@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>여행 일정 관리 v4.4</title>
+    <title>여행 일정 관리 v1.0</title>
     
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
-    
     <link rel="stylesheet" href="https://unpkg.com/@tabler/icons-webfont@3.20.0/dist/tabler-icons.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -401,7 +400,7 @@
                 <button type="button" class="btn-icon" onclick="closeModal('modalShare')"><i class="ti ti-x"></i></button>
             </div>
             <div class="modal-body">
-                <p class="form-label">아래 링크를 복사하여 일행과 공유하세요. 이 주소로 접속하면 실시간 연동됩니다!</p>
+                <p class="form-label">아래 링크를 복사하여 일행과 공유하세요. <br>이 주소로 접속하면 실시간 연동됩니다!</p>
                 <div class="share-url-box">
                     <i class="ti ti-link"></i>
                     <textarea id="inputShareUrl" readonly rows="2"></textarea>
@@ -680,8 +679,12 @@
             catch (e) { console.error("클라우드 저장 실패:", e); showToast("데이터베이스 저장에 실패했습니다."); }
         };
 
+        let unsubscribeSnapshot = null;
         function listenToCloud() {
-            onSnapshot(doc(db, "trips", tripId), (docSnap) => {
+            if (unsubscribeSnapshot) {
+                unsubscribeSnapshot();
+            }
+            unsubscribeSnapshot = onSnapshot(doc(db, "trips", tripId), (docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     window.tripInfo = data.tripInfo || window.tripInfo;
@@ -700,9 +703,7 @@
         }
 
         listenToCloud();
-    </script>
 
-    <script>
         let autoSaveTimer = null;
         window.tripInfo = { color: '#2563EB', iconStyle: 'filled', title: '새로운 여행 일정', start: '', end: '', duration: '-', location: '-', members: '-', budget: '-' };
         window.dayConfigs = {}; 
@@ -963,26 +964,29 @@
             setTimeout(() => { toast.classList.remove('show'); }, 2500);
         }
 
-        function openModal(id) { document.getElementById(id).classList.add('active'); }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+        window.openModal = function(id) { document.getElementById(id).classList.add('active'); }
+        window.closeModal = function(id) { document.getElementById(id).classList.remove('active'); }
         
-        function openShareModal() { openModal('modalShare'); }
+        window.openShareModal = function() { window.openModal('modalShare'); }
         window.copyShareUrl = function() { 
-            const copyText = document.getElementById("inputShareUrl"); 
-            copyText.select(); 
-            document.execCommand("copy"); 
-            showToast("링크가 복사되었습니다!"); 
+            const copyText = document.getElementById("inputShareUrl").value; 
+            navigator.clipboard.writeText(copyText).then(() => {
+                showToast("링크가 복사되었습니다!");
+            }).catch(err => {
+                console.error('클립보드 복사 실패:', err);
+                showToast("클립보드 복사에 실패했습니다.");
+            });
         }
         
         window.previewShareMode = function() { 
-            closeModal('modalShare'); document.body.classList.add('view-mode'); document.body.classList.add('preview-test-mode'); 
+            window.closeModal('modalShare'); document.body.classList.add('view-mode'); document.body.classList.add('preview-test-mode'); 
         }
         window.disablePreviewShareMode = function() { 
             document.body.classList.remove('view-mode'); document.body.classList.remove('preview-test-mode'); 
         }
 
-        async function executeCapture(type) {
-            closeModal('modalCaptureOption');
+        window.executeCapture = async function(type) {
+            window.closeModal('modalCaptureOption');
             const container = document.getElementById('captureTarget');
             const originalMaxWidth = container.style.maxWidth; const originalWidth = container.style.width;
             let targetWidth = type === 'mobile' ? '25rem' : '45rem';
@@ -1051,7 +1055,7 @@
             document.getElementById('inputTripBudget').value = window.tripInfo.budget;
         }
 
-        window.openTripModal = function() { populateTripForm(); openModal('modalTrip'); }
+        window.openTripModal = function() { populateTripForm(); window.openModal('modalTrip'); }
 
         document.getElementById('formTrip').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -1065,7 +1069,7 @@
             };
             saveAndSync(); 
             initDayIconGrid(); initCategoryGrid(); initIconChips(); initIconPickerGrid();
-            renderTrip(); closeModal('modalTrip');
+            renderTrip(); window.closeModal('modalTrip');
         });
 
         function renderTrip() {
@@ -1169,7 +1173,7 @@
                     document.getElementById('inputFlightPrice').value = f.price || ''; 
                 } 
             }
-            openModal('modalFlight');
+            window.openModal('modalFlight');
         }
         
         document.getElementById('formFlight').addEventListener('submit', (e) => {
@@ -1180,20 +1184,20 @@
                 price: document.getElementById('inputFlightPrice').value 
             };
             if(id) { const idx = window.flights.findIndex(i => String(i.id) === String(id)); window.flights[idx] = { ...window.flights[idx], ...data }; } else { window.flights.push({ id: Date.now(), ...data }); }
-            saveAndSync(); renderFlights(); closeModal('modalFlight');
+            saveAndSync(); renderFlights(); window.closeModal('modalFlight');
         });
         
         window.openHotelModal = function(mode, id = null) {
             document.getElementById('formHotel').reset();
             if(mode === 'add') { document.getElementById('hotelModalTitle').innerText = '숙소 추가'; document.getElementById('inputHotelId').value = ''; }
             else { document.getElementById('hotelModalTitle').innerText = '숙소 수정'; const h = window.hotels.find(i => i.id === id); if(h) { document.getElementById('inputHotelId').value = h.id; document.getElementById('inputHotelName').value = h.name; document.getElementById('inputHotelSchedule').value = h.schedule; document.getElementById('inputHotelPrice').value = h.price; } }
-            openModal('modalHotel');
+            window.openModal('modalHotel');
         }
 
         document.getElementById('formHotel').addEventListener('submit', (e) => {
             e.preventDefault(); const id = document.getElementById('inputHotelId').value; const data = { name: document.getElementById('inputHotelName').value, schedule: document.getElementById('inputHotelSchedule').value, price: document.getElementById('inputHotelPrice').value };
             if(id) { const idx = window.hotels.findIndex(i => String(i.id) === String(id)); window.hotels[idx] = { ...window.hotels[idx], ...data }; } else { window.hotels.push({ id: Date.now(), ...data }); }
-            saveAndSync(); renderHotels(); closeModal('modalHotel');
+            saveAndSync(); renderHotels(); window.closeModal('modalHotel');
         });
 
         window.openDayModal = function(e, dayNum) {
@@ -1226,13 +1230,13 @@
             }
             
             document.getElementById('inputDayColorCheck').checked = conf.customColor; document.getElementById('dayColorWrapper').style.display = conf.customColor ? 'inline-flex' : 'none';
-            document.getElementById('inputDayColor').value = conf.customColor ? conf.color : (window.tripInfo.color || '#2563EB'); openModal('modalDay');
+            document.getElementById('inputDayColor').value = conf.customColor ? conf.color : (window.tripInfo.color || '#2563EB'); window.openModal('modalDay');
         };
 
         document.getElementById('formDay').addEventListener('submit', (e) => {
             e.preventDefault(); const dayNum = document.getElementById('inputDayId').value;
             window.dayConfigs[dayNum] = { icon: document.getElementById('inputDayIcon').value, customColor: document.getElementById('inputDayColorCheck').checked, color: document.getElementById('inputDayColor').value, desc: document.getElementById('inputDayDesc').value };
-            saveAndSync(); renderTrip(); closeModal('modalDay');
+            saveAndSync(); renderTrip(); window.closeModal('modalDay');
         });
 
         window.selectDayIcon = function(btnEl, iconClass) {
@@ -1301,7 +1305,7 @@
         }
 
         window.setEventIcon = function(icon) {
-            closeModal('modalIconPicker');
+            window.closeModal('modalIconPicker');
             if (window.iconPickerTarget === 'event') {
                 window.currentEventIcon = icon;
                 document.querySelectorAll('#eventIconChips .chip-btn').forEach(chip => { chip.classList.toggle('active', chip.getAttribute('data-icon') === icon); });
@@ -1328,7 +1332,7 @@
             document.querySelectorAll('#fullIconGrid .icon-grid-item').forEach(el => {
                 el.classList.toggle('active', el.getAttribute('data-icon') === currentIcon);
             });
-            openModal('modalIconPicker');
+            window.openModal('modalIconPicker');
         }
 
         function renderTimeline(dayNum) {
@@ -1390,10 +1394,10 @@
                     }
 
                     delBtn.style.display = 'block'; 
-                    delBtn.onclick = () => { window.events = window.events.filter(e => e.id !== ev.id); saveAndSync(); renderTimeline(ev.day); closeModal('modalEvent'); }; 
+                    delBtn.onclick = () => { window.events = window.events.filter(e => e.id !== ev.id); saveAndSync(); renderTimeline(ev.day); window.closeModal('modalEvent'); }; 
                 } 
             }
-            openModal('modalEvent');
+            window.openModal('modalEvent');
         }
         
         document.getElementById('formEvent').addEventListener('submit', (e) => {
@@ -1405,7 +1409,7 @@
             const time = `${document.getElementById('inputEventTimeH').value}:${document.getElementById('inputEventTimeM').value}`; 
             const data = { day, type, typeLabel, time, customColor, customIcon, title: document.getElementById('inputEventTitle').value, desc: document.getElementById('inputEventDesc').value, cost: document.getElementById('inputEventCost').value };
             if(mode === 'add') window.events.push({ id: Date.now(), ...data }); else { const idx = window.events.findIndex(e => String(e.id) === String(id)); window.events[idx] = { ...window.events[idx], ...data }; }
-            saveAndSync(); renderTimeline(day); closeModal('modalEvent');
+            saveAndSync(); renderTimeline(day); window.closeModal('modalEvent');
         });
 
         function renderPrepList() {
