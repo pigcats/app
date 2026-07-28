@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>여행 일정 관리 v1.2</title>
+    <title>여행 일정 관리 v1.4</title>
     
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
-    
     <link rel="stylesheet" href="https://unpkg.com/@tabler/icons-webfont@3.20.0/dist/tabler-icons.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -90,6 +89,7 @@
         .day-header { padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; cursor: pointer; background: #fff; position: sticky; top: 0; z-index: 10; border-radius: 1rem; transition: all 0.2s ease;}
         .day-header-left { display: flex; align-items: center; gap: 0.875rem; }
         .day-icon-block { display: none; width: 2.625rem; height: 2.625rem; background: var(--current-primary-light); color: var(--current-primary); border-radius: 0.625rem; align-items: center; justify-content: center; font-size: 1.5625rem; transition: all 0.3s;}
+        
         .day-text-wrap { display: flex; align-items: center; gap: 0.75rem; transition: all 0.2s ease;}
         .day-title-row { display: flex; align-items: center; gap: 0.5rem; }
         .day-badge-text { color: var(--current-primary); font-size: 1rem; font-weight: 700; transition: color 0.3s;}
@@ -177,10 +177,10 @@
 
         .form-group { margin-bottom: 1rem; }
         .form-label { display: block; font-size: 0.8125rem; font-weight: 600; color: var(--text-gray); margin-bottom: 0.5rem; }
-        .form-input { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 0.625rem; font-size: 0.875rem; outline: none; }
+        .form-input { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 0.625rem; font-size: 0.875rem; outline: none; min-width: 0; }
         .form-input:focus { border-color: var(--primary); }
         .form-row { display: flex; gap: 0.75rem; }
-        .form-col { flex: 1; }
+        .form-col { flex: 1; min-width: 0; }
 
         .color-box-wrapper { display: inline-flex; align-items: center; justify-content: center; width: 3rem; height: 3rem; background: #fff; border: 1px solid var(--border-color); border-radius: 0.75rem; }
         .color-input-circle { width: 1.875rem; height: 1.875rem; border: none; outline: none; background: none; cursor: pointer; -webkit-appearance: none; padding: 0;}
@@ -375,7 +375,6 @@
         </section>
     </div>
 
-    <!-- 모달 배경(Dim) 클릭 시 닫기 인터랙션 추가됨 -->
     <div id="modalCaptureOption" class="modal-overlay" onclick="if(event.target === this) closeModal('modalCaptureOption')">
         <div class="modal-content">
             <div class="modal-header">
@@ -436,7 +435,6 @@
                         <div class="form-group form-col"><label class="form-label">인원</label><input type="text" id="inputTripMembers" class="form-input" required placeholder="예: 2명"></div>
                     </div>
                     
-                    <!-- 모바일 숫자 전용 키패드 호출을 위한 inputmode="numeric" 추가됨 -->
                     <div class="form-group"><label class="form-label">예산</label><input type="text" id="inputTripBudget" class="form-input" required placeholder="예: 1,200,000원" inputmode="numeric"></div>
 
                     <div class="form-row">
@@ -567,14 +565,12 @@
                         <div class="style-picker-row">
                             <div class="color-chip" style="background-color: #000000;" onclick="setEventColor('#000000')" data-color="#000000"></div>
                             <div class="color-chip" style="background-color: #6B7280;" onclick="setEventColor('#6B7280')" data-color="#6b7280"></div>
-
                             <div class="color-chip" style="background-color: #EF4444;" onclick="setEventColor('#EF4444')" data-color="#ef4444"></div>
                             <div class="color-chip" style="background-color: #F97316;" onclick="setEventColor('#F97316')" data-color="#f97316"></div>
                             <div class="color-chip" style="background-color: #EAB308;" onclick="setEventColor('#EAB308')" data-color="#eab308"></div>
                             <div class="color-chip" style="background-color: #22C55E;" onclick="setEventColor('#22C55E')" data-color="#22c55e"></div>
                             <div class="color-chip" style="background-color: #06B6D4;" onclick="setEventColor('#06B6D4')" data-color="#06b6d4"></div>
                             <div class="color-chip" style="background-color: #3B82F6;" onclick="setEventColor('#3B82F6')" data-color="#3b82f6"></div>
-
                             <div class="color-chip" style="background-color: #8B5CF6;" onclick="setEventColor('#8B5CF6')" data-color="#8b5cf6"></div>
                             <div class="color-chip" style="background-color: #EC4899;" onclick="setEventColor('#EC4899')" data-color="#ec4899"></div>
                             <div class="color-box-wrapper custom-color-wrapper"><input type="color" class="color-input-circle custom-color-input" onchange="handleCustomColorChange(event)"></div>
@@ -713,13 +709,10 @@
         window.currentEventColor = ''; window.currentEventIcon = '';
         window.iconPickerTarget = 'event';
 
-        /* 아이콘 스타일 변환 헬퍼 함수 (Tabler Icons 전용) */
         window.getStyledIcon = function(iconClass) {
             if (!iconClass) return '';
             let baseIcon = iconClass;
             if (baseIcon.startsWith('ti ')) baseIcon = baseIcon.substring(3);
-            
-            // -filled가 있으면 그대로 유지, 없으면 기본 선 타입으로 출력
             return `ti ${baseIcon}`;
         }
 
