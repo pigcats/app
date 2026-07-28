@@ -648,13 +648,10 @@
         /* 아이콘 스타일 변환 헬퍼 함수 (Tabler Icons 전용) */
         window.getStyledIcon = function(iconClass) {
             if (!iconClass) return '';
-            
-            // Base Tabler 아이콘 이름 추출 (클린업)
             let baseIcon = iconClass;
             if (baseIcon.startsWith('ti ')) baseIcon = baseIcon.substring(3);
-            if (baseIcon.endsWith('-filled')) baseIcon = baseIcon.replace('-filled', '');
-
-            // 채움 모드 제거 요청에 따라 무조건 라인(기본 선) 버전만 반환합니다.
+            
+            // -filled가 있으면 그대로 유지, 없으면 기본 선 타입으로 출력
             return `ti ${baseIcon}`;
         }
 
@@ -662,7 +659,7 @@
             { id: 'type-departure', label: '출발', color: '#3B82F6', icon: 'ti-plane-departure' },
             { id: 'type-arrival', label: '도착', color: '#22C55E', icon: 'ti-map-pin' },
             { id: 'type-move', label: '이동', color: '#06B6D4', icon: 'ti-car' },
-            { id: 'type-food', label: '식사', color: '#F97316', icon: 'ti-tools-kitchen-2' },
+            { id: 'type-food', label: '식사', color: '#F97316', icon: 'ti-tools-kitchen-3' },
             { id: 'type-massage', label: '마사지', color: '#8B5CF6', icon: 'ti-massage' },
             { id: 'type-shopping', label: '쇼핑', color: '#EC4899', icon: 'ti-shopping-bag' },
             { id: 'type-flight', label: '공항', color: '#2563EB', icon: 'ti-plane' },
@@ -711,7 +708,7 @@
             {
                 category: "음식 · 카페",
                 icons: [
-                    { icon: 'ti-tools-kitchen-2', label: '식사' },
+                    { icon: 'ti-tools-kitchen-3', label: '식사' },
                     { icon: 'ti-coffee', label: '카페' },
                     { icon: 'ti-glass-full', label: '칵테일' },
                     { icon: 'ti-beer', label: '맥주' },
@@ -739,9 +736,10 @@
             {
                 category: "물놀이",
                 icons: [
+                    { icon: 'ti-beach', label: '비치' },
                     { icon: 'ti-scuba-mask', label: '스노클링' },
                     { icon: 'ti-swimming', label: '수영' },
-                    { icon: 'ti-wave-sine', label: '파도' },
+                    { icon: 'ti-ripple', label: '파도' },
                     { icon: 'ti-droplet', label: '물' },
                     { icon: 'ti-fish', label: '물고기' },
                     { icon: 'ti-lifebuoy', label: '구명튜브' },
@@ -790,7 +788,7 @@
                     { icon: 'ti-device-mobile', label: '휴대폰' },
                     { icon: 'ti-toilet-paper', label: '화장실' },
                     { icon: 'ti-bath', label: '샤워' },
-                    { icon: 'ti-first-aid-kit', label: '병원' },
+                    { icon: 'ti-building-hospital', label: '병원' },
                     { icon: 'ti-pill', label: '약' },
                     { icon: 'ti-info-circle', label: '안내' },
                     { icon: 'ti-alert-triangle', label: '경고' }
@@ -800,14 +798,41 @@
                 category: "기타",
                 icons: [
                     { icon: 'ti-star', label: '별' },
+                    { icon: 'ti-star-filled', label: '별' },
                     { icon: 'ti-heart', label: '하트' },
+                    { icon: 'ti-heart-filled', label: '하트' },
                     { icon: 'ti-flag', label: '깃발' },
                     { icon: 'ti-pin', label: '핀' },
                     { icon: 'ti-note', label: '메모' },
                     { icon: 'ti-edit', label: '편집' },
                     { icon: 'ti-dots', label: '더보기' },
                     { icon: 'ti-circle', label: '원형' },
-                    { icon: 'ti-list-check', label: '체크리스트' }
+                    { icon: 'ti-list-check', label: '체크리스트' },
+                    { icon: 'ti-check', label: '체크' },
+                    { icon: 'ti-search', label: '검색' },
+                ]
+            },
+            {
+                category: "숫자",
+                icons: [
+                    { icon: 'ti-number-1', label: '1' },
+                    { icon: 'ti-number-2', label: '2' },
+                    { icon: 'ti-number-3', label: '3' },
+                    { icon: 'ti-number-4', label: '4' },
+                    { icon: 'ti-number-5', label: '5' },
+                    { icon: 'ti-number-6', label: '6' },
+                    { icon: 'ti-number-7', label: '7' },
+                    { icon: 'ti-number-8', label: '8' },
+                    { icon: 'ti-number-9', label: '9' },
+                    { icon: 'ti-circle-number-1', label: '1' },
+                    { icon: 'ti-circle-number-2', label: '2' },
+                    { icon: 'ti-circle-number-3', label: '3' },
+                    { icon: 'ti-circle-number-4', label: '4' },
+                    { icon: 'ti-circle-number-5', label: '5' },
+                    { icon: 'ti-circle-number-6', label: '6' },
+                    { icon: 'ti-circle-number-7', label: '7' },
+                    { icon: 'ti-circle-number-8', label: '8' },
+                    { icon: 'ti-circle-number-9', label: '9' },
                 ]
             }
         ];
