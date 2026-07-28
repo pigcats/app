@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>여행 일정 관리 v3.3</title>
+    <title>여행 일정 관리 v4.0</title>
     
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@tabler/icons-webfont@3.20.0/dist/tabler-icons.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
@@ -662,7 +662,7 @@
             { id: 'type-arrival', label: '도착', color: '#22C55E', icon: 'ti-map-pin' },
             { id: 'type-move', label: '이동', color: '#06B6D4', icon: 'ti-car' },
             { id: 'type-food', label: '식사', color: '#F97316', icon: 'ti-tools-kitchen-2' },
-            { id: 'type-massage', label: '마사지', color: '#8B5CF6', icon: 'ti-flower' },
+            { id: 'type-massage', label: '마사지', color: '#8B5CF6', icon: 'ti-massage' },
             { id: 'type-shopping', label: '쇼핑', color: '#EC4899', icon: 'ti-shopping-bag' },
             { id: 'type-flight', label: '공항', color: '#2563EB', icon: 'ti-plane' },
             { id: 'type-cafe', label: '카페', color: '#A16207', icon: 'ti-coffee' },
@@ -680,65 +680,136 @@
             {
                 category: "이동 · 교통",
                 icons: [
-                    { icon: 'ti-plane-departure', label: '출발' }, { icon: 'ti-plane-arrival', label: '도착' }, { icon: 'ti-plane', label: '비행기' }, { icon: 'ti-building', label: '공항' }, { icon: 'ti-car', label: '자동차' }, { icon: 'ti-bus', label: '버스' }, { icon: 'ti-train', label: '기차' }, { icon: 'ti-ship', label: '배' }, { icon: 'ti-bike', label: '자전거' }, { icon: 'ti-steering-wheel', label: '택시' }, { icon: 'ti-route', label: '길찾기' }, { icon: 'ti-navigation', label: '내비게이션' }, { icon: 'ti-map-pin', label: '위치' }, { icon: 'ti-map', label: '지도' }, { icon: 'ti-compass', label: '나침반' }
+                    { icon: 'ti-plane-departure', label: '출발' },
+                    { icon: 'ti-plane-arrival', label: '도착' },
+                    { icon: 'ti-plane', label: '비행기' },
+                    { icon: 'ti-building-airport', label: '공항' },
+                    { icon: 'ti-car', label: '자동차' },
+                    { icon: 'ti-bus', label: '버스' },
+                    { icon: 'ti-train', label: '기차' },
+                    { icon: 'ti-ship', label: '배' },
+                    { icon: 'ti-bike', label: '자전거' },
+                    { icon: 'ti-steering-wheel', label: '택시' },
+                    { icon: 'ti-route', label: '길찾기' },
+                    { icon: 'ti-navigation', label: '내비게이션' },
+                    { icon: 'ti-map-pin', label: '위치' },
+                    { icon: 'ti-map', label: '지도' },
+                    { icon: 'ti-compass', label: '나침반' }
                 ]
             },
             {
                 category: "숙소",
                 icons: [
-                    { icon: 'ti-building', label: '호텔' }, { icon: 'ti-bed', label: '침대' }, { icon: 'ti-home', label: '집' }, { icon: 'ti-key', label: '열쇠' }, { icon: 'ti-door', label: '문' }
+                    { icon: 'ti-building', label: '호텔' },
+                    { icon: 'ti-bed', label: '침대' },
+                    { icon: 'ti-home', label: '집' },
+                    { icon: 'ti-key', label: '열쇠' },
+                    { icon: 'ti-door', label: '문' }
                 ]
             },
             {
                 category: "음식 · 카페",
                 icons: [
-                    { icon: 'ti-tools-kitchen-2', label: '식사' }, { icon: 'ti-coffee', label: '카페' }, { icon: 'ti-glass-full', label: '칵테일' }, { icon: 'ti-beer', label: '맥주' }, { icon: 'ti-ice-cream', label: '아이스크림' }, { icon: 'ti-cake', label: '케이크' }, { icon: 'ti-pizza', label: '피자' }, { icon: 'ti-burger', label: '햄버거' }
+                    { icon: 'ti-tools-kitchen-2', label: '식사' },
+                    { icon: 'ti-coffee', label: '카페' },
+                    { icon: 'ti-glass-full', label: '칵테일' },
+                    { icon: 'ti-beer', label: '맥주' },
+                    { icon: 'ti-ice-cream', label: '아이스크림' },
+                    { icon: 'ti-cake', label: '케이크' },
+                    { icon: 'ti-pizza', label: '피자' },
+                    { icon: 'ti-burger', label: '햄버거' }
                 ]
             },
             {
                 category: "관광 · 액티비티",
                 icons: [
-                    { icon: 'ti-camera', label: '관광' }, { icon: 'ti-photo', label: '사진' }, { icon: 'ti-video', label: '비디오' }, { icon: 'ti-beach', label: '해변' }, { icon: 'ti-tree', label: '야자수' }, { icon: 'ti-mountain', label: '산' }, { icon: 'ti-sun', label: '해' }, { icon: 'ti-sunset', label: '일몰' }, { icon: 'ti-stars', label: '별' }, { icon: 'ti-telescope', label: '망원경' }
+                    { icon: 'ti-camera', label: '관광' },
+                    { icon: 'ti-photo', label: '사진' },
+                    { icon: 'ti-video', label: '비디오' },
+                    { icon: 'ti-beach', label: '해변' },
+                    { icon: 'ti-tree', label: '야자수' },
+                    { icon: 'ti-mountain', label: '산' },
+                    { icon: 'ti-sun', label: '해' },
+                    { icon: 'ti-sunset', label: '일몰' },
+                    { icon: 'ti-stars', label: '별' },
+                    { icon: 'ti-telescope', label: '망원경' }
                 ]
             },
             {
                 category: "물놀이",
                 icons: [
-                    { icon: 'ti-swimming', label: '수영' }, { icon: 'ti-wave-sine', label: '파도' }, { icon: 'ti-droplet', label: '물' }, { icon: 'ti-fish', label: '물고기' }, { icon: 'ti-lifebuoy', label: '구명튜브' }, { icon: 'ti-mask', label: '스노클' }
+                    { icon: 'ti-scuba-mask', label: '스노클링' },
+                    { icon: 'ti-swimming', label: '수영' },
+                    { icon: 'ti-wave-sine', label: '파도' },
+                    { icon: 'ti-droplet', label: '물' },
+                    { icon: 'ti-fish', label: '물고기' },
+                    { icon: 'ti-lifebuoy', label: '구명튜브' },
                 ]
             },
             {
                 category: "쇼핑",
                 icons: [
-                    { icon: 'ti-shopping-bag', label: '쇼핑' }, { icon: 'ti-shopping-cart', label: '장바구니' }, { icon: 'ti-building-store', label: '상점' }, { icon: 'ti-gift', label: '선물' }, { icon: 'ti-credit-card', label: '카드' }, { icon: 'ti-cash', label: '돈' }
+                    { icon: 'ti-shopping-bag', label: '쇼핑' },
+                    { icon: 'ti-shopping-cart', label: '장바구니' },
+                    { icon: 'ti-building-store', label: '상점' },
+                    { icon: 'ti-gift', label: '선물' },
+                    { icon: 'ti-credit-card', label: '카드' },
+                    { icon: 'ti-cash', label: '돈' }
                 ]
             },
             {
                 category: "휴식 · 힐링",
                 icons: [
-                    { icon: 'ti-armchair', label: '휴식' }, { icon: 'ti-flower', label: '마사지' }, { icon: 'ti-flower', label: '스파' }, { icon: 'ti-heart', label: '하트' }, { icon: 'ti-sparkles', label: '반짝' }, { icon: 'ti-mood-smile', label: '웃음' }
+                    { icon: 'ti-armchair', label: '휴식' },
+                    { icon: 'ti-massage', label: '마사지' },
+                    { icon: 'ti-heart', label: '하트' },
+                    { icon: 'ti-sparkles', label: '반짝' },
+                    { icon: 'ti-mood-smile', label: '웃음' }
                 ]
             },
             {
                 category: "여행 준비",
                 icons: [
-                    { icon: 'ti-id-badge', label: '여권' }, { icon: 'ti-luggage', label: '여행가방' }, { icon: 'ti-backpack', label: '백팩' }, { icon: 'ti-ticket', label: '티켓' }, { icon: 'ti-qrcode', label: 'QR' }, { icon: 'ti-calendar-event', label: '일정' }, { icon: 'ti-circle-check', label: '체크' }, { icon: 'ti-clock', label: '시계' }, { icon: 'ti-alarm', label: '알람' }
+                    { icon: 'ti-id-badge', label: '여권' },
+                    { icon: 'ti-luggage', label: '여행가방' },
+                    { icon: 'ti-backpack', label: '백팩' },
+                    { icon: 'ti-ticket', label: '티켓' },
+                    { icon: 'ti-qrcode', label: 'QR' },
+                    { icon: 'ti-calendar-event', label: '일정' },
+                    { icon: 'ti-circle-check', label: '체크' },
+                    { icon: 'ti-clock', label: '시계' },
+                    { icon: 'ti-alarm', label: '알람' }
                 ]
             },
             {
                 category: "편의시설",
                 icons: [
-                    { icon: 'ti-wifi', label: '와이파이' }, { icon: 'ti-battery-charging', label: '충전' }, { icon: 'ti-device-mobile', label: '휴대폰' }, { icon: 'ti-toilet-paper', label: '화장실' }, { icon: 'ti-bath', label: '샤워' }, { icon: 'ti-first-aid-kit', label: '병원' }, { icon: 'ti-pill', label: '약' }, { icon: 'ti-info-circle', label: '안내' }, { icon: 'ti-alert-triangle', label: '경고' }
+                    { icon: 'ti-wifi', label: '와이파이' },
+                    { icon: 'ti-battery-charging', label: '충전' },
+                    { icon: 'ti-device-mobile', label: '휴대폰' },
+                    { icon: 'ti-toilet-paper', label: '화장실' },
+                    { icon: 'ti-bath', label: '샤워' },
+                    { icon: 'ti-first-aid-kit', label: '병원' },
+                    { icon: 'ti-pill', label: '약' },
+                    { icon: 'ti-info-circle', label: '안내' },
+                    { icon: 'ti-alert-triangle', label: '경고' }
                 ]
             },
             {
                 category: "기타",
                 icons: [
-                    { icon: 'ti-star', label: '별' }, { icon: 'ti-heart', label: '하트' }, { icon: 'ti-flag', label: '깃발' }, { icon: 'ti-pin', label: '핀' }, { icon: 'ti-note', label: '메모' }, { icon: 'ti-edit', label: '편집' }, { icon: 'ti-dots', label: '더보기' }, { icon: 'ti-circle', label: '원형' }, { icon: 'ti-list-check', label: '체크리스트' }
+                    { icon: 'ti-star', label: '별' },
+                    { icon: 'ti-heart', label: '하트' },
+                    { icon: 'ti-flag', label: '깃발' },
+                    { icon: 'ti-pin', label: '핀' },
+                    { icon: 'ti-note', label: '메모' },
+                    { icon: 'ti-edit', label: '편집' },
+                    { icon: 'ti-dots', label: '더보기' },
+                    { icon: 'ti-circle', label: '원형' },
+                    { icon: 'ti-list-check', label: '체크리스트' }
                 ]
             }
         ];
-
         window.checkStickyHeaders = function() {
             const headers = document.querySelectorAll('.day-card.active .day-header');
             headers.forEach(header => {
