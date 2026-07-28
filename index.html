@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>여행 일정 관리 v2.5</title>
+    <title>여행 일정 관리 v3.3</title>
     
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
@@ -116,11 +117,12 @@
         .day-card.active .day-body { display: block; }
 
         .timeline { display: flex; flex-direction: column; }
-        .timeline-item { display: flex; align-items: stretch; margin-bottom: 12px; }
+        .timeline-item { display: flex; align-items: stretch; margin-bottom: 12px; position: relative; }
         .timeline-time { width: 44px; font-size: 14px; font-weight: 700; color: var(--text-dark); padding-top: 12px; text-align: left; }
-        .timeline-divider { display: flex; flex-direction: column; align-items: center; margin: 6px 16px 0; }
-        .timeline-circle { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; z-index: 2; flex-shrink: 0; }
-        .timeline-line { width: 2px; background: #E5E7EB; flex-grow: 1; margin-top: 4px; margin-bottom: 4px; min-height: 24px; }
+        
+        .timeline-divider { position: relative; display: flex; flex-direction: column; align-items: center; margin: 6px 16px 0; width: 34px; flex-shrink: 0; }
+        .timeline-circle { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; z-index: 2; position: relative; flex-shrink: 0; }
+        .timeline-line { position: absolute; top: 34px; bottom: -18px; left: 16px; width: 2px; background: #E5E7EB; z-index: 1; }
         .timeline-item:last-child .timeline-line { display: none; }
         .timeline-item:last-child { margin-bottom: 0; }
         
@@ -201,10 +203,11 @@
         .color-chip:hover { transform: scale(1.1); }
         .color-chip.active { border-color: #111827; box-shadow: 0 0 0 2px #fff inset; }
 
-        .icon-grid-full { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; padding-bottom: 20px;}
-        .icon-grid-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: #F9FAFB; border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 4px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
+        .icon-category-title { font-size: 13px; font-weight: 700; color: var(--text-gray-dark); margin: 20px 0 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; }
+        .icon-grid-full { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; padding-bottom: 4px;}
+        .icon-grid-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: #F9FAFB; border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 4px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; overflow: hidden; }
         .icon-grid-item i { font-size: 24px; }
-        .icon-grid-item span { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+        .icon-grid-item span { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90%; text-align: center; }
         .icon-grid-item:hover { background: #F3F4F6; }
         .icon-grid-item.active { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
 
@@ -224,23 +227,19 @@
         .capture-overlay.active { display: flex; }
         #capturedImage { max-width: 90%; max-height: 80vh; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .capture-guide { margin-top: 16px; font-weight: 700; color: #374151; display: flex; align-items: center; gap: 8px; }
-
-        @media (max-width: 420px) {
-            .form-row { gap: 8px; }
-        }
     </style>
 </head>
 <body>
     <div class="app-container" id="captureTarget">
         <header class="hero-section">
             <div class="hero-btn-group">
-                <button class="btn-hero-circle" onclick="manualCloudSave()" title="클라우드 수동 저장"><i class="ph ph-cloud-arrow-up"></i></button>
-                <button class="btn-hero-circle" onclick="document.getElementById('importFile').click()" title="데이터 불러오기"><i class="ph ph-folder-open"></i></button>
+                <button class="btn-hero-circle" onclick="manualCloudSave()" title="클라우드 수동 저장"><i class="ti ti-cloud-upload"></i></button>
+                <button class="btn-hero-circle" onclick="document.getElementById('importFile').click()" title="데이터 불러오기"><i class="ti ti-folder-open"></i></button>
                 <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
-                <button class="btn-hero-circle" onclick="exportData()" title="데이터 저장"><i class="ph ph-floppy-disk"></i></button>
-                <button class="btn-hero-circle" onclick="openModal('modalCaptureOption')" title="이미지로 저장"><i class="ph ph-download-simple"></i></button>
-                <button class="btn-hero-circle" onclick="openShareModal()" title="공유하기"><i class="ph ph-share-network"></i></button>
-                <button class="btn-hero-circle" onclick="openTripModal()" title="정보 수정"><i class="ph ph-pencil-simple"></i></button>
+                <button class="btn-hero-circle" onclick="exportData()" title="데이터 저장"><i class="ti ti-device-floppy"></i></button>
+                <button class="btn-hero-circle" onclick="openModal('modalCaptureOption')" title="이미지로 저장"><i class="ti ti-download"></i></button>
+                <button class="btn-hero-circle" onclick="openShareModal()" title="공유하기"><i class="ti ti-share"></i></button>
+                <button class="btn-hero-circle" onclick="openTripModal()" title="정보 수정"><i class="ti ti-pencil"></i></button>
             </div>
             
             <h1 class="hero-title" id="displayTripTitle">새로운 여행 일정</h1>
@@ -251,19 +250,19 @@
             <h2 class="section-title">여행 개요</h2>
             <div class="overview-grid">
                 <div class="overview-item">
-                    <div class="overview-icon"><i class="ph ph-calendar-blank"></i></div>
+                    <div class="overview-icon"><i class="ti ti-calendar"></i></div>
                     <div><p class="overview-label">기간</p><p class="overview-value" id="overviewDuration">-</p></div>
                 </div>
                 <div class="overview-item">
-                    <div class="overview-icon"><i class="ph ph-map-pin"></i></div>
+                    <div class="overview-icon"><i class="ti ti-map-pin"></i></div>
                     <div><p class="overview-label">여행지</p><p class="overview-value" id="overviewLocation">-</p></div>
                 </div>
                 <div class="overview-item">
-                    <div class="overview-icon"><i class="ph ph-users"></i></div>
+                    <div class="overview-icon"><i class="ti ti-users"></i></div>
                     <div><p class="overview-label">인원</p><p class="overview-value" id="overviewMembers">-</p></div>
                 </div>
                 <div class="overview-item">
-                    <div class="overview-icon"><i class="ph ph-currency-krw"></i></div>
+                    <div class="overview-icon"><i class="ti ti-currency-won"></i></div>
                     <div><p class="overview-label">예산</p><p class="overview-value" id="overviewBudget">-</p></div>
                 </div>
             </div>
@@ -272,7 +271,7 @@
         <section class="section-wrap">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                 <h2 class="section-title" style="margin-bottom: 0;">항공권 정보</h2>
-                <button class="btn-add-booking" onclick="openFlightModal('add')"><i class="ph ph-plus"></i> 항공 추가</button>
+                <button class="btn-add-booking" onclick="openFlightModal('add')"><i class="ti ti-plus"></i> 항공 추가</button>
             </div>
             <div id="flightListContainer"><ul class="booking-list" id="flightList"></ul></div>
         </section>
@@ -280,7 +279,7 @@
         <section class="section-wrap">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                 <h2 class="section-title" style="margin-bottom: 0;">숙소 정보</h2>
-                <button class="btn-add-booking" onclick="openHotelModal('add')"><i class="ph ph-plus"></i> 숙소 추가</button>
+                <button class="btn-add-booking" onclick="openHotelModal('add')"><i class="ti ti-plus"></i> 숙소 추가</button>
             </div>
             <div id="hotelListContainer"><ul class="booking-list" id="hotelList"></ul></div>
         </section>
@@ -299,7 +298,7 @@
                 <ul class="prep-list" id="prepList"></ul>
                 <form class="prep-add-form" id="formAddPrep">
                     <input type="text" class="prep-input" id="inputPrepItem" placeholder="새로운 준비물 입력..." required autocomplete="off">
-                    <button type="submit" class="btn-prep-add"><i class="ph ph-plus"></i></button>
+                    <button type="submit" class="btn-prep-add"><i class="ti ti-plus"></i></button>
                 </form>
             </div>
         </section>
@@ -310,7 +309,7 @@
                 <ul class="prep-list" id="memoList"></ul>
                 <form class="prep-add-form" id="formAddMemo">
                     <input type="text" class="prep-input" id="inputMemoItem" placeholder="새로운 메모 입력 (링크 등록 가능)" required autocomplete="off">
-                    <button type="submit" class="btn-prep-add"><i class="ph ph-plus"></i></button>
+                    <button type="submit" class="btn-prep-add"><i class="ti ti-plus"></i></button>
                 </form>
             </div>
         </section>
@@ -320,14 +319,14 @@
         <div class="modal-content" style="max-width: 320px; max-height: unset;">
             <div class="modal-header">
                 <h3 class="modal-title">이미지 저장 옵션</h3>
-                <button type="button" class="btn-icon" onclick="closeModal('modalCaptureOption')"><i class="ph ph-x"></i></button>
+                <button type="button" class="btn-icon" onclick="closeModal('modalCaptureOption')"><i class="ti ti-x"></i></button>
             </div>
             <div class="modal-body" style="display: flex; flex-direction: column; gap: 12px;">
                 <button type="button" class="btn-submit" onclick="executeCapture('mobile')" style="background: var(--text-dark); margin: 0;">
-                    <i class="ph ph-device-mobile"></i> 모바일 이미지 생성 (길게 눌러 저장)
+                    <i class="ti ti-device-mobile"></i> 모바일 이미지 생성 (길게 눌러 저장)
                 </button>
                 <button type="button" class="btn-submit" onclick="executeCapture('pc')" style="margin: 0;">
-                    <i class="ph ph-desktop"></i> PC로 바로 다운로드
+                    <i class="ti ti-device-desktop"></i> PC로 바로 다운로드
                 </button>
             </div>
         </div>
@@ -337,19 +336,19 @@
         <div class="modal-content" style="max-height: unset;">
             <div class="modal-header">
                 <h3 class="modal-title">일정 공유하기</h3>
-                <button type="button" class="btn-icon" onclick="closeModal('modalShare')"><i class="ph ph-x"></i></button>
+                <button type="button" class="btn-icon" onclick="closeModal('modalShare')"><i class="ti ti-x"></i></button>
             </div>
             <div class="modal-body">
                 <p class="form-label" style="margin-bottom: 12px; color: var(--text-dark);">아래 링크를 복사하여 일행과 공유하세요. 이 주소로 접속하면 실시간 연동됩니다!</p>
                 <div class="share-url-box">
-                    <i class="ph ph-link" style="color: var(--text-gray); font-size:18px; flex-shrink: 0;"></i>
+                    <i class="ti ti-link" style="color: var(--text-gray); font-size:18px; flex-shrink: 0;"></i>
                     <textarea id="inputShareUrl" readonly rows="2" style="flex: 1; border: none; background: transparent; outline: none; font-size: 14px; color: var(--text-gray); resize: none; word-break: break-all; padding: 0;"></textarea>
                     <button type="button" class="btn-copy" onclick="copyShareUrl()" style="flex-shrink: 0; background: white; border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">복사</button>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn-submit" onclick="previewShareMode()" style="background: #F3F4F6; color: var(--text-dark); border: 1px solid var(--border-color); margin: 0;">
-                    <i class="ph ph-eye" style="margin-right:4px;"></i> 공유된 화면 미리보기
+                    <i class="ti ti-eye" style="margin-right:4px;"></i> 공유된 화면 미리보기
                 </button>
             </div>
         </div>
@@ -359,10 +358,25 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title">여행 정보 설정</h3>
-                <button type="button" class="btn-icon" onclick="closeModal('modalTrip')"><i class="ph ph-x"></i></button>
+                <button type="button" class="btn-icon" onclick="closeModal('modalTrip')"><i class="ti ti-x"></i></button>
             </div>
             <form id="formTrip" class="modal-form">
                 <div class="modal-body">
+                    <div class="form-group"><label class="form-label">여행 제목</label><input type="text" id="inputTripTitle" class="form-input" required placeholder="여행 제목"></div>
+                    <div class="form-group"><label class="form-label">기간 (텍스트)</label><input type="text" id="inputTripDuration" class="form-input" required placeholder="예: 3박 5일"></div>
+                    
+                    <div class="form-row">
+                        <div class="form-group form-col"><label class="form-label">시작일</label><input type="date" id="inputTripStart" class="form-input" required onchange="handleStartDateChange()"></div>
+                        <div class="form-group form-col"><label class="form-label">종료일</label><input type="date" id="inputTripEnd" class="form-input" required></div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group form-col"><label class="form-label">여행지</label><input type="text" id="inputTripLocation" class="form-input" required placeholder="예: 필리핀 보홀"></div>
+                        <div class="form-group form-col"><label class="form-label">인원</label><input type="text" id="inputTripMembers" class="form-input" required placeholder="예: 2명"></div>
+                    </div>
+                    
+                    <div class="form-group"><label class="form-label">예산</label><input type="text" id="inputTripBudget" class="form-input" required placeholder="예: 1,200,000원"></div>
+
                     <div class="form-row">
                         <div class="form-group form-col">
                             <label class="form-label">메인 포인트 컬러</label>
@@ -371,24 +385,10 @@
                         <div class="form-group form-col">
                             <label class="form-label">전체 아이콘 스타일</label>
                             <select id="inputTripIconStyle" class="form-input">
-                                <option value="ph-fill">Fill (채움)</option>
-                                <option value="ph">Regular (기본 선)</option>
-                                <option value="ph-light">Light (얇은 선)</option>
-                                <option value="ph-bold">Bold (굵은 선)</option>
+                                <option value="outline">Outline (기본 선)</option>
                             </select>
                         </div>
                     </div>
-                    <div class="form-group"><label class="form-label">여행 제목</label><input type="text" id="inputTripTitle" class="form-input" required placeholder="여행 제목"></div>
-                    <div class="form-row">
-                        <div class="form-group form-col"><label class="form-label">시작일</label><input type="date" id="inputTripStart" class="form-input" required onchange="handleStartDateChange()"></div>
-                        <div class="form-group form-col"><label class="form-label">종료일</label><input type="date" id="inputTripEnd" class="form-input" required></div>
-                    </div>
-                    <div class="form-group"><label class="form-label">기간</label><input type="text" id="inputTripDuration" class="form-input" required placeholder="예: 3박 5일"></div>
-                    <div class="form-row">
-                        <div class="form-group form-col"><label class="form-label">여행지</label><input type="text" id="inputTripLocation" class="form-input" required placeholder="예: 필리핀 보홀"></div>
-                        <div class="form-group form-col"><label class="form-label">인원</label><input type="text" id="inputTripMembers" class="form-input" required placeholder="예: 2명"></div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:0;"><label class="form-label">예산</label><input type="text" id="inputTripBudget" class="form-input" required placeholder="예: 1,200,000원"></div>
                 </div>
                 <div class="modal-footer"><button type="submit" class="btn-submit" style="margin:0;">저장하기</button></div>
             </form>
@@ -399,7 +399,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title" id="flightModalTitle">항공권 추가</h3>
-                <button type="button" class="btn-icon" onclick="closeModal('modalFlight')"><i class="ph ph-x"></i></button>
+                <button type="button" class="btn-icon" onclick="closeModal('modalFlight')"><i class="ti ti-x"></i></button>
             </div>
             <form id="formFlight" class="modal-form">
                 <div class="modal-body">
@@ -432,7 +432,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title" id="hotelModalTitle">숙소 추가</h3>
-                <button type="button" class="btn-icon" onclick="closeModal('modalHotel')"><i class="ph ph-x"></i></button>
+                <button type="button" class="btn-icon" onclick="closeModal('modalHotel')"><i class="ti ti-x"></i></button>
             </div>
             <form id="formHotel" class="modal-form">
                 <div class="modal-body">
@@ -450,7 +450,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title">DAY 설정</h3>
-                <button type="button" class="btn-icon" onclick="closeModal('modalDay')"><i class="ph ph-x"></i></button>
+                <button type="button" class="btn-icon" onclick="closeModal('modalDay')"><i class="ti ti-x"></i></button>
             </div>
             <form id="formDay" class="modal-form">
                 <div class="modal-body">
@@ -467,7 +467,7 @@
                         <div class="category-grid" id="dayIconGrid">
                             <!-- JS 랜더링 -->
                         </div>
-                        <input type="hidden" id="inputDayIcon" value="ph-fill ph-map-pin">
+                        <input type="hidden" id="inputDayIcon" value="ti-map-pin">
                     </div>
                     <div class="form-group" style="margin-bottom:0;">
                         <label class="form-label">주요 일정 (요약)</label>
@@ -483,7 +483,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title" id="eventModalTitle">일정 추가</h3>
-                <button type="button" class="btn-icon" onclick="closeModal('modalEvent')"><i class="ph ph-x"></i></button>
+                <button type="button" class="btn-icon" onclick="closeModal('modalEvent')"><i class="ti ti-x"></i></button>
             </div>
             <form id="formEvent" class="modal-form">
                 <div class="modal-body">
@@ -491,7 +491,7 @@
                     <input type="hidden" id="inputEventDay">
                     <input type="hidden" id="inputEventMode">
                     <div class="form-group">
-                        <label class="form-label">카테고리</label>
+                        <label class="form-label">카테고리 아이콘</label>
                         <div class="category-grid" id="eventCategoryGrid">
                             <!-- JS 랜더링 -->
                         </div>
@@ -516,7 +516,7 @@
                             <div class="icon-chips" id="eventIconChips" style="display:flex; gap:8px;">
                                 <!-- JS 랜더링: 추천 아이콘 칩 -->
                             </div>
-                            <button type="button" class="btn-icon-more" onclick="openIconPickerModal('event')" title="더 많은 아이콘 보기"><i class="ph ph-plus"></i></button>
+                            <button type="button" class="btn-icon-more" onclick="openIconPickerModal('event')" title="더 많은 아이콘 보기"><i class="ti ti-plus"></i></button>
                         </div>
                     </div>
 
@@ -537,9 +537,9 @@
                     <div class="form-group"><label class="form-label">일정 제목</label><input type="text" id="inputEventTitle" class="form-input" required placeholder="예: 호텔 체크인"></div>
                     <div class="form-group" style="margin-bottom:0;"><label class="form-label">상세 내용 (선택)</label><input type="text" id="inputEventDesc" class="form-input" placeholder="예: 예약번호 123456"></div>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn-submit" style="margin:0;">저장하기</button>
-                    <button type="button" id="btnEventDelete" class="btn-submit" style="background-color:#EF4444; display:none; margin-top:8px;">이 일정 삭제하기</button>
+                <div class="modal-footer" style="display: flex; flex-direction: row; gap: 8px; flex-wrap: nowrap;">
+                    <button type="submit" class="btn-submit" style="margin:0; flex:1;">저장하기</button>
+                    <button type="button" id="btnEventDelete" class="btn-submit" style="background-color:#EF4444; display:none; margin:0; flex:1;">삭제하기</button>
                 </div>
             </form>
         </div>
@@ -549,24 +549,24 @@
         <div class="modal-content" style="max-width: 500px;">
             <div class="modal-header">
                 <h3 class="modal-title">아이콘 선택</h3>
-                <button type="button" class="btn-icon" onclick="closeModal('modalIconPicker')"><i class="ph ph-x"></i></button>
+                <button type="button" class="btn-icon" onclick="closeModal('modalIconPicker')"><i class="ti ti-x"></i></button>
             </div>
             <div class="modal-body" style="padding: 24px; padding-right: 24px;">
-                <div class="icon-grid-full" id="fullIconGrid">
+                <div id="fullIconGrid">
                     <!-- JS 랜더링: 확장 아이콘 리스트 -->
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="toastMessage" class="toast-msg"><i class="ph-fill ph-check-circle"></i> <span>메시지</span></div>
+    <div id="toastMessage" class="toast-msg"><i class="ti ti-circle-check"></i> <span>메시지</span></div>
     
-    <button id="btnExitView" class="btn-exit-view" onclick="disablePreviewShareMode()"><i class="ph ph-arrow-left"></i> 편집 모드로 돌아가기</button>
+    <button id="btnExitView" class="btn-exit-view" onclick="disablePreviewShareMode()"><i class="ti ti-arrow-left"></i> 편집 모드로 돌아가기</button>
     
     <div id="captureResultOverlay" class="capture-overlay">
         <img id="capturedImage" src="" alt="Captured Trip Plan">
         <div class="capture-guide">
-            <i class="ph-fill ph-info"></i> 이미지를 길게 눌러서 '사진 앱에 저장'을 선택하세요.
+            <i class="ti ti-info-circle"></i> 이미지를 길게 눌러서 '사진 앱에 저장'을 선택하세요.
         </div>
         <button type="button" class="btn-submit" onclick="document.getElementById('captureResultOverlay').classList.remove('active')" style="width: 200px; margin-top: 24px;">닫기</button>
     </div>
@@ -637,60 +637,106 @@
 
     <script>
         let autoSaveTimer = null;
-        window.tripInfo = { color: '#2563EB', iconStyle: 'ph-fill', title: '새로운 여행 일정', start: '', end: '', duration: '-', location: '-', members: '-', budget: '-' };
+        window.tripInfo = { color: '#2563EB', iconStyle: 'filled', title: '새로운 여행 일정', start: '', end: '', duration: '-', location: '-', members: '-', budget: '-' };
         window.dayConfigs = {}; 
         window.flights = []; window.hotels = []; window.events = []; window.prepItems = []; window.memoItems = [];
 
         window.currentEventColor = ''; window.currentEventIcon = '';
         window.iconPickerTarget = 'event';
 
-        /* 아이콘 스타일 변환 헬퍼 함수 */
+        /* 아이콘 스타일 변환 헬퍼 함수 (Tabler Icons 전용) */
         window.getStyledIcon = function(iconClass) {
             if (!iconClass) return '';
-            const style = window.tripInfo.iconStyle || 'ph-fill';
-            const parts = iconClass.split(' ');
-            const baseIcon = parts.find(p => p !== 'ph-fill' && p !== 'ph' && p !== 'ph-light' && p !== 'ph-bold' && p !== 'ph-thin' && p !== 'ph-duotone' && p.startsWith('ph-'));
-            return baseIcon ? `${style} ${baseIcon}` : iconClass;
+            
+            // Base Tabler 아이콘 이름 추출 (클린업)
+            let baseIcon = iconClass;
+            if (baseIcon.startsWith('ti ')) baseIcon = baseIcon.substring(3);
+            if (baseIcon.endsWith('-filled')) baseIcon = baseIcon.replace('-filled', '');
+
+            // 채움 모드 제거 요청에 따라 무조건 라인(기본 선) 버전만 반환합니다.
+            return `ti ${baseIcon}`;
         }
 
         const standardCategories = [
-            { id: 'type-departure', label: '출발', color: '#3B82F6', icon: 'ph-fill ph-airplane-takeoff' },
-            { id: 'type-arrival', label: '도착', color: '#22C55E', icon: 'ph-fill ph-map-pin' },
-            { id: 'type-move', label: '이동', color: '#06B6D4', icon: 'ph-fill ph-car' },
-            { id: 'type-food', label: '식사', color: '#F97316', icon: 'ph-fill ph-fork-knife' },
-            { id: 'type-massage', label: '마사지', color: '#8B5CF6', icon: 'ph-fill ph-flower-lotus' },
-            { id: 'type-shopping', label: '쇼핑', color: '#EC4899', icon: 'ph-fill ph-shopping-bag' },
-            { id: 'type-flight', label: '공항', color: '#2563EB', icon: 'ph-fill ph-airplane' },
-            { id: 'type-cafe', label: '카페', color: '#A16207', icon: 'ph-fill ph-coffee' },
-            { id: 'type-hotel', label: '호텔', color: '#4F46E5', icon: 'ph-fill ph-bed' },
-            { id: 'type-swim', label: '수영', color: '#14B8A6', icon: 'ph-fill ph-swimmer' },
-            { id: 'type-hoping', label: '호핑', color: '#0EA5A4', icon: 'ph-fill ph-waves' },
-            { id: 'type-sightseeing', label: '관광', color: '#EAB308', icon: 'ph-fill ph-camera' },
-            { id: 'type-other', label: '기타', color: '#6B7280', icon: 'ph-fill ph-dots-three-circle' }
+            { id: 'type-departure', label: '출발', color: '#3B82F6', icon: 'ti-plane-departure' },
+            { id: 'type-arrival', label: '도착', color: '#22C55E', icon: 'ti-map-pin' },
+            { id: 'type-move', label: '이동', color: '#06B6D4', icon: 'ti-car' },
+            { id: 'type-food', label: '식사', color: '#F97316', icon: 'ti-tools-kitchen-2' },
+            { id: 'type-massage', label: '마사지', color: '#8B5CF6', icon: 'ti-flower' },
+            { id: 'type-shopping', label: '쇼핑', color: '#EC4899', icon: 'ti-shopping-bag' },
+            { id: 'type-flight', label: '공항', color: '#2563EB', icon: 'ti-plane' },
+            { id: 'type-cafe', label: '카페', color: '#A16207', icon: 'ti-coffee' },
+            { id: 'type-hotel', label: '호텔', color: '#4F46E5', icon: 'ti-bed' },
+            { id: 'type-swim', label: '수영', color: '#14B8A6', icon: 'ti-swimming' },
+            { id: 'type-hoping', label: '호핑', color: '#0EA5A4', icon: 'ti-ripple' },
+            { id: 'type-sightseeing', label: '관광', color: '#EAB308', icon: 'ti-camera' },
+            { id: 'type-other', label: '기타', color: '#6B7280', icon: 'ti-dots' }
         ];
 
-        const recommendedIcons = ['ph-fill ph-star', 'ph-fill ph-heart', 'ph-fill ph-flag', 'ph-fill ph-smiley'];
-
-        const defaultDayIcons = ['ph-fill ph-map-pin', 'ph-fill ph-airplane-tilt', 'ph-fill ph-buildings', 'ph-fill ph-car-profile', 'ph-fill ph-camera', 'ph-fill ph-coffee', 'ph-fill ph-flag', 'ph-fill ph-star', 'ph-fill ph-heart', 'ph-fill ph-check-circle'];
+        const recommendedIcons = ['ti-star', 'ti-heart', 'ti-flag', 'ti-mood-smile'];
+        const defaultDayIcons = ['ti-map-pin', 'ti-plane-tilt', 'ti-building', 'ti-car', 'ti-camera', 'ti-coffee', 'ti-flag', 'ti-star', 'ti-heart', 'ti-circle-check'];
 
         const extendedIcons = [
-            { icon: 'ph-fill ph-airplane-takeoff', label: '출발' }, { icon: 'ph-fill ph-airplane-landing', label: '도착' }, { icon: 'ph-fill ph-airplane', label: '항공' }, { icon: 'ph-fill ph-car', label: '자동차' }, { icon: 'ph-fill ph-train', label: '기차' },
-            { icon: 'ph-fill ph-bus', label: '버스' }, { icon: 'ph-fill ph-taxi', label: '택시' }, { icon: 'ph-fill ph-bicycle', label: '자전거' }, { icon: 'ph-fill ph-boat', label: '배' }, { icon: 'ph-fill ph-buildings', label: '빌딩' },
-            { icon: 'ph-fill ph-house', label: '숙소' }, { icon: 'ph-fill ph-bed', label: '침대' }, { icon: 'ph-fill ph-fork-knife', label: '식사' }, { icon: 'ph-fill ph-coffee', label: '커피' }, { icon: 'ph-fill ph-martini', label: '칵테일' },
-            { icon: 'ph-fill ph-beer-bottle', label: '맥주' }, { icon: 'ph-fill ph-hamburger', label: '햄버거' }, { icon: 'ph-fill ph-pizza', label: '피자' }, { icon: 'ph-fill ph-camera', label: '카메라' }, { icon: 'ph-fill ph-binoculars', label: '관광' },
-            { icon: 'ph-fill ph-shopping-bag', label: '쇼핑' }, { icon: 'ph-fill ph-storefront', label: '상점' }, { icon: 'ph-fill ph-shopping-cart', label: '카트' }, { icon: 'ph-fill ph-gift', label: '기념품' }, { icon: 'ph-fill ph-flower-lotus', label: '마사지' },
-            { icon: 'ph-fill ph-swimmer', label: '수영' }, { icon: 'ph-fill ph-waves', label: '바다/호핑' }, { icon: 'ph-fill ph-drop', label: '물놀이' }, { icon: 'ph-fill ph-swimming-pool', label: '수영장' }, { icon: 'ph-fill ph-fish-simple', label: '스노클링' },
-            { icon: 'ph-fill ph-umbrella', label: '파라솔' }, { icon: 'ph-fill ph-sun', label: '햇빛' }, { icon: 'ph-fill ph-cloud-sun', label: '구름' }, { icon: 'ph-fill ph-mountains', label: '산' }, { icon: 'ph-fill ph-tree', label: '나무' },
-            { icon: 'ph-fill ph-tent', label: '캠핑' }, { icon: 'ph-fill ph-map-pin', label: '위치' }, { icon: 'ph-fill ph-map-trifold', label: '지도' }, { icon: 'ph-fill ph-navigation-arrow', label: '길찾기' }, { icon: 'ph-fill ph-compass', label: '방향' },
-            { icon: 'ph-fill ph-ticket', label: '티켓' }, { icon: 'ph-fill ph-money', label: '현금' }, { icon: 'ph-fill ph-credit-card', label: '카드' }, { icon: 'ph-fill ph-identification-card', label: '신분증' },
-            { icon: 'ph-fill ph-suitcase', label: '캐리어' }, { icon: 'ph-fill ph-package', label: '짐' }, { icon: 'ph-fill ph-backpack', label: '백팩' }, { icon: 'ph-fill ph-handbag', label: '가방' }, { icon: 'ph-fill ph-t-shirt', label: '옷' },
-            { icon: 'ph-fill ph-sneaker', label: '신발' }, { icon: 'ph-fill ph-plug-charging', label: '충전' }, { icon: 'ph-fill ph-battery-charging', label: '배터리' }, { icon: 'ph-fill ph-wifi-high', label: '와이파이' }, { icon: 'ph-fill ph-phone', label: '전화' },
-            { icon: 'ph-fill ph-clock', label: '시간' }, { icon: 'ph-fill ph-alarm', label: '알람' }, { icon: 'ph-fill ph-calendar', label: '일정' }, { icon: 'ph-fill ph-calendar-check', label: '예약완료' }, { icon: 'ph-fill ph-clock-countdown', label: '대기' },
-            { icon: 'ph-fill ph-chat-circle-text', label: '메모' }, { icon: 'ph-fill ph-note-pencil', label: '기록' }, { icon: 'ph-fill ph-music-notes', label: '음악' }, { icon: 'ph-fill ph-camera-rotate', label: '셀카' }, { icon: 'ph-fill ph-video-camera', label: '비디오' },
-            { icon: 'ph-fill ph-film-strip', label: '영화' }, { icon: 'ph-fill ph-game-controller', label: '게임' }, { icon: 'ph-fill ph-first-aid', label: '응급' }, { icon: 'ph-fill ph-pill', label: '약' }, { icon: 'ph-fill ph-lifebuoy', label: '안전' },
-            { icon: 'ph-fill ph-warning-circle', label: '주의' }, { icon: 'ph-fill ph-info', label: '안내' }, { icon: 'ph-fill ph-toilet', label: '화장실' }, { icon: 'ph-fill ph-shower', label: '샤워' }, { icon: 'ph-fill ph-star', label: '별' },
-            { icon: 'ph-fill ph-heart', label: '하트' }, { icon: 'ph-fill ph-sparkle', label: '추천' }, { icon: 'ph-fill ph-crown', label: '최고' }, { icon: 'ph-fill ph-target', label: '목표' }, { icon: 'ph-fill ph-smiley', label: '스마일' },
-            { icon: 'ph-fill ph-check-circle', label: '체크' }, { icon: 'ph-fill ph-flag', label: '깃발' }, { icon: 'ph-fill ph-circle', label: '도트' }, { icon: 'ph-fill ph-dots-three-circle', label: '기타' }
+            {
+                category: "이동 · 교통",
+                icons: [
+                    { icon: 'ti-plane-departure', label: '출발' }, { icon: 'ti-plane-arrival', label: '도착' }, { icon: 'ti-plane', label: '비행기' }, { icon: 'ti-building', label: '공항' }, { icon: 'ti-car', label: '자동차' }, { icon: 'ti-bus', label: '버스' }, { icon: 'ti-train', label: '기차' }, { icon: 'ti-ship', label: '배' }, { icon: 'ti-bike', label: '자전거' }, { icon: 'ti-steering-wheel', label: '택시' }, { icon: 'ti-route', label: '길찾기' }, { icon: 'ti-navigation', label: '내비게이션' }, { icon: 'ti-map-pin', label: '위치' }, { icon: 'ti-map', label: '지도' }, { icon: 'ti-compass', label: '나침반' }
+                ]
+            },
+            {
+                category: "숙소",
+                icons: [
+                    { icon: 'ti-building', label: '호텔' }, { icon: 'ti-bed', label: '침대' }, { icon: 'ti-home', label: '집' }, { icon: 'ti-key', label: '열쇠' }, { icon: 'ti-door', label: '문' }
+                ]
+            },
+            {
+                category: "음식 · 카페",
+                icons: [
+                    { icon: 'ti-tools-kitchen-2', label: '식사' }, { icon: 'ti-coffee', label: '카페' }, { icon: 'ti-glass-full', label: '칵테일' }, { icon: 'ti-beer', label: '맥주' }, { icon: 'ti-ice-cream', label: '아이스크림' }, { icon: 'ti-cake', label: '케이크' }, { icon: 'ti-pizza', label: '피자' }, { icon: 'ti-burger', label: '햄버거' }
+                ]
+            },
+            {
+                category: "관광 · 액티비티",
+                icons: [
+                    { icon: 'ti-camera', label: '관광' }, { icon: 'ti-photo', label: '사진' }, { icon: 'ti-video', label: '비디오' }, { icon: 'ti-beach', label: '해변' }, { icon: 'ti-tree', label: '야자수' }, { icon: 'ti-mountain', label: '산' }, { icon: 'ti-sun', label: '해' }, { icon: 'ti-sunset', label: '일몰' }, { icon: 'ti-stars', label: '별' }, { icon: 'ti-telescope', label: '망원경' }
+                ]
+            },
+            {
+                category: "물놀이",
+                icons: [
+                    { icon: 'ti-swimming', label: '수영' }, { icon: 'ti-wave-sine', label: '파도' }, { icon: 'ti-droplet', label: '물' }, { icon: 'ti-fish', label: '물고기' }, { icon: 'ti-lifebuoy', label: '구명튜브' }, { icon: 'ti-mask', label: '스노클' }
+                ]
+            },
+            {
+                category: "쇼핑",
+                icons: [
+                    { icon: 'ti-shopping-bag', label: '쇼핑' }, { icon: 'ti-shopping-cart', label: '장바구니' }, { icon: 'ti-building-store', label: '상점' }, { icon: 'ti-gift', label: '선물' }, { icon: 'ti-credit-card', label: '카드' }, { icon: 'ti-cash', label: '돈' }
+                ]
+            },
+            {
+                category: "휴식 · 힐링",
+                icons: [
+                    { icon: 'ti-armchair', label: '휴식' }, { icon: 'ti-flower', label: '마사지' }, { icon: 'ti-flower', label: '스파' }, { icon: 'ti-heart', label: '하트' }, { icon: 'ti-sparkles', label: '반짝' }, { icon: 'ti-mood-smile', label: '웃음' }
+                ]
+            },
+            {
+                category: "여행 준비",
+                icons: [
+                    { icon: 'ti-id-badge', label: '여권' }, { icon: 'ti-luggage', label: '여행가방' }, { icon: 'ti-backpack', label: '백팩' }, { icon: 'ti-ticket', label: '티켓' }, { icon: 'ti-qrcode', label: 'QR' }, { icon: 'ti-calendar-event', label: '일정' }, { icon: 'ti-circle-check', label: '체크' }, { icon: 'ti-clock', label: '시계' }, { icon: 'ti-alarm', label: '알람' }
+                ]
+            },
+            {
+                category: "편의시설",
+                icons: [
+                    { icon: 'ti-wifi', label: '와이파이' }, { icon: 'ti-battery-charging', label: '충전' }, { icon: 'ti-device-mobile', label: '휴대폰' }, { icon: 'ti-toilet-paper', label: '화장실' }, { icon: 'ti-bath', label: '샤워' }, { icon: 'ti-first-aid-kit', label: '병원' }, { icon: 'ti-pill', label: '약' }, { icon: 'ti-info-circle', label: '안내' }, { icon: 'ti-alert-triangle', label: '경고' }
+                ]
+            },
+            {
+                category: "기타",
+                icons: [
+                    { icon: 'ti-star', label: '별' }, { icon: 'ti-heart', label: '하트' }, { icon: 'ti-flag', label: '깃발' }, { icon: 'ti-pin', label: '핀' }, { icon: 'ti-note', label: '메모' }, { icon: 'ti-edit', label: '편집' }, { icon: 'ti-dots', label: '더보기' }, { icon: 'ti-circle', label: '원형' }, { icon: 'ti-list-check', label: '체크리스트' }
+                ]
+            }
         ];
 
         window.checkStickyHeaders = function() {
@@ -821,13 +867,17 @@
             const endInput = document.getElementById('inputTripEnd');
             if(startInput.value) {
                 endInput.min = startInput.value;
-                if(!endInput.value || endInput.value < startInput.value) { endInput.value = startInput.value; }
+                if(!endInput.value || endInput.value < startInput.value) { 
+                    endInput.value = startInput.value; 
+                }
             }
         };
 
         function populateTripForm() {
+            let savedStyle = 'outline'; // 채움 옵션 삭제로 인해 항상 outline 사용
+            
             document.getElementById('inputTripColor').value = window.tripInfo.color || '#2563EB';
-            document.getElementById('inputTripIconStyle').value = window.tripInfo.iconStyle || 'ph-fill';
+            document.getElementById('inputTripIconStyle').value = savedStyle;
             document.getElementById('inputTripTitle').value = window.tripInfo.title;
             document.getElementById('inputTripStart').value = window.tripInfo.start;
             document.getElementById('inputTripEnd').value = window.tripInfo.end;
@@ -874,7 +924,7 @@
                 timelineContainer.innerHTML = ''; 
                 for (let i = 0; i < diffDays; i++) {
                     const curDate = new Date(startD); curDate.setDate(curDate.getDate() + i);
-                    const dayNum = i + 1; const conf = window.dayConfigs[dayNum] || { icon: 'ph-fill ph-map-pin', desc: '', customColor: false, color: '#2563EB' };
+                    const dayNum = i + 1; const conf = window.dayConfigs[dayNum] || { icon: 'ti-map-pin', desc: '', customColor: false, color: '#2563EB' };
                     timelineContainer.insertAdjacentHTML('beforeend', `
                         <div class="day-card active" data-day="${dayNum}" ${conf.customColor ? `style="--day-primary: ${conf.color}; --day-primary-light: ${conf.color}1A;"` : ''}>
                             <div class="day-header" onclick="toggleDay(this)">
@@ -885,9 +935,9 @@
                                         <div class="day-desc-text" id="dayDesc${dayNum}">${conf.desc}</div>
                                     </div>
                                 </div>
-                                <div class="day-header-actions"><button class="btn-icon" onclick="openDayModal(event, ${dayNum})"><i class="ph ph-pencil-simple"></i></button><i class="ph ph-caret-down icon-caret"></i></div>
+                                <div class="day-header-actions"><button class="btn-icon" onclick="openDayModal(event, ${dayNum})"><i class="ti ti-pencil"></i></button><i class="ti ti-chevron-down icon-caret"></i></div>
                             </div>
-                            <div class="day-body"><div class="timeline" id="timelineList${dayNum}"></div><button class="btn-add-schedule" onclick="openEventModal('add', ${dayNum})"><i class="ph ph-plus"></i> 일정 추가</button></div>
+                            <div class="day-body"><div class="timeline" id="timelineList${dayNum}"></div><button class="btn-add-schedule" onclick="openEventModal('add', ${dayNum})"><i class="ti ti-plus"></i> 일정 추가</button></div>
                         </div>`);
                     renderTimeline(dayNum); 
                 }
@@ -915,7 +965,7 @@
                                 </div>
                                 ${inboundHtml}
                             </div>
-                            <div class="item-actions"><button class="btn-icon" onclick="openFlightModal('edit', ${f.id})"><i class="ph ph-pencil-simple"></i></button><button class="btn-icon delete" onclick="deleteFlight(${f.id})"><i class="ph ph-trash"></i></button></div>
+                            <div class="item-actions"><button class="btn-icon" onclick="openFlightModal('edit', ${f.id})"><i class="ti ti-pencil"></i></button><button class="btn-icon delete" onclick="deleteFlight(${f.id})"><i class="ti ti-trash"></i></button></div>
                         </div>
                         ${priceHtml}
                     </li>`;
@@ -930,10 +980,10 @@
                     <li class="booking-item">
                         <div class="booking-item-header">
                             <div class="booking-info">
-                                <p class="flight-route" style="font-size: 15px; margin-bottom: 4px;"><i class="${getStyledIcon('ph-fill ph-buildings')}" style="color:var(--purple); margin-right:4px;"></i>${h.name}</p>
+                                <p class="flight-route" style="font-size: 15px; margin-bottom: 4px;"><i class="${getStyledIcon('ti-building-skyscraper')}" style="color:var(--purple); margin-right:4px;"></i>${h.name}</p>
                                 <p class="flight-time">${h.schedule}</p>
                             </div>
-                            <div class="item-actions"><button class="btn-icon" onclick="openHotelModal('edit', ${h.id})"><i class="ph ph-pencil-simple"></i></button><button class="btn-icon delete" onclick="deleteHotel(${h.id})"><i class="ph ph-trash"></i></button></div>
+                            <div class="item-actions"><button class="btn-icon" onclick="openHotelModal('edit', ${h.id})"><i class="ti ti-pencil"></i></button><button class="btn-icon delete" onclick="deleteHotel(${h.id})"><i class="ti ti-trash"></i></button></div>
                         </div>
                         ${priceHtml}
                     </li>`;
@@ -983,14 +1033,17 @@
         });
 
         window.openDayModal = function(e, dayNum) {
-            e.stopPropagation(); document.getElementById('inputDayId').value = dayNum; const conf = window.dayConfigs[dayNum] || { icon: 'ph-fill ph-map-pin', desc: '', customColor: false, color: '#2563EB' };
+            e.stopPropagation(); document.getElementById('inputDayId').value = dayNum; const conf = window.dayConfigs[dayNum] || { icon: 'ti-map-pin', desc: '', customColor: false, color: '#2563EB' };
             document.getElementById('inputDayDesc').value = conf.desc; 
             
+            // 호환성 변환 없이 다이렉트 처리
             let finalIcon = conf.icon;
+            if (finalIcon.startsWith('ti ')) finalIcon = finalIcon.substring(3);
+            if (finalIcon.endsWith('-filled')) finalIcon = finalIcon.replace('-filled', '');
             document.getElementById('inputDayIcon').value = finalIcon;
             
             let found = false;
-            document.querySelectorAll('#dayIconGrid .category-btn:not(#dayCustomIconBtn)').forEach(b => {
+            document.querySelectorAll('#dayIconGrid .category-btn:not(#dayCustomIconBtn):not(#dayIconMoreBtn)').forEach(b => {
                 const isMatch = b.getAttribute('data-icon') === finalIcon;
                 b.classList.toggle('active', isMatch);
                 if(isMatch) found = true;
@@ -1031,8 +1084,8 @@
             defaultDayIcons.forEach(icon => {
                 grid.innerHTML += `<button type="button" class="category-btn icon-btn" data-icon="${icon}" onclick="selectDayIcon(this, '${icon}')"><i class="${getStyledIcon(icon)}"></i></button>`;
             });
-            grid.innerHTML += `<button type="button" class="category-btn icon-btn" id="dayCustomIconBtn" style="display:none;" onclick="selectDayIcon(this, '')"><i class=""></i></button>`;
-            grid.innerHTML += `<button type="button" class="btn-icon-more" onclick="openIconPickerModal('day')" title="더 많은 아이콘 보기"><i class="ph ph-plus"></i></button>`;
+            grid.innerHTML += `<button type="button" class="category-btn icon-btn" id="dayCustomIconBtn" style="display:none;" onclick="selectDayIcon(this, '')"><i></i></button>`;
+            grid.innerHTML += `<button type="button" class="btn-icon-more" id="dayIconMoreBtn" onclick="openIconPickerModal('day')" title="더 많은 아이콘 보기"><i class="ti ti-plus"></i></button>`;
         }
 
         function initCategoryGrid() {
@@ -1050,9 +1103,15 @@
         }
         
         function initIconPickerGrid() {
-            const grid = document.getElementById('fullIconGrid'); grid.innerHTML = '';
-            extendedIcons.forEach(item => {
-                grid.innerHTML += `<div class="icon-grid-item" data-icon="${item.icon}" onclick="setEventIcon('${item.icon}')"><i class="${getStyledIcon(item.icon)}"></i><span>${item.label}</span></div>`;
+            const gridContainer = document.getElementById('fullIconGrid'); gridContainer.innerHTML = '';
+            extendedIcons.forEach((group, index) => {
+                const titleHtml = `<div class="icon-category-title" ${index === 0 ? 'style="margin-top:0;"' : ''}>${group.category}</div>`;
+                let gridHtml = `<div class="icon-grid-full">`;
+                group.icons.forEach(item => {
+                    gridHtml += `<div class="icon-grid-item" data-icon="${item.icon}" onclick="setEventIcon('${item.icon}')"><i class="${getStyledIcon(item.icon)}"></i><span>${item.label}</span></div>`;
+                });
+                gridHtml += `</div>`;
+                gridContainer.innerHTML += titleHtml + gridHtml;
             });
         }
 
@@ -1085,7 +1144,7 @@
             } else if (window.iconPickerTarget === 'day') {
                 document.getElementById('inputDayIcon').value = icon;
                 let found = false;
-                document.querySelectorAll('#dayIconGrid .category-btn:not(#dayCustomIconBtn)').forEach(b => {
+                document.querySelectorAll('#dayIconGrid .category-btn:not(#dayCustomIconBtn):not(#dayIconMoreBtn)').forEach(b => {
                     if (b.getAttribute('data-icon') === icon) { b.classList.add('active'); found = true; } else { b.classList.remove('active'); }
                 });
                 
@@ -1115,15 +1174,19 @@
             
             dayEvents.forEach(ev => {
                 let displayColor = ev.customColor || standardCategories.find(c => c.id === ev.type)?.color || '#6B7280';
-                let displayIcon = ev.customIcon || standardCategories.find(c => c.id === ev.type)?.icon || 'ph-fill ph-dots-three-outline';
+                
+                // 타임라인 아이콘 변환
+                let displayIcon = ev.customIcon || standardCategories.find(c => c.id === ev.type)?.icon || 'ti-dots';
+                if (displayIcon.startsWith('ti ')) displayIcon = displayIcon.substring(3);
+                if (displayIcon.endsWith('-filled')) displayIcon = displayIcon.replace('-filled', '');
                 
                 list.insertAdjacentHTML('beforeend', `
                     <div class="timeline-item ${ev.type}">
                         <div class="timeline-time">${ev.time}</div>
                         <div class="timeline-divider"><div class="timeline-circle" style="background-color: ${displayColor};"><i class="${getStyledIcon(displayIcon)}"></i></div><div class="timeline-line"></div></div>
                         <div class="timeline-content">
-                            <div class="timeline-text"><h4>${ev.title}</h4>${ev.desc?`<p>${ev.desc}</p>`:''}${ev.cost&&ev.cost!=='원'?`<div class="timeline-cost"><i class="ph-fill ph-coin"></i> <span>${ev.cost}</span></div>`:''}</div>
-                            <div class="timeline-actions"><button class="btn-icon" onclick="openEventModal('edit', ${ev.id})"><i class="ph ph-pencil-simple"></i></button></div>
+                            <div class="timeline-text"><h4>${ev.title}</h4>${ev.desc?`<p>${ev.desc}</p>`:''}${ev.cost&&ev.cost!=='원'?`<div class="timeline-cost"><i class="ti ti-coin"></i> <span>${ev.cost}</span></div>`:''}</div>
+                            <div class="timeline-actions"><button class="btn-icon" onclick="openEventModal('edit', ${ev.id})"><i class="ti ti-pencil"></i></button></div>
                         </div>
                     </div>`);
             });
@@ -1154,7 +1217,13 @@
                     if(catBtn) catBtn.click();
                     
                     if(ev.customColor) setEventColor(ev.customColor);
-                    if(ev.customIcon) setEventIcon(ev.customIcon);
+                    
+                    if(ev.customIcon) {
+                        let finalIco = ev.customIcon;
+                        if (finalIco.startsWith('ti ')) finalIco = finalIco.substring(3);
+                        if (finalIco.endsWith('-filled')) finalIco = finalIco.replace('-filled', '');
+                        setEventIcon(finalIco);
+                    }
 
                     delBtn.style.display = 'block'; 
                     delBtn.onclick = () => { window.events = window.events.filter(e => e.id !== ev.id); saveAndSync(); renderTimeline(ev.day); closeModal('modalEvent'); }; 
@@ -1182,12 +1251,12 @@
                 listEl.insertAdjacentHTML('beforeend', `
                     <li class="prep-item ${item.checked?'completed':''}">
                         <div class="prep-item-left" onclick="togglePrep(${item.id})">
-                            <i class="${item.checked?'ph-fill ph-check-circle':'ph ph-circle'} prep-checkbox"></i>
+                            <i class="${item.checked?'ti ti-circle-check-filled':'ti ti-circle'} prep-checkbox"></i>
                             <span class="prep-text" id="prep-text-${item.id}">${item.text}</span>
                         </div>
                         <div class="item-actions">
-                            <button class="btn-icon edit" onclick="editPrep(${item.id})"><i class="ph ph-pencil-simple"></i></button>
-                            <button class="btn-icon delete" onclick="deletePrep(${item.id})"><i class="ph ph-trash"></i></button>
+                            <button class="btn-icon edit" onclick="editPrep(${item.id})"><i class="ti ti-pencil"></i></button>
+                            <button class="btn-icon delete" onclick="deletePrep(${item.id})"><i class="ti ti-trash"></i></button>
                         </div>
                     </li>`);
             });
@@ -1221,12 +1290,12 @@
                 listEl.insertAdjacentHTML('beforeend', `
                     <li class="prep-item">
                         <div class="prep-item-left" style="cursor:default;">
-                            <i class="ph-fill ph-push-pin" style="color:var(--warning); font-size:20px;"></i>
+                            <i class="ti ti-pin-filled" style="color:var(--warning); font-size:20px;"></i>
                             <span class="prep-text" id="memo-text-${item.id}">${linkify(item.text)}</span>
                         </div>
                         <div class="item-actions">
-                            <button class="btn-icon edit" onclick="editMemo(${item.id})"><i class="ph ph-pencil-simple"></i></button>
-                            <button class="btn-icon delete" onclick="deleteMemo(${item.id})"><i class="ph ph-trash"></i></button>
+                            <button class="btn-icon edit" onclick="editMemo(${item.id})"><i class="ti ti-pencil"></i></button>
+                            <button class="btn-icon delete" onclick="deleteMemo(${item.id})"><i class="ti ti-trash"></i></button>
                         </div>
                     </li>`);
             });
