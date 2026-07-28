@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>여행 일정 관리 v1.8</title>
+    <title>여행 일정 관리 v1.9</title>
     
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -149,18 +149,16 @@
         .timeline-cost i { color: var(--text-gray); font-size: 14px; }
         .timeline-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
         
-        .timeline-tag { font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 800; letter-spacing: -0.3px; border: 1px solid; background-color: #fff; }
-
-        .type-flight .timeline-circle { background: var(--primary); } .type-flight .timeline-tag { color: var(--primary-dark); border-color: var(--primary-border); background: var(--primary-light); }
-        .type-departure .timeline-circle { background: var(--primary); } .type-departure .timeline-tag { color: var(--primary-dark); border-color: var(--primary-border); background: var(--primary-light); }
-        .type-arrival .timeline-circle { background: var(--success); } .type-arrival .timeline-tag { color: var(--success-dark); border-color: var(--success-border); background: var(--success-light); }
-        .type-move .timeline-circle { background: var(--warning); } .type-move .timeline-tag { color: var(--warning-dark); border-color: var(--warning-border); background: var(--warning-light); }
-        .type-hotel .timeline-circle { background: var(--purple); } .type-hotel .timeline-tag { color: var(--purple-dark); border-color: var(--purple-border); background: var(--purple-light); }
-        .type-food .timeline-circle { background: var(--pink); } .type-food .timeline-tag { color: var(--pink-dark); border-color: var(--pink-border); background: var(--pink-light); }
-        .type-sightseeing .timeline-circle { background: var(--success); } .type-sightseeing .timeline-tag { color: var(--success-dark); border-color: var(--success-border); background: var(--success-light); }
-        .type-shopping .timeline-circle { background: var(--pink); } .type-shopping .timeline-tag { color: var(--pink-dark); border-color: var(--pink-border); background: var(--pink-light); }
-        .type-massage .timeline-circle { background: var(--rose); } .type-massage .timeline-tag { color: var(--rose-dark); border-color: var(--rose-border); background: var(--rose-light); }
-        .type-other .timeline-circle { background: var(--gray-tag); } .type-other .timeline-tag { color: var(--gray-dark); border-color: var(--gray-border); background: var(--gray-light); }
+        .type-flight .timeline-circle { background: var(--primary); } 
+        .type-departure .timeline-circle { background: var(--primary); } 
+        .type-arrival .timeline-circle { background: var(--success); } 
+        .type-move .timeline-circle { background: var(--warning); } 
+        .type-hotel .timeline-circle { background: var(--purple); } 
+        .type-food .timeline-circle { background: var(--pink); } 
+        .type-sightseeing .timeline-circle { background: var(--success); } 
+        .type-shopping .timeline-circle { background: var(--pink); } 
+        .type-massage .timeline-circle { background: var(--rose); } 
+        .type-other .timeline-circle { background: var(--gray-tag); } 
 
         .btn-add-schedule { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: #fff; border: 1px solid var(--border-color); border-radius: 12px; color: var(--current-primary, var(--primary)); font-weight: 600; font-size: 14px; margin-top: 10px; cursor: pointer; transition: all 0.2s; }
         .btn-add-schedule:hover { background: #F8FAFC; border-color: var(--current-primary, var(--primary)); }
@@ -705,7 +703,9 @@
             const container = document.getElementById('captureTarget');
             const originalMaxWidth = container.style.maxWidth;
             const originalWidth = container.style.width;
-            let targetWidth = type === 'mobile' ? '480px' : '720px';
+            
+            // v1.9 변경점 2: 모바일 캡처 사이즈 400px로 수정
+            let targetWidth = type === 'mobile' ? '400px' : '720px';
             
             document.body.classList.add('view-mode'); 
             window.scrollTo(0, 0);
@@ -920,14 +920,14 @@
 
         document.querySelectorAll('#dayIconGrid .category-btn').forEach(btn => btn.addEventListener('click', function() { document.querySelectorAll('#dayIconGrid .category-btn').forEach(b => b.classList.remove('active')); this.classList.add('active'); document.getElementById('inputDayIcon').value = this.getAttribute('data-icon'); }));
 
-
         function renderTimeline(dayNum) {
             const list = document.getElementById('timelineList' + dayNum); if(!list) return; list.innerHTML = '';
             const dayEvents = window.events.filter(e => String(e.day) === String(dayNum));
             dayEvents.sort((a,b) => a.time.localeCompare(b.time));
             
             dayEvents.forEach(ev => {
-                list.insertAdjacentHTML('beforeend', `<div class="timeline-item ${ev.type}"><div class="timeline-time">${ev.time}</div><div class="timeline-divider"><div class="timeline-circle">${getEventIcon(ev.type)}</div><div class="timeline-line"></div></div><div class="timeline-content"><div class="timeline-text"><h4>${ev.title}</h4>${ev.desc?`<p>${ev.desc}</p>`:''}${ev.cost&&ev.cost!=='원'?`<div class="timeline-cost"><i class="ph-fill ph-coin"></i> <span>${ev.cost}</span></div>`:''}</div><div class="timeline-actions"><span class="timeline-tag">${ev.typeLabel}</span><button class="btn-icon" onclick="openEventModal('edit', ${ev.id})"><i class="ph ph-pencil-simple"></i></button></div></div></div>`);
+                // v1.9 변경점 1: 타임라인 태그(<span class="timeline-tag">) 제외
+                list.insertAdjacentHTML('beforeend', `<div class="timeline-item ${ev.type}"><div class="timeline-time">${ev.time}</div><div class="timeline-divider"><div class="timeline-circle">${getEventIcon(ev.type)}</div><div class="timeline-line"></div></div><div class="timeline-content"><div class="timeline-text"><h4>${ev.title}</h4>${ev.desc?`<p>${ev.desc}</p>`:''}${ev.cost&&ev.cost!=='원'?`<div class="timeline-cost"><i class="ph-fill ph-coin"></i> <span>${ev.cost}</span></div>`:''}</div><div class="timeline-actions"><button class="btn-icon" onclick="openEventModal('edit', ${ev.id})"><i class="ph ph-pencil-simple"></i></button></div></div></div>`);
             });
 
             const dayCard = document.querySelector(`.day-card[data-day="${dayNum}"]`);
