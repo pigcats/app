@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>여행 일정 관리 v2.0</title>
+    <title>여행 일정 관리 v2.1</title>
     
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -59,21 +59,19 @@
 
         .app-container { max-width: 600px; margin: 0 auto; background-color: #F9FAFB; min-height: 100vh; position: relative; padding-bottom: 80px; }
 
-        /* v2.0: 히어로 섹션 패딩 조정 */
         .hero-section { position: relative; background-color: var(--primary); border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; padding: 70px 20px 30px; color: white; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); transition: background-color 0.3s; }
         .hero-title { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
         .hero-date { font-size: 15px; opacity: 0.9; }
 
-        /* v2.0: 히어로 버튼 그룹핑 및 위치 수정 */
         .hero-btn-group {
             position: absolute;
             top: 20px;
             right: 20px;
             display: flex;
-            gap: 8px; /* 버튼 사이 간격 */
-            flex-wrap: wrap; /* 창이 좁을 경우 다음 줄로 넘어가도록 설정 */
+            gap: 8px; 
+            flex-wrap: wrap; 
             justify-content: flex-end;
-            max-width: 90%; /* 너무 넓어지지 않도록 제한 */
+            max-width: 90%; 
         }
 
         .btn-hero-circle { width: 36px; height: 36px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.3); color: white; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; transition: background 0.2s; }
@@ -116,13 +114,14 @@
         .day-card { background: #fff; border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 20px; --current-primary: var(--day-primary, var(--primary)); --current-primary-light: var(--day-primary-light, var(--primary-light));}
         .view-mode .day-card.is-empty-day { display: none !important; }
 
-        .day-header { padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; background: #fff; position: sticky; top: 0; z-index: 10; border-radius: 16px; }
+        .day-header { padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; background: #fff; position: sticky; top: 0; z-index: 10; border-radius: 16px; transition: all 0.2s ease;}
         .day-header-left { display: flex; align-items: center; gap: 14px; }
         .day-icon-block { display: none; width: 42px; height: 42px; background: var(--current-primary-light); color: var(--current-primary); border-radius: 10px; align-items: center; justify-content: center; font-size: 22px; transition: all 0.3s;}
-        .day-text-wrap { display: flex; align-items: center; gap: 12px; }
+        .day-text-wrap { display: flex; align-items: center; gap: 12px; transition: all 0.2s ease;}
         .day-title-row { display: flex; align-items: center; gap: 8px; }
         .day-badge-text { color: var(--current-primary); font-size: 16px; font-weight: 700; transition: color 0.3s;}
         .day-date-text { color: var(--text-gray); font-size: 14px; font-weight: 500; }
+        
         .day-desc-text { font-size: 14px; color: var(--text-gray-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; transition: all 0.2s;}
         .day-desc-text:empty::before { content: '일정을 요약해주세요'; color: #9CA3AF; }
         .view-mode .day-desc-text:empty::before { content: ''; }
@@ -139,7 +138,7 @@
         .day-card.active .day-header.is-sticky { align-items: center; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); border-bottom: 1px solid var(--border-color); }
         .day-card.active .day-header.is-sticky .day-icon-block { display: none; }
         .day-card.active .day-header.is-sticky .day-text-wrap { flex-direction: row; align-items: center; gap: 12px; }
-        .day-card.active .day-header.is-sticky .day-desc-text { font-size: 14px; color: var(--text-gray-dark); white-space: nowrap; max-width: 180px; }
+        .day-card.active .day-header.is-sticky .day-desc-text { font-size: 14px; color: var(--text-gray-dark); white-space: nowrap; max-width: 180px; overflow: hidden; text-overflow: ellipsis;}
 
         .day-body { display: none; padding: 16px 20px 20px; border-top: 1px solid #F3F4F6; border-radius: 0 0 16px 16px; }
         .day-card.active .day-body { display: block; }
@@ -231,9 +230,11 @@
         .category-btn.active { border-color: var(--primary); background: var(--primary-light); color: var(--primary); }
         .icon-btn { padding: 8px; font-size: 20px; width: 44px; height: 44px; border-radius: 12px; }
 
-        /* v2.0: 공유 모드 시 편집 UI 완전 숨김 */
         .view-mode .hero-btn-group { display: none !important; }
-        .view-mode .day-header-actions { display: none !important; } /* 데이 수정 아이콘 및 화살표 숨김 */
+        
+        /* 2.1 Fix: day-header-actions 전체를 숨기는 대신 수정 아이콘(btn-icon)만 숨겨서 화살표(icon-caret) 유지 */
+        .view-mode .day-header-actions .btn-icon { display: none !important; } 
+        
         .view-mode .timeline-actions { display: none !important; }
         .view-mode .btn-add-schedule { display: none !important; }
         .view-mode .btn-add-booking { display: none !important; }
@@ -242,7 +243,6 @@
         .view-mode .prep-item .btn-icon { display: none !important; }
         .view-mode .prep-item-left { pointer-events: none; }
         
-        /* 뷰 모드 탈출 버튼 (작성자 화면 테스트용) */
         .btn-exit-view { display: none; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--text-dark); color: white; padding: 12px 24px; border-radius: 30px; font-weight: 600; font-size: 14px; z-index: 1000; cursor: pointer; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.2);}
         .preview-test-mode .btn-exit-view { display: flex; align-items: center; gap: 8px; }
         
@@ -263,7 +263,6 @@
 
     <div class="app-container" id="captureTarget">
         <header class="hero-section">
-            <!-- v2.0: 버튼 그룹화 -->
             <div class="hero-btn-group">
                 <button class="btn-hero-circle" onclick="manualCloudSave()" title="클라우드 수동 저장">
                     <i class="ph ph-cloud-arrow-up"></i>
@@ -561,7 +560,6 @@
 
     <div id="toastMessage" class="toast-msg"><i class="ph-fill ph-check-circle"></i> <span>메시지</span></div>
     
-    <!-- v2.0: 테스트 모드에서만 보이는 탈출 버튼 -->
     <button id="btnExitView" class="btn-exit-view" onclick="disablePreviewShareMode()"><i class="ph ph-arrow-left"></i> 편집 모드로 돌아가기</button>
     
     <div id="captureResultOverlay" class="capture-overlay">
@@ -591,15 +589,13 @@
         let urlParams = new URLSearchParams(window.location.search);
         let tripId = urlParams.get('id');
         let viewId = urlParams.get('view');
-        let isSharedView = false; // v2.0 공유 모드 플래그
+        let isSharedView = false; 
         
         if (viewId) {
-            // ?view= 로 접속한 경우 외부 접속(공유 받은 사람)으로 간주하여 뷰 모드 활성화
             tripId = viewId;
             isSharedView = true;
             document.body.classList.add('view-mode');
         } else if (!tripId) {
-            // 완전히 처음 접속한 경우 새 ID 생성 (편집 모드)
             tripId = Math.random().toString(36).substr(2, 9);
             try {
                 window.history.replaceState(null, null, `?id=${tripId}`);
@@ -607,12 +603,11 @@
                 console.warn("미리보기 환경 제한 무시");
             }
         }
-        // ?id= 가 있는 경우는 작성자 본인(편집 모드)이므로 화면을 숨기지 않음
         
         try {
             let shareUrl = new URL(window.location.href);
-            shareUrl.searchParams.delete('id'); // 작성자용 편집 파라미터 제거
-            shareUrl.searchParams.set('view', tripId); // 공유용 읽기 전용 파라미터 추가
+            shareUrl.searchParams.delete('id'); 
+            shareUrl.searchParams.set('view', tripId); 
             document.getElementById('inputShareUrl').value = shareUrl.href;
         } catch (e) {
             let base = window.location.href.split('?')[0];
@@ -620,7 +615,7 @@
         }
 
         window.saveDataToCloud = async function(data) {
-            if (isSharedView) return; // 공유 모드에서는 클라우드 덮어쓰기 금지
+            if (isSharedView) return; 
             try {
                 await setDoc(doc(db, "trips", tripId), data);
             } catch (e) {
@@ -661,6 +656,25 @@
         window.memoItems = [];
 
         let autoSaveTimer = null;
+
+        // 2.1 Fix: 스크롤 시 헤더 고정 처리 및 접힌 디자인 변환을 위한 스크립트 복구
+        window.checkStickyHeaders = function() {
+            const headers = document.querySelectorAll('.day-card.active .day-header');
+            headers.forEach(header => {
+                const rect = header.getBoundingClientRect();
+                if (rect.top <= 1) { 
+                    header.classList.add('is-sticky'); 
+                } else { 
+                    header.classList.remove('is-sticky'); 
+                }
+            });
+        };
+        window.addEventListener('scroll', window.checkStickyHeaders, { passive: true });
+
+        window.toggleDay = function(headerEl) { 
+            headerEl.closest('.day-card').classList.toggle('active'); 
+            setTimeout(window.checkStickyHeaders, 50); 
+        };
 
         function saveAndSync() {
             clearTimeout(autoSaveTimer);
@@ -725,11 +739,10 @@
         function openShareModal() { openModal('modalShare'); }
         function copyShareUrl() { const copyText = document.getElementById("inputShareUrl"); copyText.select(); document.execCommand("copy"); showToast("링크가 복사되었습니다!"); }
         
-        // v2.0: 테스트 모드 미리보기 로직
         window.previewShareMode = function() { 
             closeModal('modalShare'); 
             document.body.classList.add('view-mode'); 
-            document.body.classList.add('preview-test-mode'); // 테스트 모드 전용 클래스
+            document.body.classList.add('preview-test-mode'); 
         }
         window.disablePreviewShareMode = function() { 
             document.body.classList.remove('view-mode'); 
@@ -742,7 +755,6 @@
             const originalMaxWidth = container.style.maxWidth;
             const originalWidth = container.style.width;
             
-            // v1.9 변경점 2: 모바일 캡처 사이즈 400px로 수정
             let targetWidth = type === 'mobile' ? '400px' : '720px';
             
             document.body.classList.add('view-mode'); 
@@ -764,7 +776,6 @@
                 } catch (err) { alert("이미지 저장 중 문제가 발생했습니다."); } 
                 finally {
                     container.style.maxWidth = originalMaxWidth; container.style.width = originalWidth;
-                    // 테스트 모드(preview-test-mode)가 아닐 때만 뷰모드를 해제하여 작성자 화면 보호
                     if(!document.body.classList.contains('preview-test-mode')){
                         document.body.classList.remove('view-mode');
                     }
@@ -844,9 +855,10 @@
                 for (let i = 0; i < diffDays; i++) {
                     const curDate = new Date(startD); curDate.setDate(curDate.getDate() + i);
                     const dayNum = i + 1; const conf = window.dayConfigs[dayNum] || { icon: 'ph-map-pin', desc: '', customColor: false, color: '#2563EB' };
+                    // 2.1 Fix: onclick 이벤트에 toggleDay 함수 적용
                     timelineContainer.insertAdjacentHTML('beforeend', `
                         <div class="day-card active" data-day="${dayNum}" ${conf.customColor ? `style="--day-primary: ${conf.color}; --day-primary-light: ${conf.color}1A;"` : ''}>
-                            <div class="day-header" onclick="this.closest('.day-card').classList.toggle('active')">
+                            <div class="day-header" onclick="toggleDay(this)">
                                 <div class="day-header-left">
                                     <div class="day-icon-block"><i class="ph-fill ${conf.icon}"></i></div>
                                     <div class="day-text-wrap">
@@ -860,6 +872,8 @@
                         </div>`);
                     renderTimeline(dayNum); 
                 }
+                // 2.1 Fix: 초기 렌더링 후 헤더 위치 체크
+                setTimeout(window.checkStickyHeaders, 100);
             }
         }
 
@@ -967,7 +981,6 @@
             dayEvents.sort((a,b) => a.time.localeCompare(b.time));
             
             dayEvents.forEach(ev => {
-                // v1.9 변경점 1: 타임라인 태그(<span class="timeline-tag">) 제외
                 list.insertAdjacentHTML('beforeend', `<div class="timeline-item ${ev.type}"><div class="timeline-time">${ev.time}</div><div class="timeline-divider"><div class="timeline-circle">${getEventIcon(ev.type)}</div><div class="timeline-line"></div></div><div class="timeline-content"><div class="timeline-text"><h4>${ev.title}</h4>${ev.desc?`<p>${ev.desc}</p>`:''}${ev.cost&&ev.cost!=='원'?`<div class="timeline-cost"><i class="ph-fill ph-coin"></i> <span>${ev.cost}</span></div>`:''}</div><div class="timeline-actions"><button class="btn-icon" onclick="openEventModal('edit', ${ev.id})"><i class="ph ph-pencil-simple"></i></button></div></div></div>`);
             });
 
