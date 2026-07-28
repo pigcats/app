@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>여행 일정 관리 v1.6</title>
+    <title>여행 일정 관리 v2.0</title>
     
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -228,11 +228,11 @@
         .btn-icon-more { width: 24px; height: 24px; border-radius: 50%; border: 1px dashed var(--border-color); background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-gray); font-size: 12px; transition: all 0.2s; }
         .btn-icon-more:hover { background: #F3F4F6; color: var(--text-dark); }
 
-        .icon-grid-full { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 10px; max-height: 350px; overflow-y: auto; padding-right: 4px; }
-        .icon-grid-item { width: 100%; border-radius: 12px; background: #F3F4F6; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; border: 2px solid transparent; color: var(--text-dark); transition: all 0.2s; padding: 12px 4px; gap: 6px;}
+        .icon-grid-full { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; align-content: start; }
+        .icon-grid-item { width: 100%; border-radius: 12px; background: #F3F4F6; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; border: 2px solid transparent; color: var(--text-dark); transition: all 0.2s; padding: 10px 2px; gap: 6px;}
         .icon-grid-item:hover { background: #E5E7EB; }
         .icon-grid-item.active { border-color: var(--primary); background: var(--primary-light); color: var(--primary); }
-        .icon-label { font-size: 11px; font-weight: 500; text-align: center; color: var(--text-gray-dark); width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .icon-label { font-size: 10px; font-weight: 500; text-align: center; color: var(--text-gray-dark); width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .icon-grid-item.active .icon-label { color: var(--primary); font-weight: 600; }
 
         .view-mode .hero-btn-group { display: none !important; }
@@ -543,12 +543,11 @@
                             <button type="button" class="category-btn" data-val="type-shopping" data-label="쇼핑"><i class="ph-fill ph-shopping-bag"></i> 쇼핑</button>
                             <button type="button" class="category-btn" data-val="type-flight" data-label="공항"><i class="ph-fill ph-airplane"></i> 공항</button>
                             <button type="button" class="category-btn" data-val="type-cafe" data-label="카페"><i class="ph-fill ph-coffee"></i> 카페</button>
-                            <button type="button" class="category-btn" data-val="type-hotel" data-label="호텔"><i class="ph-fill ph-bed"></i> 호텔</button>
+                            <button type="button" class="category-btn" data-val="type-hotel" data-label="숙소"><i class="ph-fill ph-bed"></i> 숙소</button>
                             <button type="button" class="category-btn" data-val="type-swim" data-label="수영"><i class="ph-fill ph-person-simple-swim"></i> 수영</button>
                             <button type="button" class="category-btn" data-val="type-hopping" data-label="호핑"><i class="ph-fill ph-waves"></i> 호핑</button>
-                            <button type="button" class="category-btn" data-val="type-rest" data-label="휴식"><i class="ph-fill ph-palm-tree"></i> 휴식</button>
                             <button type="button" class="category-btn" data-val="type-sightseeing" data-label="관광"><i class="ph-fill ph-camera"></i> 관광</button>
-                            <button type="button" class="category-btn" data-val="type-other" data-label="기타"><i class="ph-fill ph-dots-three-outline"></i> 기타</button>
+                            <button type="button" class="category-btn" data-val="type-other" data-label="기타"><i class="ph-fill ph-dots-three-circle"></i> 기타</button>
                         </div>
                         <input type="hidden" id="inputEventType" value="type-departure">
                         <input type="hidden" id="inputEventTypeLabel" value="출발">
@@ -726,9 +725,8 @@
             'type-hotel': { icon: 'ph-fill ph-bed', color: '#4F46E5' },
             'type-swim': { icon: 'ph-fill ph-person-simple-swim', color: '#14B8A6' },
             'type-hopping': { icon: 'ph-fill ph-waves', color: '#0EA5A4' },
-            'type-rest': { icon: 'ph-fill ph-palm-tree', color: '#84CC16' },
             'type-sightseeing': { icon: 'ph-fill ph-camera', color: '#EAB308' },
-            'type-other': { icon: 'ph-fill ph-dots-three-outline', color: '#6B7280' }
+            'type-other': { icon: 'ph-fill ph-dots-three-circle', color: '#6B7280' }
         };
 
         const fixedColorPalette = [
@@ -769,9 +767,7 @@
             { class: 'ph-fill ph-swimming-pool', label: '수영장' },
             { class: 'ph-fill ph-waves', label: '바다/호핑' },
             { class: 'ph-fill ph-drop', label: '물놀이' },
-            { class: 'ph-fill ph-fish', label: '스노클링' },
-            { class: 'ph-fill ph-palm-tree', label: '휴양' },
-            { class: 'ph-fill ph-island', label: '섬' },
+            { class: 'ph-fill ph-fish-simple', label: '스노클링' },
             { class: 'ph-fill ph-tent', label: '텐트' },
             { class: 'ph-fill ph-mountains', label: '산' },
             { class: 'ph-fill ph-tree', label: '나무' },
@@ -786,22 +782,21 @@
             { class: 'ph-fill ph-flag', label: '깃발' },
             { class: 'ph-fill ph-clock', label: '시간' },
             { class: 'ph-fill ph-alarm', label: '알람' },
-            { class: 'ph-fill ph-clock-countdown', label: '카운트다운' },
+            { class: 'ph-fill ph-hourglass', label: '카운트다운' },
             { class: 'ph-fill ph-calendar', label: '일정' },
             { class: 'ph-fill ph-calendar-check', label: '예약완료' },
             { class: 'ph-fill ph-ticket', label: '티켓' },
             { class: 'ph-fill ph-money', label: '돈' },
             { class: 'ph-fill ph-credit-card', label: '카드' },
-            { class: 'ph-fill ph-suitcase', label: '캐리어' },
+            { class: 'ph-fill ph-suitcase-rolling', label: '캐리어' },
             { class: 'ph-fill ph-backpack', label: '백팩' },
             { class: 'ph-fill ph-handbag', label: '가방' },
             { class: 'ph-fill ph-package', label: '짐' },
-            { class: 'ph-fill ph-passport', label: '여권' },
             { class: 'ph-fill ph-identification-card', label: '신분증' },
             { class: 'ph-fill ph-qr-code', label: 'QR' },
             { class: 'ph-fill ph-wifi-high', label: '와이파이' },
             { class: 'ph-fill ph-plug-charging', label: '충전' },
-            { class: 'ph-fill ph-battery-charging', label: '보전' },
+            { class: 'ph-fill ph-battery-charging', label: '보조배터리' },
             { class: 'ph-fill ph-phone', label: '전화' },
             { class: 'ph-fill ph-chat-circle-text', label: '메모' },
             { class: 'ph-fill ph-note-pencil', label: '기록' },
@@ -812,7 +807,6 @@
             { class: 'ph-fill ph-game-controller', label: '게임' },
             { class: 'ph-fill ph-t-shirt', label: '옷' },
             { class: 'ph-fill ph-sneaker', label: '신발' },
-            { class: 'ph-fill ph-medical-kit', label: '응급' },
             { class: 'ph-fill ph-first-aid', label: '구급' },
             { class: 'ph-fill ph-pill', label: '약' },
             { class: 'ph-fill ph-toilet', label: '화장실' },
