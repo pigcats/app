@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>여행 일정 관리 v1.6</title>
+    <title>여행 일정 관리 v1.6 (Cloud Sync)</title>
     
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -14,42 +14,16 @@
             --primary: #2563EB;
             --primary-light: #EFF6FF;
             --primary-border: #BFDBFE;
-            --primary-dark: #1E40AF;
+            --primary-dark: #1E40AF; 
             
             --success: #10B981;
-            --success-light: #ECFDF5;
-            --success-border: #A7F3D0;
-            --success-dark: #047857;
-            
             --warning: #F59E0B;
-            --warning-light: #FFFBEB;
-            --warning-border: #FDE68A;
-            --warning-dark: #B45309;
-            
             --purple: #8B5CF6;
             --purple-light: #F5F3FF;
-            --purple-border: #DDD6FE;
-            --purple-dark: #5B21B6;
-            
             --pink: #EC4899;
-            --pink-light: #FDF2F8;
-            --pink-border: #FBCFE8;
-            --pink-dark: #9D174D;
-
             --teal: #14B8A6;
-            --teal-light: #F0FDFA;
-            --teal-border: #99F6E4;
-            --teal-dark: #0F766E;
-
             --rose: #E11D48;
-            --rose-light: #FFF1F2;
-            --rose-border: #FECDD3;
-            --rose-dark: #9F1239;
-
             --gray-tag: #6B7280;
-            --gray-light: #F3F4F6;
-            --gray-border: #D1D5DB;
-            --gray-dark: #374151;
 
             --bg-color: #F9FAFB;
             --text-dark: #111827;
@@ -58,27 +32,65 @@
             --border-color: #E5E7EB;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Pretendard', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-dark); -webkit-font-smoothing: antialiased; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pretendard', sans-serif;
+        }
 
-        .app-container { max-width: 600px; margin: 0 auto; background-color: #F9FAFB; min-height: 100vh; position: relative; padding-bottom: 80px; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+        }
 
-        .hero-section { position: relative; background-color: var(--primary); border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; padding: 40px 20px 30px; color: white; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); transition: background-color 0.3s; }
+        .app-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #F9FAFB;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 80px;
+        }
+
+        .hero-section {
+            position: relative;
+            background-color: var(--primary);
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            padding: 40px 20px 30px;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
         .hero-title { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
         .hero-date { font-size: 15px; opacity: 0.9; }
 
-        .btn-hero-circle { position: absolute; top: 24px; width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.3); color: white; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; transition: background 0.2s; }
-        .btn-hero-circle:hover { background: rgba(255, 255, 255, 0.3); }
-        
-        .btn-hero-edit { right: 20px; } .btn-hero-share { right: 68px; } .btn-hero-download { right: 116px; } .btn-hero-export { right: 164px; } .btn-hero-import { right: 212px; }
+        .btn-hero-circle {
+            position: absolute; top: 24px; width: 40px; height: 40px;
+            border-radius: 50%; background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.3);
+            color: white; display: flex; align-items: center; justify-content: center;
+            font-size: 20px; cursor: pointer; transition: background 0.2s;
+        }
+        .btn-hero-edit { right: 20px; }
+        .btn-hero-share { right: 68px; }
+        .btn-hero-download { right: 116px; }
+        .btn-hero-export { right: 164px; }
+        .btn-hero-import { right: 212px; }
 
         .section-wrap { padding: 32px 20px 12px; }
         .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #374151; display: flex; align-items: center; gap: 8px; }
         .section-title::before { content: ''; display: block; width: 4px; height: 16px; background-color: #9CA3AF; border-radius: 2px; }
 
-        .overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #fff; border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; }
+        .overview-grid { 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; 
+            background: #fff; border: 1px solid var(--border-color); 
+            border-radius: 16px; padding: 16px; 
+        }
         .overview-item { display: flex; align-items: center; gap: 10px; }
-        .overview-icon { width: 36px; height: 36px; border-radius: 10px; background: #F8FAFC; color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 18px; transition: color 0.3s; }
+        .overview-icon { width: 36px; height: 36px; border-radius: 10px; background: #F8FAFC; color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 18px; }
         .overview-label { font-size: 12px; color: var(--text-gray); margin-bottom: 2px; }
         .overview-value { font-size: 14px; font-weight: 600; color: var(--text-dark); }
 
@@ -87,47 +99,46 @@
         .booking-title { font-size: 15px; font-weight: 700; display:flex; align-items:center; gap:6px; color: var(--text-dark); }
         .booking-title i { color: var(--primary); font-size: 18px; }
         
-        .btn-add-booking { font-size: 12px; padding: 6px 12px; border-radius: 8px; background: #F3F4F6; color: var(--text-dark); border: none; cursor: pointer; font-weight: 600; display:flex; align-items:center; gap:4px; transition: background 0.2s;}
-        .btn-add-booking:hover { background: #E5E7EB; }
+        .btn-add-booking { 
+            font-size: 13px; padding: 8px 14px; border-radius: 12px; 
+            background: #fff; color: var(--primary); border: 1px solid var(--primary-border); 
+            cursor: pointer; font-weight: 600; display:flex; align-items:center; gap:4px; transition: all 0.2s;
+        }
+        .btn-add-booking:hover { background: #F8FAFC; border-color: var(--primary); }
         
         .booking-list { list-style: none; padding: 0; }
-        .booking-item { display: flex; align-items: flex-start; justify-content: space-between; padding: 16px 0; border-bottom: 1px dashed #E5E7EB; gap: 12px; }
-        .booking-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .booking-item { display: flex; align-items: flex-start; justify-content: space-between; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border-color); border-radius: 12px; background: #fff; gap: 12px; }
+        .booking-item:last-child { margin-bottom: 0; }
+        
         .booking-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
         
-        .booking-set-box { background: #F8FAFC; border-radius: 12px; border: 1px solid #E5E7EB; display: flex; flex-direction: column; }
-        .booking-legs-wrap { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
         .flight-leg { display: flex; flex-direction: column; gap: 4px; }
-        .flight-leg:not(:last-child) { border-bottom: 1px dashed #D1D5DB; padding-bottom: 10px; }
-        
-        .flight-info-row { display: flex; align-items: center; flex-wrap: wrap; column-gap: 6px; row-gap: 4px; line-height: 1.4; }
+        .flight-info-row { display: flex; align-items: center; flex-wrap: wrap; column-gap: 6px; row-gap: 4px; }
         .flight-badge { font-size: 11px; font-weight: 700; padding: 3px 6px; border-radius: 6px; background: #E5E7EB; color: #4B5563; }
         .flight-route { font-size: 14px; font-weight: 700; color: var(--text-dark); }
         .flight-name { font-size: 14px; font-weight: 700; color: #EA580C; }
         .flight-time-row { display: flex; padding-left: 51px; }
         .flight-time { font-size: 14px; color: var(--text-dark); font-weight: 500; }
 
-        .flight-price-footer { background: #F1F5F9; padding: 10px 12px; border-top: 1px solid #E5E7EB; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .flight-price-footer { border-top: 1px dashed #E5E7EB; margin-top: 8px; padding-top: 8px; display: flex; justify-content: space-between; align-items: center; }
         .flight-price-label { font-size: 12px; color: var(--text-gray); font-weight: 600; }
-        .flight-price-value { font-size: 15px; font-weight: 700; color: var(--text-dark); }
+        .flight-price-value { font-size: 14px; font-weight: 700; color: var(--text-dark); }
 
-        .booking-item .item-actions { display: flex; gap: 4px; flex-shrink: 0; margin-left: 8px; margin-top: 6px; }
-        .booking-item .btn-icon { color: #D1D5DB; font-size: 20px; padding: 4px; border: none; background: none; cursor: pointer; border-radius: 6px; }
+        .booking-item .item-actions { display: flex; gap: 4px; flex-shrink: 0; margin-left: 8px; }
+        .booking-item .btn-icon { color: #9CA3AF; font-size: 20px; padding: 4px; border: none; background: none; cursor: pointer; border-radius: 6px; }
         .booking-item .btn-icon:hover { color: var(--text-gray); background: #F3F4F6; }
-        .booking-item .btn-icon.delete:hover { color: #EF4444; background: #FEF2F2; }
 
-        .day-card { background: #fff; border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02); --current-primary: var(--day-primary, var(--primary)); --current-primary-light: var(--day-primary-light, var(--primary-light)); }
+        .day-card { background: #fff; border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 20px; }
         .view-mode .day-card.is-empty-day { display: none !important; }
 
-        .day-header { padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; background: #fff; transition: all 0.2s; position: sticky; top: 0; z-index: 10; border-radius: 16px; }
+        .day-header { padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; background: #fff; position: sticky; top: 0; z-index: 10; border-radius: 16px; }
         .day-header-left { display: flex; align-items: center; gap: 14px; }
-        .day-icon-block { display: none; width: 42px; height: 42px; background: var(--current-primary-light); color: var(--current-primary); border-radius: 10px; align-items: center; justify-content: center; font-size: 22px; transition: all 0.3s; }
-        .day-text-wrap { display: flex; align-items: center; gap: 12px; transition: all 0.2s; }
+        .day-icon-block { display: none; width: 42px; height: 42px; background: var(--primary-light); color: var(--primary); border-radius: 10px; align-items: center; justify-content: center; font-size: 22px; }
+        .day-text-wrap { display: flex; align-items: center; gap: 12px; }
         .day-title-row { display: flex; align-items: center; gap: 8px; }
-        .day-badge-text { color: var(--current-primary); font-size: 16px; font-weight: 700; transition: color 0.3s; }
+        .day-badge-text { color: var(--primary); font-size: 16px; font-weight: 700; }
         .day-date-text { color: var(--text-gray); font-size: 14px; font-weight: 500; }
-        
-        .day-desc-text { font-size: 14px; color: var(--text-gray-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; transition: all 0.2s; }
+        .day-desc-text { font-size: 14px; color: var(--text-gray-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
         .day-desc-text:empty::before { content: '일정을 요약해주세요'; color: #9CA3AF; }
         .view-mode .day-desc-text:empty::before { content: ''; }
 
@@ -140,53 +151,37 @@
         .day-card.active .day-text-wrap { flex-direction: column; align-items: flex-start; gap: 4px; }
         .day-card.active .day-desc-text { font-size: 13px; color: var(--text-gray); white-space: normal; max-width: none; }
 
-        .day-card.active .day-header.is-sticky { align-items: center; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); border-bottom: 1px solid var(--border-color); }
-        .day-card.active .day-header.is-sticky .day-icon-block { display: none; }
-        .day-card.active .day-header.is-sticky .day-text-wrap { flex-direction: row; align-items: center; gap: 12px; }
-        .day-card.active .day-header.is-sticky .day-desc-text { font-size: 14px; color: var(--text-gray-dark); white-space: nowrap; max-width: 180px; }
-
         .day-body { display: none; padding: 16px 20px 20px; border-top: 1px solid #F3F4F6; border-radius: 0 0 16px 16px; }
         .day-card.active .day-body { display: block; }
 
         .timeline { display: flex; flex-direction: column; }
-        .timeline-item { display: flex; align-items: stretch; }
-        .timeline-time { width: 44px; font-size: 14px; font-weight: 700; color: var(--text-dark); padding-top: 6px; text-align: left; }
-        .timeline-divider { display: flex; flex-direction: column; align-items: center; margin: 0 16px; }
-        .timeline-circle { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; z-index: 2; flex-shrink: 0; }
-        .timeline-line { width: 2px; background: #E5E7EB; flex-grow: 1; margin-top: 4px; margin-bottom: 4px; min-height: 24px; }
-        .timeline-item:last-child .timeline-line { display: none; }
+        .timeline-item { display: flex; align-items: stretch; margin-bottom: 12px; }
+        .timeline-time { width: 44px; font-size: 14px; font-weight: 700; color: var(--text-dark); padding-top: 12px; text-align: left; }
         
-        .timeline-content { flex: 1; min-width: 0; padding-top: 6px; padding-bottom: 32px; display: flex; justify-content: space-between; align-items: flex-start; }
-        .timeline-text { flex: 1; min-width: 0; padding-right: 12px; word-break: keep-all; overflow-wrap: break-word; }
+        .timeline-content { 
+            flex: 1; min-width: 0; background: #F8FAFC; border: 1px solid #E5E7EB; 
+            border-radius: 12px; padding: 12px; display: flex; justify-content: space-between; align-items: flex-start; 
+        }
+        
+        .timeline-text { flex: 1; min-width: 0; padding-right: 12px; }
         .timeline-text h4 { font-size: 15px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
-        .timeline-text p { font-size: 13px; color: var(--text-gray-dark); line-height: 1.5; margin-top: 4px; } 
-        .timeline-text img { max-width: 100%; height: auto; border-radius: 8px; display: block; margin-top: 8px; border: 1px solid var(--border-color); }
-        .timeline-text * { max-width: 100%; }
+        .timeline-text p { font-size: 13px; color: var(--text-gray-dark); line-height: 1.4; } 
         
-        .timeline-cost { font-size: 13px; font-weight: 600; color: var(--text-dark); margin-top: 6px; display: flex; align-items: center; gap: 4px; }
+        .timeline-cost { font-size: 13px; font-weight: 600; color: var(--text-dark); margin-top: 8px; display: flex; align-items: center; gap: 4px; border-top: 1px dashed #D1D5DB; padding-top: 8px;}
         .timeline-cost i { color: var(--text-gray); font-size: 14px; }
+
         .timeline-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
         
-        .timeline-tag { font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 800; letter-spacing: -0.3px; border: 1px solid; background-color: #fff; }
+        .btn-add-schedule {
+            display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: #fff; border: 1px solid var(--primary-border);
+            border-radius: 12px; color: var(--primary); font-weight: 600; font-size: 14px; margin-top: 10px; cursor: pointer; transition: all 0.2s;
+        }
+        .btn-add-schedule:hover { background: #F8FAFC; border-color: var(--primary); }
 
-        .type-flight .timeline-circle { background: var(--primary); } .type-flight .timeline-tag { color: var(--primary-dark); border-color: var(--primary-border); background: var(--primary-light); }
-        .type-departure .timeline-circle { background: var(--primary); } .type-departure .timeline-tag { color: var(--primary-dark); border-color: var(--primary-border); background: var(--primary-light); }
-        .type-arrival .timeline-circle { background: var(--success); } .type-arrival .timeline-tag { color: var(--success-dark); border-color: var(--success-border); background: var(--success-light); }
-        .type-move .timeline-circle { background: var(--warning); } .type-move .timeline-tag { color: var(--warning-dark); border-color: var(--warning-border); background: var(--warning-light); }
-        .type-hotel .timeline-circle { background: var(--purple); } .type-hotel .timeline-tag { color: var(--purple-dark); border-color: var(--purple-border); background: var(--purple-light); }
-        .type-food .timeline-circle { background: var(--pink); } .type-food .timeline-tag { color: var(--pink-dark); border-color: var(--pink-border); background: var(--pink-light); }
-        .type-sightseeing .timeline-circle { background: var(--success); } .type-sightseeing .timeline-tag { color: var(--success-dark); border-color: var(--success-border); background: var(--success-light); }
-        .type-shopping .timeline-circle { background: var(--pink); } .type-shopping .timeline-tag { color: var(--pink-dark); border-color: var(--pink-border); background: var(--pink-light); }
-        .type-massage .timeline-circle { background: var(--rose); } .type-massage .timeline-tag { color: var(--rose-dark); border-color: var(--rose-border); background: var(--rose-light); }
-        .type-other .timeline-circle { background: var(--gray-tag); } .type-other .timeline-tag { color: var(--gray-dark); border-color: var(--gray-border); background: var(--gray-light); }
-
-        .btn-add-schedule { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; background: #fff; border: 1px solid var(--border-color); border-radius: 12px; color: var(--current-primary); font-weight: 600; font-size: 14px; margin-top: 10px; cursor: pointer; transition: all 0.2s; }
-        .btn-add-schedule:hover { background: #F8FAFC; border-color: var(--current-primary); }
-
-        .prep-card { background: #fff; border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02); }
+        .prep-card { background: #fff; border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; }
         .prep-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #F3F4F6; }
         .prep-progress-text { font-size: 14px; font-weight: 600; color: var(--text-dark); }
-        .prep-progress-count { color: var(--primary); transition: color 0.3s; }
+        .prep-progress-count { color: var(--primary); }
         
         .prep-list { list-style: none; padding: 0; margin-bottom: 16px; }
         .prep-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed #E5E7EB; gap: 8px;} 
@@ -199,29 +194,21 @@
         .prep-item.completed .prep-text { text-decoration: line-through; color: var(--text-gray); opacity: 0.7; }
         
         .memo-link-text { color: var(--primary); text-decoration: underline; font-weight: 500; cursor: pointer; }
-        .memo-link-text:hover { color: #1D4ED8; }
 
         .btn-icon { background: none; border: none; color: #9CA3AF; font-size: 18px; cursor: pointer; padding: 4px; border-radius: 6px; }
         .btn-icon:hover { background: #F3F4F6; color: var(--text-dark); }
         .btn-icon.delete:hover { background: #FEF2F2; color: #EF4444; }
 
         .prep-add-form { display: flex; gap: 8px; }
-        .prep-input { flex: 1; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 12px; font-size: 14px; outline: none; background: #F9FAFB; transition: all 0.2s; }
+        .prep-input { flex: 1; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 12px; font-size: 14px; outline: none; background: #F9FAFB; }
         .prep-input:focus { border-color: var(--text-dark); background: #fff; }
-        .btn-prep-add { width: 46px; height: 46px; background: #111827; color: white; border: none; border-radius: 12px; font-size: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.3s; flex-shrink: 0;}
-        .btn-prep-add:hover { background: #374151; }
-
-        .inline-edit-form { display: flex; flex: 1; gap: 8px; align-items: center; }
-        .inline-edit-input { flex: 1; padding: 8px 12px; border: 1px solid var(--text-dark); border-radius: 8px; font-size: 14px; outline: none; }
-        .btn-inline-save { background: var(--text-dark); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-size: 14px; cursor: pointer; font-weight: 600; }
-        .btn-inline-save:hover { background: #374151; }
+        .btn-prep-add { width: 46px; height: 46px; background: #111827; color: white; border: none; border-radius: 12px; font-size: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 1000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(2px);}
         .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease-out; }
-        .modal-content { background: #fff; width: 100%; max-width: 400px; border-radius: 20px; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); animation: slideUp 0.3s ease-out; max-height: 90vh; overflow-y: auto;}
+        .modal-content { background: #fff; width: 100%; max-width: 400px; border-radius: 20px; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-height: 90vh; overflow-y: auto;}
         
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .modal-title { font-size: 18px; font-weight: 700; }
@@ -234,18 +221,9 @@
         .form-col { flex: 1; }
 
         .color-box-wrapper { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: #fff; border: 1px solid var(--border-color); border-radius: 12px; }
-        .color-input-circle { width: 30px; height: 30px; border: none; outline: none; background: none; cursor: pointer; -webkit-appearance: none; padding: 0; }
-        .color-input-circle::-webkit-color-swatch-wrapper { padding: 0; }
-        .color-input-circle::-webkit-color-swatch { border: none; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); }
+        .color-input-circle { width: 30px; height: 30px; border: none; outline: none; background: none; cursor: pointer; }
 
-        .btn-submit { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 8px; transition: background 0.3s;}
-
-        .category-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-        .category-btn { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 14px; border: 1px solid var(--border-color); border-radius: 20px; background: #fff; color: var(--text-gray); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-        .category-btn i { font-size: 16px; }
-        .category-btn:hover { background: #F8FAFC; }
-        .category-btn.active { border-color: var(--primary); background: var(--primary-light); color: var(--primary); }
-        .icon-btn { padding: 8px; font-size: 20px; width: 44px; height: 44px; border-radius: 12px; }
+        .btn-submit { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 8px; }
 
         .view-mode .btn-hero-circle { display: none !important; }
         .view-mode .day-header-actions .btn-icon:not(.icon-caret) { display: none !important; }
@@ -257,42 +235,27 @@
         .view-mode .prep-item .btn-icon { display: none !important; }
         .view-mode .prep-item-left { pointer-events: none; }
         
-        .btn-exit-view { display: none; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--text-dark); color: white; padding: 12px 24px; border-radius: 30px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 1000; cursor: pointer; border: none; }
+        .btn-exit-view { display: none; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--text-dark); color: white; padding: 12px 24px; border-radius: 30px; font-weight: 600; font-size: 14px; z-index: 1000; cursor: pointer; border: none; }
         .view-mode .btn-exit-view { display: flex; align-items: center; gap: 8px; }
         
-        .toast-msg { position: fixed; bottom: -60px; left: 50%; transform: translateX(-50%); background: rgba(17, 24, 39, 0.9); color: #fff; padding: 14px 24px; border-radius: 12px; font-size: 14px; opacity: 0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 8px; font-weight: 500; }
+        .toast-msg { position: fixed; bottom: -60px; left: 50%; transform: translateX(-50%); background: rgba(17, 24, 39, 0.9); color: #fff; padding: 14px 24px; border-radius: 12px; font-size: 14px; opacity: 0; transition: all 0.3s; z-index: 2000; display: flex; align-items: center; gap: 8px; }
         .toast-msg.show { bottom: 30px; opacity: 1; }
 
         .share-url-box { display: flex; align-items: center; gap: 8px; background: #F3F4F6; padding: 12px; border-radius: 10px; margin-bottom: 16px; }
         .share-url-box input { flex: 1; border: none; background: transparent; outline: none; font-size: 14px; color: var(--text-gray); }
-        .btn-copy { background: white; border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--text-dark); }
+        .btn-copy { background: white; border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
         
-        .capture-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.8); z-index: 9999; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: var(--primary); backdrop-filter: blur(4px); }
+        .capture-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.9); z-index: 9999; align-items: center; justify-content: center; flex-direction: column; backdrop-filter: blur(4px); }
         .capture-overlay.active { display: flex; }
-        
-        .sync-indicator { display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(17, 24, 39, 0.8); color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; z-index: 9999; align-items: center; gap: 8px; backdrop-filter: blur(4px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-        .sync-indicator.active { display: flex; }
+        #capturedImage { max-width: 90%; max-height: 80vh; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .capture-guide { margin-top: 16px; font-weight: 700; color: #374151; display: flex; align-items: center; gap: 8px; }
     </style>
 </head>
 <body>
 
-    <div id="cloudSyncIndicator" class="sync-indicator">
-        <i class="ph ph-spinner-gap" style="font-size: 18px; animation: spin 1s linear infinite;"></i>
-        <span>클라우드 동기화 중...</span>
-    </div>
-
     <div class="app-container" id="captureTarget">
         
         <header class="hero-section">
-            <button class="btn-hero-circle btn-hero-import" onclick="document.getElementById('importFile').click()" title="데이터 불러오기">
-                <i class="ph ph-folder-open"></i>
-            </button>
-            <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
-            
-            <button class="btn-hero-circle btn-hero-export" onclick="exportData()" title="데이터 저장">
-                <i class="ph ph-floppy-disk"></i>
-            </button>
-
             <button class="btn-hero-circle btn-hero-download" onclick="openModal('modalCaptureOption')" title="이미지로 저장">
                 <i class="ph ph-download-simple"></i>
             </button>
@@ -329,18 +292,21 @@
         </section>
 
         <section class="section-wrap">
-            <h2 class="section-title">항공 및 숙소 정보</h2>
-            <div class="booking-card">
-                <div class="booking-header">
-                    <h3 class="booking-title"><i class="ph-fill ph-airplane-tilt"></i> 항공권</h3>
-                    <button class="btn-add-booking" onclick="openFlightModal('add')"><i class="ph ph-plus"></i> 추가</button>
-                </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h2 class="section-title" style="margin-bottom: 0;">항공권 정보</h2>
+                <button class="btn-add-booking" onclick="openFlightModal('add')"><i class="ph ph-plus"></i> 항공 추가</button>
+            </div>
+            <div id="flightListContainer">
                 <ul class="booking-list" id="flightList"></ul>
+            </div>
+        </section>
 
-                <div class="booking-header" style="margin-top: 24px;">
-                    <h3 class="booking-title"><i class="ph-fill ph-buildings"></i> 숙소</h3>
-                    <button class="btn-add-booking" onclick="openHotelModal('add')"><i class="ph ph-plus"></i> 추가</button>
-                </div>
+        <section class="section-wrap">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h2 class="section-title" style="margin-bottom: 0;">숙소 정보</h2>
+                <button class="btn-add-booking" onclick="openHotelModal('add')"><i class="ph ph-plus"></i> 숙소 추가</button>
+            </div>
+            <div id="hotelListContainer">
                 <ul class="booking-list" id="hotelList"></ul>
             </div>
         </section>
@@ -376,6 +342,7 @@
         </section>
     </div>
 
+    <!-- 모달 창들 -->
     <div id="modalCaptureOption" class="modal-overlay">
         <div class="modal-content" style="max-width: 320px;">
             <div class="modal-header">
@@ -384,10 +351,10 @@
             </div>
             <div style="display: flex; flex-direction: column; gap: 12px;">
                 <button type="button" class="btn-submit" onclick="executeCapture('mobile')" style="background: var(--text-dark); margin: 0;">
-                    <i class="ph ph-device-mobile"></i> 모바일 버전 (480px)
+                    <i class="ph ph-device-mobile"></i> 모바일 이미지 생성 (길게 눌러 저장)
                 </button>
                 <button type="button" class="btn-submit" onclick="executeCapture('pc')" style="margin: 0;">
-                    <i class="ph ph-desktop"></i> PC 버전 (720px)
+                    <i class="ph ph-desktop"></i> PC로 바로 다운로드
                 </button>
             </div>
         </div>
@@ -399,7 +366,7 @@
                 <h3 class="modal-title">일정 공유하기</h3>
                 <button type="button" class="btn-icon" onclick="closeModal('modalShare')"><i class="ph ph-x"></i></button>
             </div>
-            <p class="form-label" style="margin-bottom: 12px; color: var(--text-dark);">아래 링크를 복사하여 일행과 공유하세요. (클라우드 실시간 연동)</p>
+            <p class="form-label" style="margin-bottom: 12px; color: var(--text-dark);">아래 링크를 복사하여 일행과 공유하세요. 이 주소로 접속하면 실시간 연동됩니다!</p>
             <div class="share-url-box">
                 <i class="ph ph-link" style="color: var(--text-gray); font-size:18px;"></i>
                 <input type="text" id="inputShareUrl" readonly>
@@ -414,14 +381,10 @@
     <div id="modalTrip" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">여행 정보 및 테마 설정</h3>
+                <h3 class="modal-title">여행 정보 설정</h3>
                 <button type="button" class="btn-icon" onclick="closeModal('modalTrip')"><i class="ph ph-x"></i></button>
             </div>
             <form id="formTrip">
-                <div class="form-group">
-                    <label class="form-label">메인 포인트 컬러</label>
-                    <div class="color-box-wrapper"><input type="color" id="inputTripColor" class="color-input-circle" value="#2563EB"></div>
-                </div>
                 <div class="form-group"><label class="form-label">여행 제목</label><input type="text" id="inputTripTitle" class="form-input" required placeholder="여행 제목"></div>
                 <div class="form-row">
                     <div class="form-group form-col"><label class="form-label">시작일</label><input type="date" id="inputTripStart" class="form-input" required></div>
@@ -433,7 +396,7 @@
                     <div class="form-group form-col"><label class="form-label">인원</label><input type="text" id="inputTripMembers" class="form-input" required placeholder="예: 2명"></div>
                     <div class="form-group form-col"><label class="form-label">예산</label><input type="text" id="inputTripBudget" class="form-input" required placeholder="예: 1,200,000원"></div>
                 </div>
-                <button type="submit" class="btn-submit">저장 및 동기화</button>
+                <button type="submit" class="btn-submit">저장하기</button>
             </form>
         </div>
     </div>
@@ -482,47 +445,6 @@
         </div>
     </div>
 
-    <div id="modalDay" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">DAY 설정</h3>
-                <button type="button" class="btn-icon" onclick="closeModal('modalDay')"><i class="ph ph-x"></i></button>
-            </div>
-            <form id="formDay">
-                <input type="hidden" id="inputDayId">
-                <div class="form-group">
-                    <label class="form-label" style="cursor:pointer; display:flex; align-items:center; gap:8px;">
-                        <input type="checkbox" id="inputDayColorCheck" onchange="toggleDayColorInput()" style="width:16px; height:16px;">
-                        이 날짜만 다른 포인트 컬러 사용
-                    </label>
-                    <div class="color-box-wrapper" id="dayColorWrapper" style="display:none;"><input type="color" id="inputDayColor" class="color-input-circle" value="#8B5CF6"></div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">대표 아이콘</label>
-                    <div class="category-grid" id="dayIconGrid">
-                        <button type="button" class="category-btn icon-btn active" data-icon="ph-map-pin"><i class="ph-fill ph-map-pin"></i></button>
-                        <button type="button" class="category-btn icon-btn" data-icon="ph-airplane-tilt"><i class="ph-fill ph-airplane-tilt"></i></button>
-                        <button type="button" class="category-btn icon-btn" data-icon="ph-buildings"><i class="ph-fill ph-buildings"></i></button>
-                        <button type="button" class="category-btn icon-btn" data-icon="ph-car-profile"><i class="ph-fill ph-car-profile"></i></button>
-                        <button type="button" class="category-btn icon-btn" data-icon="ph-camera"><i class="ph-fill ph-camera"></i></button>
-                        <button type="button" class="category-btn icon-btn" data-icon="ph-coffee"><i class="ph-fill ph-coffee"></i></button>
-                        <button type="button" class="category-btn icon-btn" data-icon="ph-flag"><i class="ph-fill ph-flag"></i></button>
-                        <button type="button" class="category-btn icon-btn" data-icon="ph-star"><i class="ph-fill ph-star"></i></button>
-                        <button type="button" class="category-btn icon-btn" data-icon="ph-heart"><i class="ph-fill ph-heart"></i></button>
-                        <button type="button" class="category-btn icon-btn" data-icon="ph-check-circle"><i class="ph-fill ph-check-circle"></i></button>
-                        <button type="button" class="category-btn icon-btn" data-icon="ph-number-circle-one"><i class="ph-fill ph-number-circle-one"></i></button>
-                    </div>
-                    <input type="hidden" id="inputDayIcon" value="ph-map-pin">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">주요 일정 (요약)</label>
-                    <input type="text" id="inputDayDesc" class="form-input" placeholder="예: 해변 휴식 및 쇼핑">
-                </div>
-                <button type="submit" class="btn-submit">저장하기</button>
-            </form>
-        </div>
-    </div>
-
     <div id="modalEvent" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -533,30 +455,13 @@
                 <input type="hidden" id="inputEventId">
                 <input type="hidden" id="inputEventDay">
                 <input type="hidden" id="inputEventMode">
-                <div class="form-group">
-                    <label class="form-label">카테고리</label>
-                    <div class="category-grid" id="eventCategoryGrid">
-                        <button type="button" class="category-btn active" data-val="type-departure" data-label="출발"><i class="ph-fill ph-airplane-takeoff"></i> 출발</button>
-                        <button type="button" class="category-btn" data-val="type-arrival" data-label="도착"><i class="ph-fill ph-airplane-landing"></i> 도착</button>
-                        <button type="button" class="category-btn" data-val="type-flight" data-label="항공"><i class="ph-fill ph-airplane-tilt"></i> 항공</button>
-                        <button type="button" class="category-btn" data-val="type-move" data-label="이동"><i class="ph-fill ph-car-profile"></i> 이동</button>
-                        <button type="button" class="category-btn" data-val="type-hotel" data-label="숙소"><i class="ph-fill ph-buildings"></i> 숙소</button>
-                        <button type="button" class="category-btn" data-val="type-food" data-label="식사"><i class="ph-fill ph-fork-knife"></i> 식사</button>
-                        <button type="button" class="category-btn" data-val="type-sightseeing" data-label="관광"><i class="ph-fill ph-camera"></i> 관광</button>
-                        <button type="button" class="category-btn" data-val="type-shopping" data-label="쇼핑"><i class="ph-fill ph-shopping-bag"></i> 쇼핑</button>
-                        <button type="button" class="category-btn" data-val="type-massage" data-label="마사지"><i class="ph-fill ph-flower-lotus"></i> 마사지</button>
-                        <button type="button" class="category-btn" data-val="type-other" data-label="기타"><i class="ph-fill ph-dots-three-circle"></i> 기타</button>
-                    </div>
-                    <input type="hidden" id="inputEventType" value="type-departure">
-                    <input type="hidden" id="inputEventTypeLabel" value="출발">
-                </div>
                 <div class="form-row">
                     <div class="form-group form-col">
                         <label class="form-label">시간</label>
                         <div style="display:flex; gap:4px; align-items:center;">
-                            <select id="inputEventTimeH" class="form-input" style="padding: 12px 8px; cursor:pointer;" required></select>
-                            <span style="font-weight:700; color:var(--text-dark);">:</span>
-                            <select id="inputEventTimeM" class="form-input" style="padding: 12px 8px; cursor:pointer;" required></select>
+                            <select id="inputEventTimeH" class="form-input" style="padding: 12px 8px;" required></select>
+                            <span style="font-weight:700;">:</span>
+                            <select id="inputEventTimeM" class="form-input" style="padding: 12px 8px;" required></select>
                         </div>
                     </div>
                     <div class="form-group form-col">
@@ -567,23 +472,29 @@
                 <div class="form-group"><label class="form-label">일정 제목</label><input type="text" id="inputEventTitle" class="form-input" required placeholder="예: 호텔 체크인"></div>
                 <div class="form-group"><label class="form-label">상세 내용 (선택)</label><input type="text" id="inputEventDesc" class="form-input" placeholder="예: 예약번호 123456"></div>
                 <button type="submit" class="btn-submit">저장하기</button>
-                <button type="button" id="btnEventDelete" class="btn-submit" style="background-color:#EF4444; display:none; margin-top:8px;">이 일정 삭제하기</button>
+                <button type="button" id="btnEventDelete" class="btn-submit" style="background-color:#EF4444; display:none;">이 일정 삭제하기</button>
             </form>
         </div>
     </div>
 
     <div id="toastMessage" class="toast-msg"><i class="ph-fill ph-check-circle"></i> <span>메시지</span></div>
     <button id="btnExitView" class="btn-exit-view" onclick="disableViewMode()"><i class="ph ph-arrow-left"></i> 편집 모드로 돌아가기</button>
-    <div id="captureLoader" class="capture-overlay"></div>
-    <style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>
+    
+    <div id="captureResultOverlay" class="capture-overlay">
+        <img id="capturedImage" src="" alt="Captured Trip Plan">
+        <div class="capture-guide">
+            <i class="ph-fill ph-info"></i> 이미지를 길게 눌러서 '사진 앱에 저장'을 선택하세요.
+        </div>
+        <button type="button" class="btn-submit" onclick="document.getElementById('captureResultOverlay').classList.remove('active')" style="width: 200px; margin-top: 24px;">닫기</button>
+    </div>
 
+    <!-- Firebase SDK 적용 영역 -->
     <script type="module">
-        // =========================================================================
-        // 🌟 [필독] 깃허브(GitHub Pages) 연동을 위한 Firebase 설정 영역 🌟
-        // 본인의 Firebase 프로젝트 설정(Config) 값을 아래에 덮어쓰세요.
-        // 비워두면(null) 기기 내부에만 저장되는 '로컬 모드'로 작동합니다.
-        // =========================================================================
-        const myFirebaseConfig = {
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // 고객님이 알려주신 설정값 적용 완료!
+        const firebaseConfig = {
             apiKey: "AIzaSyBHmmsd0uzkhXJv1Xf4Dm0QWKkDuGag2Xo",
             authDomain: "trip-planner-app-4f51c.firebaseapp.com",
             projectId: "trip-planner-app-4f51c",
@@ -591,9 +502,57 @@
             messagingSenderId: "623594056204",
             appId: "1:623594056204:web:e80b9c1ed45cfa55239c29"
         };
-        // =========================================================================
 
-        let tripInfo = { color: '#2563EB', title: '새로운 여행 일정', start: '', end: '', duration: '-', location: '-', members: '-', budget: '-' };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // URL에서 식별자(ID) 확인 후 없으면 생성
+        let urlParams = new URLSearchParams(window.location.search);
+        let tripId = urlParams.get('id');
+        
+        if (!tripId) {
+            tripId = Math.random().toString(36).substr(2, 9);
+            window.history.replaceState(null, null, `?id=${tripId}`);
+        }
+        
+        // 공유 URL 인풋창에 현재 주소 넣기
+        document.getElementById('inputShareUrl').value = window.location.href;
+
+        // 클라우드 저장 기능 오버라이드
+        window.saveDataToCloud = async function(data) {
+            try {
+                await setDoc(doc(db, "trips", tripId), data);
+            } catch (e) {
+                console.error("클라우드 저장 실패:", e);
+            }
+        };
+
+        // 클라우드에서 실시간 불러오기 기능
+        function listenToCloud() {
+            onSnapshot(doc(db, "trips", tripId), (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    window.tripInfo = data.tripInfo || window.tripInfo;
+                    window.dayConfigs = data.dayConfigs || window.dayConfigs;
+                    window.flights = data.flights || [];
+                    window.hotels = data.hotels || [];
+                    window.events = data.events || [];
+                    window.prepItems = data.prepItems || [];
+                    window.memoItems = data.memoItems || [];
+                    
+                    // 화면 다시 그리기
+                    populateTripForm(); renderTrip(); renderFlights(); renderHotels(); renderPrepList(); renderMemoList();
+                }
+            });
+        }
+
+        // 앱 시작 시 클라우드 리스너 작동
+        listenToCloud();
+    </script>
+
+    <!-- 앱 핵심 동작 자바스크립트 -->
+    <script>
+        let tripInfo = { title: '새로운 여행 일정', start: '', end: '', duration: '-', location: '-', members: '-', budget: '-' };
         let dayConfigs = {}; 
         let flights = [];
         let hotels = [];
@@ -601,176 +560,35 @@
         let prepItems = [];
         let memoItems = [];
 
-        // URL에서 Trip ID를 가져오거나 없으면 새로 생성
-        let currentTripId = new URLSearchParams(window.location.search).get('id');
-        if (!currentTripId) {
-            currentTripId = Math.random().toString(36).substring(2, 9);
-            try {
-                const newUrl = new URL(window.location.href);
-                newUrl.searchParams.set('id', currentTripId);
-                window.history.replaceState({}, '', newUrl);
-            } catch (e) {
-                console.warn("미리보기 환경(blob URL)에서는 주소 파라미터 변경이 무시됩니다.");
+        function saveAndSync() {
+            const data = { tripInfo, dayConfigs, flights, hotels, events, prepItems, memoItems };
+            if (window.saveDataToCloud) {
+                window.saveDataToCloud(data);
             }
         }
 
-        // 전역에서 접근 가능하도록 함수들 노출
-        window.openModal = function(id) { document.getElementById(id).classList.add('active'); };
-        window.closeModal = function(id) { document.getElementById(id).classList.remove('active'); };
-        window.showToast = function(msg) {
+        function showToast(msg) {
             const toast = document.getElementById("toastMessage");
             toast.querySelector('span').innerText = msg;
             toast.classList.add('show');
             setTimeout(() => { toast.classList.remove('show'); }, 2500);
-        };
-
-        // Firebase 연동 상태 변수
-        let db = null; let auth = null; let currentUser = null; let isFirebaseReady = false;
-        const APP_ID = typeof __app_id !== 'undefined' ? __app_id : 'trip-planner-gh';
-
-        async function initCloudSync() {
-            let activeConfig = null;
-            if (myFirebaseConfig) { activeConfig = myFirebaseConfig; }
-            else if (typeof __firebase_config !== 'undefined') { 
-                try {
-                    activeConfig = JSON.parse(__firebase_config); 
-                } catch(e) {
-                    console.warn("Invalid Firebase config provided.");
-                }
-            }
-
-            // If no valid configuration is found, log a message and exit gracefully.
-            if (!activeConfig || !activeConfig.apiKey) {
-                console.log("Firebase config not found or invalid. Running in local mode.");
-                return false;
-            }
-
-            try {
-                const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js");
-                const { getAuth, signInAnonymously, signInWithCustomToken } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js");
-                const { getFirestore, doc, getDoc, setDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
-                
-                const app = initializeApp(activeConfig); auth = getAuth(app); db = getFirestore(app);
-                window.fsDoc = doc; window.fsGetDoc = getDoc; window.fsSetDoc = setDoc;
-
-                let authSuccess = false;
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) { 
-                    try {
-                        await signInWithCustomToken(auth, __initial_auth_token); 
-                        authSuccess = true;
-                    } catch (authError) {
-                        console.warn("클라우드 인증 실패 (미리보기 환경 제한). 로컬 모드로 전환합니다.");
-                        try { 
-                            await signInAnonymously(auth); 
-                            authSuccess = true;
-                        } catch(e) {}
-                    }
-                } 
-                else { 
-                    try { 
-                        await signInAnonymously(auth); 
-                        authSuccess = true;
-                    } catch(authError) {
-                        console.warn("클라우드 익명 인증 실패 (미리보기 환경 제한). 로컬 모드로 전환합니다.");
-                    }
-                }
-                
-                if (authSuccess && auth.currentUser) {
-                    currentUser = auth.currentUser; 
-                    isFirebaseReady = true;
-                    return true;
-                }
-                return false;
-            } catch (err) { 
-                console.warn("Firebase 연동 모듈 초기화 제한됨. 로컬 모드로 작동합니다."); 
-                return false; 
-            }
         }
 
-        window.saveDataToLocal = async function() {
-            const data = { tripInfo, dayConfigs, flights, hotels, events, prepItems, memoItems, updatedAt: Date.now() };
-            localStorage.setItem(`tripPlannerData_v1.5_${currentTripId}`, JSON.stringify(data));
-
-            if (isFirebaseReady && currentUser && db) {
-                try {
-                    const docRef = window.fsDoc(db, 'artifacts', APP_ID, 'public', 'data', 'trips', currentTripId);
-                    await window.fsSetDoc(docRef, data);
-                } catch(e) { console.error("클라우드 저장 실패", e); }
-            }
-        };
-
-        async function loadDataFromCloudOrLocal() {
-            let loadedData = null;
-            if (isFirebaseReady && currentUser && db) {
-                try {
-                    const docRef = window.fsDoc(db, 'artifacts', APP_ID, 'public', 'data', 'trips', currentTripId);
-                    const docSnap = await window.fsGetDoc(docRef);
-                    if (docSnap.exists()) { loadedData = docSnap.data(); }
-                } catch(e) { console.error("클라우드 불러오기 실패", e); }
-            }
-
-            if (!loadedData) {
-                const saved = localStorage.getItem(`tripPlannerData_v1.5_${currentTripId}`);
-                if (saved) loadedData = JSON.parse(saved);
-            }
-
-            if (loadedData) {
-                tripInfo = loadedData.tripInfo || tripInfo; dayConfigs = loadedData.dayConfigs || dayConfigs;
-                flights = loadedData.flights || flights; hotels = loadedData.hotels || hotels;
-                events = loadedData.events || events; prepItems = loadedData.prepItems || prepItems;
-                memoItems = loadedData.memoItems || memoItems;
-            }
-        }
-
-        window.renderAll = function() {
-            populateTripForm(); renderTrip(); renderFlights(); renderHotels(); renderPrepList(); renderMemoList();
-        };
-
-        function checkStickyHeaders() {
-            const headers = document.querySelectorAll('.day-card.active .day-header');
-            headers.forEach(header => {
-                const rect = header.getBoundingClientRect();
-                if (rect.top <= 1) { header.classList.add('is-sticky'); } 
-                else { header.classList.remove('is-sticky'); }
-            });
-        }
-        window.addEventListener('scroll', checkStickyHeaders, { passive: true });
-
-        window.toggleDay = function(headerEl) { 
-            headerEl.closest('.day-card').classList.toggle('active'); 
-            setTimeout(checkStickyHeaders, 50); 
-        };
-
-        window.openShareModal = function() { 
-            try {
-                let shareUrl = new URL(window.location.href);
-                if (!shareUrl.searchParams.has('id')) { shareUrl.searchParams.set('id', currentTripId); }
-                document.getElementById("inputShareUrl").value = shareUrl.href;
-            } catch (e) {
-                document.getElementById("inputShareUrl").value = window.location.href + "?id=" + currentTripId;
-            }
-            openModal('modalShare'); 
-        };
-        window.copyShareUrl = function() { 
-            const copyText = document.getElementById("inputShareUrl"); 
-            copyText.select(); document.execCommand("copy"); 
-            showToast("링크가 복사되었습니다."); 
-        };
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
         
-        window.enableViewMode = function() { closeModal('modalShare'); document.body.classList.add('view-mode'); };
-        window.disableViewMode = function() { document.body.classList.remove('view-mode'); };
+        function openShareModal() { openModal('modalShare'); }
+        function copyShareUrl() { const copyText = document.getElementById("inputShareUrl"); copyText.select(); document.execCommand("copy"); showToast("링크가 복사되었습니다!"); }
+        function enableViewMode() { closeModal('modalShare'); document.body.classList.add('view-mode'); }
+        function disableViewMode() { document.body.classList.remove('view-mode'); }
 
-        window.executeCapture = async function(type) {
+        async function executeCapture(type) {
             closeModal('modalCaptureOption');
             const container = document.getElementById('captureTarget');
-            const loader = document.getElementById('captureLoader');
             const originalMaxWidth = container.style.maxWidth;
             const originalWidth = container.style.width;
             let targetWidth = type === 'mobile' ? '480px' : '720px';
             
-            // 로딩 모달 표출
-            loader.innerHTML = '<div style="display:flex; flex-direction:column; align-items:center; gap:12px;"><i class="ph ph-spinner-gap" style="font-size:32px; animation: spin 1s linear infinite; color:white;"></i><span style="color:white;">이미지를 생성하는 중...</span></div>';
-            loader.classList.add('active'); 
             document.body.classList.add('view-mode'); 
             window.scrollTo(0, 0);
 
@@ -778,66 +596,24 @@
                 container.style.maxWidth = targetWidth; container.style.width = targetWidth;
                 try {
                     const canvas = await html2canvas(container, { scale: 2, backgroundColor: '#F9FAFB', useCORS: true });
-                    const imgData = canvas.toDataURL('image/png');
                     
-                    // iOS 보안 정책을 우회하기 위해 생성된 이미지를 화면에 띄우고 직접 저장 유도
-                    loader.innerHTML = `
-                        <div style="display:flex; flex-direction:column; align-items:center; width: 100%; height: 100%; padding: 40px 20px;">
-                            <div style="background: white; padding: 16px; border-radius: 16px; width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); animation: slideUp 0.3s ease-out;">
-                                <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <h3 style="font-size: 16px; font-weight: 700; color: #111827;">일정 이미지 완성!</h3>
-                                    <button class="btn-icon" onclick="document.getElementById('captureLoader').classList.remove('active')" style="color: #111827;"><i class="ph ph-x"></i></button>
-                                </div>
-                                <p style="font-size: 13px; color: #4B5563; text-align: center; background: #F3F4F6; padding: 8px; border-radius: 8px;">
-                                    📱 모바일: 아래 이미지를 <b>길게 눌러서 '사진 앱에 저장'</b>하세요.<br>
-                                    💻 PC: 아래 버튼을 누르거나 우클릭하여 저장하세요.
-                                </p>
-                                <div style="flex: 1; overflow-y: auto; border: 1px solid #E5E7EB; border-radius: 8px; max-height: 60vh;">
-                                    <img src="${imgData}" style="width: 100%; display: block;" alt="여행일정 (길게 눌러 저장)">
-                                </div>
-                                <button onclick="downloadImage('${imgData}', '${type}')" style="width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">PC용 다운로드 버튼</button>
-                            </div>
-                        </div>
-                    `;
-                } catch (err) { 
-                    showToast("이미지 생성 중 문제가 발생했습니다."); 
-                    loader.classList.remove('active');
-                } finally {
+                    if (type === 'mobile') {
+                        // 모바일: 팝업 띄우기
+                        const imgData = canvas.toDataURL('image/png');
+                        document.getElementById('capturedImage').src = imgData;
+                        document.getElementById('captureResultOverlay').classList.add('active');
+                    } else {
+                        // PC: 즉시 다운로드
+                        const link = document.createElement('a'); link.download = `여행일정_${Date.now()}.png`; link.href = canvas.toDataURL('image/png'); link.click();
+                        showToast("이미지가 저장되었습니다.");
+                    }
+                } catch (err) { alert("이미지 저장 중 문제가 발생했습니다."); } 
+                finally {
                     container.style.maxWidth = originalMaxWidth; container.style.width = originalWidth;
-                    document.body.classList.remove('view-mode'); 
+                    document.body.classList.remove('view-mode');
                 }
             }, 100);
-        };
-
-        window.downloadImage = function(dataUrl, type) {
-            const link = document.createElement('a'); 
-            link.download = `여행일정_${type}_${Date.now()}.png`; 
-            link.href = dataUrl; 
-            link.click();
-        };
-
-        window.exportData = function() {
-            const data = { tripInfo, dayConfigs, flights, hotels, events, prepItems, memoItems };
-            const jsonStr = JSON.stringify(data, null, 2);
-            const blob = new Blob([jsonStr], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = `TripPlan_Backup_${Date.now()}.json`; a.click();
-            URL.revokeObjectURL(url); showToast("데이터 백업 저장이 완료되었습니다.");
-        };
-
-        window.importData = function(event) {
-            const file = event.target.files[0]; if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    tripInfo = data.tripInfo || tripInfo; dayConfigs = data.dayConfigs || {}; flights = data.flights || []; hotels = data.hotels || []; events = data.events || []; prepItems = data.prepItems || []; memoItems = data.memoItems || [];
-                    saveDataToLocal();
-                    renderAll(); showToast("데이터를 성공적으로 불러왔습니다.");
-                } catch (err) { showToast('데이터 파일을 읽는 중 오류가 발생했습니다.'); }
-            };
-            reader.readAsText(file); event.target.value = ''; 
-        };
+        }
 
         function formatPriceInput(inputEl) {
             inputEl.addEventListener('input', function(e) {
@@ -847,13 +623,21 @@
             inputEl.addEventListener('blur', function(e) { if(this.value && !this.value.includes('원')) this.value += '원'; });
             inputEl.addEventListener('focus', function(e) { this.value = this.value.replace('원', ''); });
         }
-        formatPriceInput(document.getElementById('inputTripBudget'));
-        formatPriceInput(document.getElementById('inputFlightPrice'));
-        formatPriceInput(document.getElementById('inputHotelPrice'));
-        formatPriceInput(document.getElementById('inputEventCost'));
+        
+        window.addEventListener('DOMContentLoaded', () => { 
+            formatPriceInput(document.getElementById('inputTripBudget'));
+            formatPriceInput(document.getElementById('inputFlightPrice'));
+            formatPriceInput(document.getElementById('inputHotelPrice'));
+            formatPriceInput(document.getElementById('inputEventCost'));
+
+            const hSelect = document.querySelectorAll('#inputEventTimeH'); const mSelect = document.querySelectorAll('#inputEventTimeM');
+            [...hSelect].forEach(sel => { for(let i=0;i<24;i++) sel.innerHTML += `<option value="${String(i).padStart(2,'0')}">${String(i).padStart(2,'0')}</option>`; });
+            [...mSelect].forEach(sel => { for(let i=0;i<60;i+=5) sel.innerHTML += `<option value="${String(i).padStart(2,'0')}">${String(i).padStart(2,'0')}</option>`; });
+            
+            renderTrip(); renderFlights(); renderHotels(); renderPrepList(); renderMemoList();
+        });
 
         function populateTripForm() {
-            document.getElementById('inputTripColor').value = tripInfo.color;
             document.getElementById('inputTripTitle').value = tripInfo.title;
             document.getElementById('inputTripStart').value = tripInfo.start;
             document.getElementById('inputTripEnd').value = tripInfo.end;
@@ -863,18 +647,16 @@
             document.getElementById('inputTripBudget').value = tripInfo.budget;
         }
 
-        window.openTripModal = function() { populateTripForm(); openModal('modalTrip'); };
+        function openTripModal() { populateTripForm(); openModal('modalTrip'); }
 
         document.getElementById('formTrip').addEventListener('submit', function(e) {
             e.preventDefault();
-            tripInfo = { color: document.getElementById('inputTripColor').value, title: document.getElementById('inputTripTitle').value, start: document.getElementById('inputTripStart').value, end: document.getElementById('inputTripEnd').value, duration: document.getElementById('inputTripDuration').value, location: document.getElementById('inputTripLocation').value, members: document.getElementById('inputTripMembers').value, budget: document.getElementById('inputTripBudget').value };
-            saveDataToLocal(); renderTrip(); closeModal('modalTrip');
+            tripInfo = { title: document.getElementById('inputTripTitle').value, start: document.getElementById('inputTripStart').value, end: document.getElementById('inputTripEnd').value, duration: document.getElementById('inputTripDuration').value, location: document.getElementById('inputTripLocation').value, members: document.getElementById('inputTripMembers').value, budget: document.getElementById('inputTripBudget').value };
+            saveAndSync();
+            renderTrip(); closeModal('modalTrip');
         });
 
-        window.renderTrip = function() {
-            document.documentElement.style.setProperty('--primary', tripInfo.color);
-            document.documentElement.style.setProperty('--primary-light', tripInfo.color + '1A');
-            document.documentElement.style.setProperty('--primary-border', tripInfo.color + '4D');
+        function renderTrip() {
             document.getElementById('displayTripTitle').innerText = tripInfo.title;
             document.getElementById('overviewDuration').innerText = tripInfo.duration;
             document.getElementById('overviewLocation').innerText = tripInfo.location;
@@ -890,91 +672,69 @@
                 timelineContainer.innerHTML = ''; 
                 for (let i = 0; i < diffDays; i++) {
                     const curDate = new Date(startD); curDate.setDate(curDate.getDate() + i);
-                    const dayNum = i + 1; const conf = dayConfigs[dayNum] || { icon: 'ph-map-pin', desc: '', customColor: false, color: '#2563EB' };
+                    const dayNum = i + 1; const conf = dayConfigs[dayNum] || { desc: '' };
                     timelineContainer.insertAdjacentHTML('beforeend', `
-                        <div class="day-card active" data-day="${dayNum}" ${conf.customColor ? `style="--day-primary: ${conf.color}; --day-primary-light: ${conf.color}1A;"` : ''}>
-                            <div class="day-header" onclick="toggleDay(this)">
+                        <div class="day-card active" data-day="${dayNum}">
+                            <div class="day-header" onclick="this.closest('.day-card').classList.toggle('active')">
                                 <div class="day-header-left">
-                                    <div class="day-icon-block"><i class="ph-fill ${conf.icon}"></i></div>
                                     <div class="day-text-wrap">
                                         <div class="day-title-row"><span class="day-badge-text">DAY ${dayNum}</span><span class="day-date-text">${String(curDate.getMonth()+1).padStart(2,'0')}.${String(curDate.getDate()).padStart(2,'0')} (${daysArr[curDate.getDay()]})</span></div>
-                                        <div class="day-desc-text" id="dayDesc${dayNum}">${conf.desc}</div>
                                     </div>
                                 </div>
-                                <div class="day-header-actions"><button class="btn-icon" onclick="openDayModal(event, ${dayNum})"><i class="ph ph-pencil-simple"></i></button><i class="ph ph-caret-down icon-caret"></i></div>
+                                <div class="day-header-actions"><i class="ph ph-caret-down icon-caret"></i></div>
                             </div>
                             <div class="day-body"><div class="timeline" id="timelineList${dayNum}"></div><button class="btn-add-schedule" onclick="openEventModal('add', ${dayNum})"><i class="ph ph-plus"></i> 일정 추가</button></div>
                         </div>`);
                     renderTimeline(dayNum); 
                 }
-                setTimeout(checkStickyHeaders, 100);
             }
-        };
+        }
 
-        window.renderFlights = function() {
+        function renderFlights() {
             const listEl = document.getElementById('flightList'); listEl.innerHTML = '';
             flights.forEach(f => {
-                let inboundHtml = '';
-                if(f.routeIn || f.nameIn || f.timeIn) {
-                    inboundHtml = `
-                        <div class="flight-leg">
-                            <div class="flight-info-row"><span class="flight-badge">오는 편</span><span class="flight-route">${f.routeIn || '-'}</span><span class="flight-name">${f.nameIn || '-'}</span></div>
-                            <div class="flight-time-row"><span class="flight-time">${f.timeIn || '-'}</span></div>
-                        </div>`;
-                }
+                let inboundHtml = f.routeIn || f.nameIn || f.timeIn ? `
+                    <div class="flight-leg">
+                        <div class="flight-info-row"><span class="flight-badge">오는 편</span><span class="flight-route">${f.routeIn || '-'}</span><span class="flight-name">${f.nameIn || '-'}</span></div>
+                        <div class="flight-time-row"><span class="flight-time">${f.timeIn || '-'}</span></div>
+                    </div>` : '';
                 const priceHtml = f.price ? `<div class="flight-price-footer"><span class="flight-price-label">결제 금액</span><span class="flight-price-value">${f.price}</span></div>` : '';
+
                 listEl.innerHTML += `
-                    <li class="booking-item" style="align-items: flex-start;">
+                    <li class="booking-item">
                         <div class="booking-info">
-                            <div class="booking-set-box">
-                                <div class="booking-legs-wrap">
-                                    <div class="flight-leg">
-                                        <div class="flight-info-row"><span class="flight-badge">가는 편</span><span class="flight-route">${f.routeOut || '-'}</span><span class="flight-name">${f.nameOut || '-'}</span></div>
-                                        <div class="flight-time-row"><span class="flight-time">${f.timeOut || '-'}</span></div>
-                                    </div>
-                                    ${inboundHtml}
-                                </div>
-                                ${priceHtml}
+                            <div class="flight-leg">
+                                <div class="flight-info-row"><span class="flight-badge">가는 편</span><span class="flight-route">${f.routeOut || '-'}</span><span class="flight-name">${f.nameOut || '-'}</span></div>
+                                <div class="flight-time-row"><span class="flight-time">${f.timeOut || '-'}</span></div>
                             </div>
+                            ${inboundHtml}
+                            ${priceHtml}
                         </div>
-                        <div class="item-actions">
-                            <button class="btn-icon" onclick="openFlightModal('edit', ${f.id})"><i class="ph ph-pencil-simple"></i></button>
-                            <button class="btn-icon delete" onclick="deleteFlight(${f.id})"><i class="ph ph-trash"></i></button>
-                        </div>
+                        <div class="item-actions"><button class="btn-icon" onclick="openFlightModal('edit', ${f.id})"><i class="ph ph-pencil-simple"></i></button><button class="btn-icon delete" onclick="deleteFlight(${f.id})"><i class="ph ph-trash"></i></button></div>
                     </li>`;
             });
-        };
+        }
         
-        window.renderHotels = function() {
+        function renderHotels() {
             const listEl = document.getElementById('hotelList'); listEl.innerHTML = '';
             hotels.forEach(h => {
                 const priceHtml = h.price ? `<div class="flight-price-footer"><span class="flight-price-label">결제 금액</span><span class="flight-price-value">${h.price}</span></div>` : '';
                 listEl.innerHTML += `
-                    <li class="booking-item" style="align-items: flex-start;">
+                    <li class="booking-item">
                         <div class="booking-info">
-                            <div class="booking-set-box">
-                                <div class="booking-legs-wrap" style="flex-direction: row; align-items: center; gap: 14px; padding: 14px;">
-                                    <div class="overview-icon" style="width: 42px; height: 42px; background: var(--purple-light); color: var(--purple); border-radius: 12px; flex-shrink: 0; font-size: 22px; margin: 0;"><i class="ph-fill ph-bed"></i></div>
-                                    <div style="flex: 1; min-width: 0;">
-                                        <p class="flight-route" style="font-size: 15px; margin-bottom: 2px;">${h.name}</p>
-                                        <p class="flight-time">${h.schedule}</p>
-                                    </div>
-                                </div>
-                                ${priceHtml}
-                            </div>
+                            <p class="flight-route" style="font-size: 15px; margin-bottom: 4px;"><i class="ph-fill ph-buildings" style="color:var(--purple); margin-right:4px;"></i>${h.name}</p>
+                            <p class="flight-time">${h.schedule}</p>
+                            ${priceHtml}
                         </div>
-                        <div class="item-actions">
-                            <button class="btn-icon" onclick="openHotelModal('edit', ${h.id})"><i class="ph ph-pencil-simple"></i></button>
-                            <button class="btn-icon delete" onclick="deleteHotel(${h.id})"><i class="ph ph-trash"></i></button>
-                        </div>
+                        <div class="item-actions"><button class="btn-icon" onclick="openHotelModal('edit', ${h.id})"><i class="ph ph-pencil-simple"></i></button><button class="btn-icon delete" onclick="deleteHotel(${h.id})"><i class="ph ph-trash"></i></button></div>
                     </li>`;
             });
-        };
+        }
         
-        window.deleteFlight = function(id) { flights = flights.filter(item => item.id !== id); saveDataToLocal(); renderFlights(); };
-        window.deleteHotel = function(id) { hotels = hotels.filter(item => item.id !== id); saveDataToLocal(); renderHotels(); };
+        function deleteFlight(id) { flights = flights.filter(i => i.id !== id); saveAndSync(); renderFlights(); }
+        function deleteHotel(id) { hotels = hotels.filter(i => i.id !== id); saveAndSync(); renderHotels(); }
         
-        window.openFlightModal = function(mode, id = null) {
+        function openFlightModal(mode, id = null) {
             document.getElementById('formFlight').reset();
             if(mode === 'add') { document.getElementById('flightModalTitle').innerText = '항공권 추가'; document.getElementById('inputFlightId').value = ''; }
             else { 
@@ -987,123 +747,81 @@
                 } 
             }
             openModal('modalFlight');
-        };
+        }
         
         document.getElementById('formFlight').addEventListener('submit', (e) => {
             e.preventDefault(); const id = document.getElementById('inputFlightId').value; 
             const data = { 
                 routeOut: document.getElementById('inputFlightRouteOut').value, timeOut: document.getElementById('inputFlightTimeOut').value, nameOut: document.getElementById('inputFlightNameOut').value, 
-                routeIn: document.getElementById('inputFlightRouteIn').value, timeIn: document.getElementById('inputFlightTimeIn').value, nameIn: document.getElementById('inputFlightNameIn').value,
+                routeIn: document.getElementById('inputFlightRouteIn').value, timeIn: document.getElementById('inputFlightTimeIn').value, nameIn: document.getElementById('inputFlightNameIn').value, 
                 price: document.getElementById('inputFlightPrice').value 
             };
             if(id) { const idx = flights.findIndex(i => String(i.id) === String(id)); flights[idx] = { ...flights[idx], ...data }; } else { flights.push({ id: Date.now(), ...data }); }
-            saveDataToLocal(); renderFlights(); closeModal('modalFlight');
+            saveAndSync(); renderFlights(); closeModal('modalFlight');
         });
         
-        window.openHotelModal = function(mode, id = null) {
+        function openHotelModal(mode, id = null) {
             document.getElementById('formHotel').reset();
             if(mode === 'add') { document.getElementById('hotelModalTitle').innerText = '숙소 추가'; document.getElementById('inputHotelId').value = ''; }
             else { document.getElementById('hotelModalTitle').innerText = '숙소 수정'; const h = hotels.find(i => i.id === id); if(h) { document.getElementById('inputHotelId').value = h.id; document.getElementById('inputHotelName').value = h.name; document.getElementById('inputHotelSchedule').value = h.schedule; document.getElementById('inputHotelPrice').value = h.price; } }
             openModal('modalHotel');
-        };
+        }
+
         document.getElementById('formHotel').addEventListener('submit', (e) => {
             e.preventDefault(); const id = document.getElementById('inputHotelId').value; const data = { name: document.getElementById('inputHotelName').value, schedule: document.getElementById('inputHotelSchedule').value, price: document.getElementById('inputHotelPrice').value };
             if(id) { const idx = hotels.findIndex(i => String(i.id) === String(id)); hotels[idx] = { ...hotels[idx], ...data }; } else { hotels.push({ id: Date.now(), ...data }); }
-            saveDataToLocal(); renderHotels(); closeModal('modalHotel');
+            saveAndSync(); renderHotels(); closeModal('modalHotel');
         });
 
-        window.openDayModal = function(e, dayNum) {
-            e.stopPropagation(); document.getElementById('inputDayId').value = dayNum; const conf = dayConfigs[dayNum] || { icon: 'ph-map-pin', desc: '', customColor: false, color: '#2563EB' };
-            document.getElementById('inputDayDesc').value = conf.desc; document.querySelectorAll('#dayIconGrid .category-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-icon') === conf.icon));
-            document.getElementById('inputDayColorCheck').checked = conf.customColor; document.getElementById('dayColorWrapper').style.display = conf.customColor ? 'inline-flex' : 'none';
-            document.getElementById('inputDayColor').value = conf.customColor ? conf.color : tripInfo.color; openModal('modalDay');
-        };
-
-        window.toggleDayColorInput = function() {
-            const check = document.getElementById('inputDayColorCheck').checked;
-            document.getElementById('dayColorWrapper').style.display = check ? 'inline-flex' : 'none';
-        }
-
-        document.getElementById('formDay').addEventListener('submit', (e) => {
-            e.preventDefault(); const dayNum = document.getElementById('inputDayId').value;
-            dayConfigs[dayNum] = { icon: document.getElementById('inputDayIcon').value, customColor: document.getElementById('inputDayColorCheck').checked, color: document.getElementById('inputDayColor').value, desc: document.getElementById('inputDayDesc').value };
-            saveDataToLocal(); renderTrip(); closeModal('modalDay');
-        });
-        document.querySelectorAll('#dayIconGrid .category-btn').forEach(btn => btn.addEventListener('click', function() { document.querySelectorAll('#dayIconGrid .category-btn').forEach(b => b.classList.remove('active')); this.classList.add('active'); document.getElementById('inputDayIcon').value = this.getAttribute('data-icon'); }));
-
-        window.renderTimeline = function(dayNum) {
+        function renderTimeline(dayNum) {
             const list = document.getElementById('timelineList' + dayNum); if(!list) return; list.innerHTML = '';
             const dayEvents = events.filter(e => String(e.day) === String(dayNum));
             dayEvents.sort((a,b) => a.time.localeCompare(b.time));
             
             dayEvents.forEach(ev => {
-                list.insertAdjacentHTML('beforeend', `<div class="timeline-item ${ev.type}"><div class="timeline-time">${ev.time}</div><div class="timeline-divider"><div class="timeline-circle">${getEventIcon(ev.type)}</div><div class="timeline-line"></div></div><div class="timeline-content"><div class="timeline-text"><h4>${ev.title}</h4>${ev.desc?`<p>${ev.desc}</p>`:''}${ev.cost&&ev.cost!=='원'?`<div class="timeline-cost"><i class="ph-fill ph-coin"></i> <span>${ev.cost}</span></div>`:''}</div><div class="timeline-actions"><span class="timeline-tag">${ev.typeLabel}</span><button class="btn-icon" onclick="openEventModal('edit', ${ev.id})"><i class="ph ph-pencil-simple"></i></button></div></div></div>`);
+                list.insertAdjacentHTML('beforeend', `<div class="timeline-item"><div class="timeline-time">${ev.time}</div><div class="timeline-content"><div class="timeline-text"><h4>${ev.title}</h4>${ev.desc?`<p>${ev.desc}</p>`:''}${ev.cost&&ev.cost!=='원'?`<div class="timeline-cost"><i class="ph-fill ph-coin"></i> <span>${ev.cost}</span></div>`:''}</div><div class="timeline-actions"><button class="btn-icon" onclick="openEventModal('edit', ${ev.id})"><i class="ph ph-pencil-simple"></i></button></div></div></div>`);
             });
 
             const dayCard = document.querySelector(`.day-card[data-day="${dayNum}"]`);
-            if (dayCard) {
-                if (dayEvents.length === 0) { dayCard.classList.add('is-empty-day'); } 
-                else { dayCard.classList.remove('is-empty-day'); }
-            }
-        };
+            if (dayCard) { if (dayEvents.length === 0) { dayCard.classList.add('is-empty-day'); } else { dayCard.classList.remove('is-empty-day'); } }
+        }
         
-        window.openEventModal = function(mode, param) {
+        function openEventModal(mode, param) {
             document.getElementById('inputEventMode').value = mode; document.getElementById('formEvent').reset(); const delBtn = document.getElementById('btnEventDelete');
             if(mode === 'add') { document.getElementById('eventModalTitle').innerText = '일정 추가'; document.getElementById('inputEventId').value = ''; document.getElementById('inputEventDay').value = param; document.getElementById('inputEventTimeH').value = '00'; document.getElementById('inputEventTimeM').value = '00'; delBtn.style.display = 'none'; }
-            else { document.getElementById('eventModalTitle').innerText = '일정 수정'; const ev = events.find(e => e.id === param); if(ev) { document.getElementById('inputEventId').value = ev.id; document.getElementById('inputEventDay').value = ev.day; const [h,m] = ev.time.split(':'); document.getElementById('inputEventTimeH').value = h; document.getElementById('inputEventTimeM').value = m; document.getElementById('inputEventTitle').value = ev.title; document.getElementById('inputEventDesc').value = ev.desc||''; document.getElementById('inputEventCost').value = ev.cost||''; document.querySelector(`#eventCategoryGrid .category-btn[data-val="${ev.type}"]`).click(); delBtn.style.display = 'block'; delBtn.onclick = () => { events = events.filter(e => e.id !== ev.id); saveDataToLocal(); renderTimeline(ev.day); closeModal('modalEvent'); }; } }
+            else { document.getElementById('eventModalTitle').innerText = '일정 수정'; const ev = events.find(e => e.id === param); if(ev) { document.getElementById('inputEventId').value = ev.id; document.getElementById('inputEventDay').value = ev.day; const [h,m] = ev.time.split(':'); document.getElementById('inputEventTimeH').value = h; document.getElementById('inputEventTimeM').value = m; document.getElementById('inputEventTitle').value = ev.title; document.getElementById('inputEventDesc').value = ev.desc||''; document.getElementById('inputEventCost').value = ev.cost||''; delBtn.style.display = 'block'; delBtn.onclick = () => { events = events.filter(e => e.id !== ev.id); saveAndSync(); renderTimeline(ev.day); closeModal('modalEvent'); }; } }
             openModal('modalEvent');
-        };
+        }
         
         document.getElementById('formEvent').addEventListener('submit', (e) => {
-            e.preventDefault(); const mode = document.getElementById('inputEventMode').value; const id = document.getElementById('inputEventId').value; const day = document.getElementById('inputEventDay').value; const type = document.getElementById('inputEventType').value; const typeLabel = document.getElementById('inputEventTypeLabel').value;
-            const time = `${document.getElementById('inputEventTimeH').value}:${document.getElementById('inputEventTimeM').value}`; const data = { day, type, typeLabel, time, title: document.getElementById('inputEventTitle').value, desc: document.getElementById('inputEventDesc').value, cost: document.getElementById('inputEventCost').value };
+            e.preventDefault(); const mode = document.getElementById('inputEventMode').value; const id = document.getElementById('inputEventId').value; const day = document.getElementById('inputEventDay').value; 
+            const time = `${document.getElementById('inputEventTimeH').value}:${document.getElementById('inputEventTimeM').value}`; const data = { day, time, title: document.getElementById('inputEventTitle').value, desc: document.getElementById('inputEventDesc').value, cost: document.getElementById('inputEventCost').value };
             if(mode === 'add') events.push({ id: Date.now(), ...data }); else { const idx = events.findIndex(e => String(e.id) === String(id)); events[idx] = { ...events[idx], ...data }; }
-            saveDataToLocal(); renderTimeline(day); closeModal('modalEvent');
+            saveAndSync(); renderTimeline(day); closeModal('modalEvent');
         });
         
-        function getEventIcon(type) { return `<i class="ph-fill ${type === 'type-flight'?'ph-airplane-tilt':type === 'type-move'?'ph-car-profile':type === 'type-hotel'?'ph-buildings':type === 'type-food'?'ph-fork-knife':type === 'type-sightseeing'?'ph-camera':type === 'type-shopping'?'ph-shopping-bag':type === 'type-massage'?'ph-flower-lotus':'ph-dots-three-circle'}"></i>`; }
-        document.querySelectorAll('#eventCategoryGrid .category-btn').forEach(b => b.addEventListener('click', function() { document.querySelectorAll('#eventCategoryGrid .category-btn').forEach(btn => btn.classList.toggle('active', btn === this)); document.getElementById('inputEventType').value = this.getAttribute('data-val'); document.getElementById('inputEventTypeLabel').value = this.getAttribute('data-label'); }));
-
-        window.renderPrepList = function() {
+        function renderPrepList() {
             const listEl = document.getElementById('prepList'); const progressEl = document.getElementById('prepProgress'); listEl.innerHTML = ''; let completedCount = 0;
             prepItems.forEach(item => {
                 if (item.checked) completedCount++;
-                listEl.insertAdjacentHTML('beforeend', `<li class="prep-item ${item.checked?'completed':''}"><div class="prep-item-left" onclick="togglePrep(${item.id})"><i class="${item.checked?'ph-fill ph-check-circle':'ph ph-circle'} prep-checkbox"></i><span class="prep-text">${item.text}</span></div><div style="display:flex;gap:4px;"><button class="btn-icon" onclick="editPrep(${item.id})"><i class="ph ph-pencil-simple"></i></button><button class="btn-icon delete" onclick="deletePrep(${item.id})"><i class="ph ph-trash"></i></button></div></li>`);
+                listEl.insertAdjacentHTML('beforeend', `<li class="prep-item ${item.checked?'completed':''}"><div class="prep-item-left" onclick="togglePrep(${item.id})"><i class="${item.checked?'ph-fill ph-check-circle':'ph ph-circle'} prep-checkbox"></i><span class="prep-text">${item.text}</span></div><div style="display:flex;gap:4px;"><button class="btn-icon delete" onclick="deletePrep(${item.id})"><i class="ph ph-trash"></i></button></div></li>`);
             });
             progressEl.innerText = `${completedCount}/${prepItems.length} 완료`;
-        };
-        window.togglePrep = function(id) { const item = prepItems.find(i => i.id === id); if(item) { item.checked = !item.checked; saveDataToLocal(); renderPrepList(); } };
-        window.deletePrep = function(id) { prepItems = prepItems.filter(i => i.id !== id); saveDataToLocal(); renderPrepList(); };
-        window.editPrep = function(id) { const item = prepItems.find(i => i.id === id); if(item) { item.isEditing = true; renderPrepList(); } };
-        window.savePrep = function(id) { const item = prepItems.find(i => i.id === id); const input = document.getElementById(`editPrep-${id}`); if(item && input) { item.text = input.value.trim()||item.text; item.isEditing = false; saveDataToLocal(); renderPrepList(); } };
-        document.getElementById('formAddPrep').addEventListener('submit', (e) => { e.preventDefault(); const input = document.getElementById('inputPrepItem'); const text = input.value.trim(); if(text) { prepItems.push({ id: Date.now(), text, checked: false }); input.value = ''; saveDataToLocal(); renderPrepList(); } });
+        }
+        function togglePrep(id) { const item = prepItems.find(i => i.id === id); if(item) { item.checked = !item.checked; saveAndSync(); renderPrepList(); } }
+        function deletePrep(id) { prepItems = prepItems.filter(i => i.id !== id); saveAndSync(); renderPrepList(); }
+        document.getElementById('formAddPrep').addEventListener('submit', (e) => { e.preventDefault(); const input = document.getElementById('inputPrepItem'); const text = input.value.trim(); if(text) { prepItems.push({ id: Date.now(), text, checked: false }); input.value = ''; saveAndSync(); renderPrepList(); } });
 
         function linkify(text) { const urlRegex = /(https?:\/\/[^\s]+)/g; return text.replace(urlRegex, (url) => `<span class="memo-link-text" onclick="window.open('${url}', '_blank')">링크 바로가기</span>`); }
-        window.renderMemoList = function() {
+        
+        function renderMemoList() {
             const listEl = document.getElementById('memoList'); listEl.innerHTML = '';
             memoItems.forEach(item => {
-                listEl.insertAdjacentHTML('beforeend', `<li class="prep-item"><div class="prep-item-left" style="cursor:default;"><i class="ph-fill ph-push-pin" style="color:var(--warning); font-size:20px;"></i><span class="prep-text">${linkify(item.text)}</span></div><div style="display:flex;gap:4px;"><button class="btn-icon" onclick="editMemo(${item.id})"><i class="ph ph-pencil-simple"></i></button><button class="btn-icon delete" onclick="deleteMemo(${item.id})"><i class="ph ph-trash"></i></button></div></li>`);
+                listEl.insertAdjacentHTML('beforeend', `<li class="prep-item"><div class="prep-item-left" style="cursor:default;"><i class="ph-fill ph-push-pin" style="color:var(--warning); font-size:20px;"></i><span class="prep-text">${linkify(item.text)}</span></div><div style="display:flex;gap:4px;"><button class="btn-icon delete" onclick="deleteMemo(${item.id})"><i class="ph ph-trash"></i></button></div></li>`);
             });
-        };
-        window.deleteMemo = function(id) { memoItems = memoItems.filter(i => i.id !== id); saveDataToLocal(); renderMemoList(); };
-        window.editMemo = function(id) { const item = memoItems.find(i => i.id === id); if(item) { item.isEditing = true; renderMemoList(); } };
-        window.saveMemo = function(id) { const item = memoItems.find(i => i.id === id); const input = document.getElementById(`editMemo-${id}`); if(item && input) { item.text = input.value.trim()||item.text; item.isEditing = false; saveDataToLocal(); renderMemoList(); } };
-        document.getElementById('formAddMemo').addEventListener('submit', (e) => { e.preventDefault(); const input = document.getElementById('inputMemoItem'); const text = input.value.trim(); if(text) { memoItems.push({ id: Date.now(), text, isEditing: false }); input.value = ''; saveDataToLocal(); renderMemoList(); } });
-
-        window.addEventListener('DOMContentLoaded', async () => { 
-            const hSelect = document.querySelectorAll('#inputEventTimeH'); const mSelect = document.querySelectorAll('#inputEventTimeM');
-            [...hSelect].forEach(sel => { for(let i=0;i<24;i++) sel.innerHTML += `<option value="${String(i).padStart(2,'0')}">${String(i).padStart(2,'0')}</option>`; });
-            [...mSelect].forEach(sel => { for(let i=0;i<60;i+=5) sel.innerHTML += `<option value="${String(i).padStart(2,'0')}">${String(i).padStart(2,'0')}</option>`; });
-            
-            const syncIndicator = document.getElementById('cloudSyncIndicator');
-            syncIndicator.classList.add('active');
-
-            await initCloudSync();
-            await loadDataFromCloudOrLocal();
-            
-            renderAll();
-            syncIndicator.classList.remove('active');
-        });
+        }
+        function deleteMemo(id) { memoItems = memoItems.filter(i => i.id !== id); saveAndSync(); renderMemoList(); }
+        document.getElementById('formAddMemo').addEventListener('submit', (e) => { e.preventDefault(); const input = document.getElementById('inputMemoItem'); const text = input.value.trim(); if(text) { memoItems.push({ id: Date.now(), text }); input.value = ''; saveAndSync(); renderMemoList(); } });
     </script>
 </body>
 </html>
