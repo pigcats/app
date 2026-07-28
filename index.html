@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>여행 일정 관리 v1.7</title>
+    <title>여행 일정 관리 v1.8</title>
     
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -65,7 +65,7 @@
 
         .btn-hero-circle { position: absolute; top: 24px; width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.3); color: white; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; transition: background 0.2s; }
         .btn-hero-circle:hover { background: rgba(255, 255, 255, 0.3); }
-        .btn-hero-edit { right: 20px; } .btn-hero-share { right: 68px; } .btn-hero-download { right: 116px; } .btn-hero-export { right: 164px; } .btn-hero-import { right: 212px; }
+        .btn-hero-edit { right: 20px; } .btn-hero-share { right: 68px; } .btn-hero-download { right: 116px; } .btn-hero-export { right: 164px; } .btn-hero-import { right: 212px; } .btn-hero-save { right: 260px; }
 
         .section-wrap { padding: 32px 20px 12px; }
         .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #374151; display: flex; align-items: center; gap: 8px; }
@@ -252,6 +252,17 @@
 
     <div class="app-container" id="captureTarget">
         <header class="hero-section">
+            <button class="btn-hero-circle btn-hero-save" onclick="manualCloudSave()" title="클라우드 수동 저장">
+                <i class="ph ph-cloud-arrow-up"></i>
+            </button>
+            <button class="btn-hero-circle btn-hero-import" onclick="document.getElementById('importFile').click()" title="데이터 불러오기">
+                <i class="ph ph-folder-open"></i>
+            </button>
+            <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
+            
+            <button class="btn-hero-circle btn-hero-export" onclick="exportData()" title="데이터 저장">
+                <i class="ph ph-floppy-disk"></i>
+            </button>
             <button class="btn-hero-circle btn-hero-download" onclick="openModal('modalCaptureOption')" title="이미지로 저장">
                 <i class="ph ph-download-simple"></i>
             </button>
@@ -548,7 +559,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        // 고객님의 Firebase 설정값 적용 완료
         const firebaseConfig = {
             apiKey: "AIzaSyBHmmsd0uzkhXJv1Xf4Dm0QWKkDuGag2Xo",
             authDomain: "trip-planner-app-4f51c.firebaseapp.com",
@@ -561,7 +571,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // URL에서 식별자(ID) 확인 후 없으면 생성
         let urlParams = new URLSearchParams(window.location.search);
         let tripId = urlParams.get('id');
         
@@ -570,11 +579,10 @@
             try {
                 window.history.replaceState(null, null, `?id=${tripId}`);
             } catch (e) {
-                console.warn("미리보기 환경(blob URL)에서는 주소 파라미터 변경이 제한됩니다.");
+                console.warn("미리보기 환경 제한 무시");
             }
         }
         
-        // 공유 URL 인풋창에 현재 주소 넣기
         try {
             let shareUrl = new URL(window.location.href);
             if (!shareUrl.searchParams.has('id')) {
@@ -585,17 +593,15 @@
             document.getElementById('inputShareUrl').value = window.location.href + "?id=" + tripId;
         }
 
-        // [동기화 핵심 1] 데이터 덮어쓰기 (저장)
         window.saveDataToCloud = async function(data) {
             try {
                 await setDoc(doc(db, "trips", tripId), data);
             } catch (e) {
                 console.error("클라우드 저장 실패:", e);
-                showToast("데이터베이스 저장에 실패했습니다. (규칙 설정 확인 필요)");
+                showToast("데이터베이스 저장에 실패했습니다.");
             }
         };
 
-        // [동기화 핵심 2] 클라우드 실시간 변경 감지 (불러오기)
         function listenToCloud() {
             onSnapshot(doc(db, "trips", tripId), (docSnap) => {
                 if (docSnap.exists()) {
@@ -608,7 +614,6 @@
                     window.prepItems = data.prepItems || [];
                     window.memoItems = data.memoItems || [];
                     
-                    // 클라우드에서 새 데이터를 받았으니 화면을 다시 그림!
                     populateTripForm(); renderTrip(); renderFlights(); renderHotels(); renderPrepList(); renderMemoList();
                 }
             }, (error) => {
@@ -616,7 +621,6 @@
             });
         }
 
-        // 앱 시작 시 클라우드 리스너 작동
         listenToCloud();
     </script>
 
@@ -629,13 +633,57 @@
         window.prepItems = [];
         window.memoItems = [];
 
-        // 데이터가 변할때마다 호출되어 클라우드로 쏘아올리는 함수
+        let autoSaveTimer = null;
+
         function saveAndSync() {
+            clearTimeout(autoSaveTimer);
+            autoSaveTimer = setTimeout(() => {
+                const data = { tripInfo: window.tripInfo, dayConfigs: window.dayConfigs, flights: window.flights, hotels: window.hotels, events: window.events, prepItems: window.prepItems, memoItems: window.memoItems };
+                if (window.saveDataToCloud) {
+                    window.saveDataToCloud(data);
+                }
+            }, 1500);
+        }
+
+        window.manualCloudSave = function() {
+            clearTimeout(autoSaveTimer);
             const data = { tripInfo: window.tripInfo, dayConfigs: window.dayConfigs, flights: window.flights, hotels: window.hotels, events: window.events, prepItems: window.prepItems, memoItems: window.memoItems };
             if (window.saveDataToCloud) {
-                window.saveDataToCloud(data);
+                window.saveDataToCloud(data).then(() => {
+                    showToast("클라우드에 수동 저장되었습니다.");
+                });
             }
-        }
+        };
+
+        window.exportData = function() {
+            const data = { tripInfo: window.tripInfo, dayConfigs: window.dayConfigs, flights: window.flights, hotels: window.hotels, events: window.events, prepItems: window.prepItems, memoItems: window.memoItems };
+            const jsonStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = `TripPlan_Backup_${Date.now()}.json`; a.click();
+            URL.revokeObjectURL(url); showToast("데이터 백업 저장이 완료되었습니다.");
+        };
+
+        window.importData = function(event) {
+            const file = event.target.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    window.tripInfo = data.tripInfo || window.tripInfo; 
+                    window.dayConfigs = data.dayConfigs || {}; 
+                    window.flights = data.flights || []; 
+                    window.hotels = data.hotels || []; 
+                    window.events = data.events || []; 
+                    window.prepItems = data.prepItems || []; 
+                    window.memoItems = data.memoItems || [];
+                    saveAndSync();
+                    populateTripForm(); renderTrip(); renderFlights(); renderHotels(); renderPrepList(); renderMemoList(); 
+                    showToast("데이터를 성공적으로 불러왔습니다.");
+                } catch (err) { showToast('데이터 파일을 읽는 중 오류가 발생했습니다.'); }
+            };
+            reader.readAsText(file); event.target.value = ''; 
+        };
 
         function showToast(msg) {
             const toast = document.getElementById("toastMessage");
@@ -702,7 +750,6 @@
             [...hSelect].forEach(sel => { for(let i=0;i<24;i++) sel.innerHTML += `<option value="${String(i).padStart(2,'0')}">${String(i).padStart(2,'0')}</option>`; });
             [...mSelect].forEach(sel => { for(let i=0;i<60;i+=5) sel.innerHTML += `<option value="${String(i).padStart(2,'0')}">${String(i).padStart(2,'0')}</option>`; });
             
-            // 데이터가 오기 전 빈 화면 방지용 렌더링
             renderTrip(); renderFlights(); renderHotels(); renderPrepList(); renderMemoList();
         });
 
