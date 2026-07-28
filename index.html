@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>여행 일정 관리 v1.5</title>
+    <title>여행 일정 관리 v1.6</title>
     
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -14,7 +14,7 @@
             --primary: #2563EB;
             --primary-light: #EFF6FF;
             --primary-border: #BFDBFE;
-            --primary-dark: #1E40AF; 
+            --primary-dark: #1E40AF;
             
             --success: #10B981;
             --success-light: #ECFDF5;
@@ -583,17 +583,14 @@
         // 본인의 Firebase 프로젝트 설정(Config) 값을 아래에 덮어쓰세요.
         // 비워두면(null) 기기 내부에만 저장되는 '로컬 모드'로 작동합니다.
         // =========================================================================
-        const myFirebaseConfig = null; 
-        /* 사용 예시:
         const myFirebaseConfig = {
-            apiKey: "AIzaSyDOCXXXXXXX123",
-            authDomain: "my-project.firebaseapp.com",
-            projectId: "my-project",
-            storageBucket: "my-project.appspot.com",
-            messagingSenderId: "1234567890",
-            appId: "1:1234567890:web:abcdef123456"
+            apiKey: "AIzaSyBHmmsd0uzkhXJv1Xf4Dm0QWKkDuGag2Xo",
+            authDomain: "trip-planner-app-4f51c.firebaseapp.com",
+            projectId: "trip-planner-app-4f51c",
+            storageBucket: "trip-planner-app-4f51c.firebasestorage.app",
+            messagingSenderId: "623594056204",
+            appId: "1:623594056204:web:e80b9c1ed45cfa55239c29"
         };
-        */
         // =========================================================================
 
         let tripInfo = { color: '#2563EB', title: '새로운 여행 일정', start: '', end: '', duration: '-', location: '-', members: '-', budget: '-' };
@@ -634,9 +631,19 @@
         async function initCloudSync() {
             let activeConfig = null;
             if (myFirebaseConfig) { activeConfig = myFirebaseConfig; }
-            else if (typeof __firebase_config !== 'undefined') { activeConfig = JSON.parse(__firebase_config); }
+            else if (typeof __firebase_config !== 'undefined') { 
+                try {
+                    activeConfig = JSON.parse(__firebase_config); 
+                } catch(e) {
+                    console.warn("Invalid Firebase config provided.");
+                }
+            }
 
-            if (!activeConfig) return false;
+            // If no valid configuration is found, log a message and exit gracefully.
+            if (!activeConfig || !activeConfig.apiKey) {
+                console.log("Firebase config not found or invalid. Running in local mode.");
+                return false;
+            }
 
             try {
                 const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js");
@@ -646,12 +653,38 @@
                 const app = initializeApp(activeConfig); auth = getAuth(app); db = getFirestore(app);
                 window.fsDoc = doc; window.fsGetDoc = getDoc; window.fsSetDoc = setDoc;
 
-                if (typeof __initial_auth_token !== 'undefined') { await signInWithCustomToken(auth, __initial_auth_token); } 
-                else { await signInAnonymously(auth); }
+                let authSuccess = false;
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) { 
+                    try {
+                        await signInWithCustomToken(auth, __initial_auth_token); 
+                        authSuccess = true;
+                    } catch (authError) {
+                        console.warn("클라우드 인증 실패 (미리보기 환경 제한). 로컬 모드로 전환합니다.");
+                        try { 
+                            await signInAnonymously(auth); 
+                            authSuccess = true;
+                        } catch(e) {}
+                    }
+                } 
+                else { 
+                    try { 
+                        await signInAnonymously(auth); 
+                        authSuccess = true;
+                    } catch(authError) {
+                        console.warn("클라우드 익명 인증 실패 (미리보기 환경 제한). 로컬 모드로 전환합니다.");
+                    }
+                }
                 
-                currentUser = auth.currentUser; isFirebaseReady = true;
-                return true;
-            } catch (err) { console.error("Firebase 초기화 에러:", err); return false; }
+                if (authSuccess && auth.currentUser) {
+                    currentUser = auth.currentUser; 
+                    isFirebaseReady = true;
+                    return true;
+                }
+                return false;
+            } catch (err) { 
+                console.warn("Firebase 연동 모듈 초기화 제한됨. 로컬 모드로 작동합니다."); 
+                return false; 
+            }
         }
 
         window.saveDataToLocal = async function() {
