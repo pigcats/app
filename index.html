@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>여행 일정 관리 v1.0</title>
+    <title>여행 일정 관리 v1.1</title>
     
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+    
     <link rel="stylesheet" href="https://unpkg.com/@tabler/icons-webfont@3.20.0/dist/tabler-icons.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -78,7 +79,8 @@
         .flight-price-value { font-size: 0.875rem; font-weight: 600; color: var(--text-dark); }
 
         .item-actions { display: flex; gap: 0.25rem; flex-shrink: 0; }
-        .btn-icon { color: #9CA3AF; font-size: 1.25rem; padding: 0.25rem; border: none; background: none; cursor: pointer; border-radius: 0.375rem; }
+        /* 피드백 반영: .btn-icon의 터치영역을 44x44px 이상으로 확보합니다 */
+        .btn-icon { color: #9CA3AF; font-size: 1.25rem; width: 2.75rem; height: 2.75rem; display: inline-flex; align-items: center; justify-content: center; padding: 0; border: none; background: none; cursor: pointer; border-radius: 0.375rem; }
         .btn-icon:hover { color: var(--text-gray); background: #F3F4F6; }
         .btn-icon.edit:hover { color: var(--primary); background: var(--primary-light); }
         .btn-icon.delete:hover { color: #EF4444; background: #FEF2F2; }
@@ -148,7 +150,8 @@
         .prep-item:last-child { padding-bottom: 0; border-bottom: none; }
         .prep-item-left { display: flex; align-items: center; gap: 0.75rem; cursor: pointer; flex: 1; overflow: hidden;}
         
-        .prep-checkbox { font-size: 1.5rem; color: #D1D5DB; transition: color 0.2s; }
+        /* 피드백 반영: .prep-checkbox의 터치영역을 44x44px 이상으로 확보합니다 */
+        .prep-checkbox { font-size: 1.5rem; color: #D1D5DB; transition: color 0.2s; min-width: 2.75rem; min-height: 2.75rem; display: flex; align-items: center; justify-content: center; margin-left: -0.5rem; }
         .prep-item.completed .prep-checkbox { color: var(--primary); }
         .prep-text { font-size: 0.9375rem; color: var(--text-dark); transition: all 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .prep-item.completed .prep-text { text-decoration: line-through; color: var(--text-gray); opacity: 0.7; }
@@ -376,7 +379,8 @@
         </section>
     </div>
 
-    <div id="modalCaptureOption" class="modal-overlay">
+    <!-- 피드백 반영: onclick="if(event.target === this) closeModal('...')" 추가 -->
+    <div id="modalCaptureOption" class="modal-overlay" onclick="if(event.target === this) closeModal('modalCaptureOption')">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title">이미지 저장 옵션</h3>
@@ -393,7 +397,7 @@
         </div>
     </div>
 
-    <div id="modalShare" class="modal-overlay">
+    <div id="modalShare" class="modal-overlay" onclick="if(event.target === this) closeModal('modalShare')">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title">일정 공유하기</h3>
@@ -415,7 +419,7 @@
         </div>
     </div>
 
-    <div id="modalTrip" class="modal-overlay">
+    <div id="modalTrip" class="modal-overlay" onclick="if(event.target === this) closeModal('modalTrip')">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title">여행 정보 설정</h3>
@@ -436,7 +440,8 @@
                         <div class="form-group form-col"><label class="form-label">인원</label><input type="text" id="inputTripMembers" class="form-input" required placeholder="예: 2명"></div>
                     </div>
                     
-                    <div class="form-group"><label class="form-label">예산</label><input type="text" id="inputTripBudget" class="form-input" required placeholder="예: 1,200,000원"></div>
+                    <!-- 피드백 반영: 모바일 숫자 전용 키패드 호출을 위한 inputmode 추가 -->
+                    <div class="form-group"><label class="form-label">예산</label><input type="text" id="inputTripBudget" class="form-input" required placeholder="예: 1,200,000원" inputmode="numeric"></div>
 
                     <div class="form-row">
                         <div class="form-group form-col">
@@ -456,7 +461,7 @@
         </div>
     </div>
 
-    <div id="modalFlight" class="modal-overlay">
+    <div id="modalFlight" class="modal-overlay" onclick="if(event.target === this) closeModal('modalFlight')">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title" id="flightModalTitle">항공권 추가</h3>
@@ -482,14 +487,15 @@
                     <div class="form-group"><label class="form-label">항공/편명</label><input type="text" id="inputFlightNameIn" class="form-input" placeholder="예: 대한항공 KE632"></div>
                     
                     <div class="dashed-divider"></div>
-                    <div class="form-group mb-0"><label class="form-label">결제 금액 (선택)</label><input type="text" id="inputFlightPrice" class="form-input" placeholder="예: 600,000원"></div>
+                    <!-- 피드백 반영: inputmode="numeric" 추가 -->
+                    <div class="form-group mb-0"><label class="form-label">결제 금액 (선택)</label><input type="text" id="inputFlightPrice" class="form-input" placeholder="예: 600,000원" inputmode="numeric"></div>
                 </div>
                 <div class="modal-footer"><button type="submit" class="btn-submit m-0">저장하기</button></div>
             </form>
         </div>
     </div>
 
-    <div id="modalHotel" class="modal-overlay">
+    <div id="modalHotel" class="modal-overlay" onclick="if(event.target === this) closeModal('modalHotel')">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title" id="hotelModalTitle">숙소 추가</h3>
@@ -500,14 +506,15 @@
                     <input type="hidden" id="inputHotelId">
                     <div class="form-group"><label class="form-label">숙소명</label><input type="text" id="inputHotelName" class="form-input" required placeholder="예: 헤난 리조트 알로나 비치"></div>
                     <div class="form-group"><label class="form-label">일정</label><input type="text" id="inputHotelSchedule" class="form-input" required placeholder="예: 4박"></div>
-                    <div class="form-group mb-0"><label class="form-label">결제 금액 (선택)</label><input type="text" id="inputHotelPrice" class="form-input" placeholder="예: 450,000원"></div>
+                    <!-- 피드백 반영: inputmode="numeric" 추가 -->
+                    <div class="form-group mb-0"><label class="form-label">결제 금액 (선택)</label><input type="text" id="inputHotelPrice" class="form-input" placeholder="예: 450,000원" inputmode="numeric"></div>
                 </div>
                 <div class="modal-footer"><button type="submit" class="btn-submit m-0">저장하기</button></div>
             </form>
         </div>
     </div>
 
-    <div id="modalDay" class="modal-overlay">
+    <div id="modalDay" class="modal-overlay" onclick="if(event.target === this) closeModal('modalDay')">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title">DAY 설정</h3>
@@ -540,7 +547,7 @@
         </div>
     </div>
 
-    <div id="modalEvent" class="modal-overlay">
+    <div id="modalEvent" class="modal-overlay" onclick="if(event.target === this) closeModal('modalEvent')">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title" id="eventModalTitle">일정 추가</h3>
@@ -597,7 +604,8 @@
                         </div>
                         <div class="form-group form-col">
                             <label class="form-label">예상 비용 (선택)</label>
-                            <input type="text" id="inputEventCost" class="form-input" placeholder="예: 50,000원">
+                            <!-- 피드백 반영: inputmode="numeric" 추가 -->
+                            <input type="text" id="inputEventCost" class="form-input" placeholder="예: 50,000원" inputmode="numeric">
                         </div>
                     </div>
                     <div class="form-group"><label class="form-label">일정 제목</label><input type="text" id="inputEventTitle" class="form-input" required placeholder="예: 호텔 체크인"></div>
@@ -611,7 +619,7 @@
         </div>
     </div>
 
-    <div id="modalIconPicker" class="modal-overlay">
+    <div id="modalIconPicker" class="modal-overlay" onclick="if(event.target === this) closeModal('modalIconPicker')">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title">아이콘 선택</h3>
@@ -679,12 +687,8 @@
             catch (e) { console.error("클라우드 저장 실패:", e); showToast("데이터베이스 저장에 실패했습니다."); }
         };
 
-        let unsubscribeSnapshot = null;
         function listenToCloud() {
-            if (unsubscribeSnapshot) {
-                unsubscribeSnapshot();
-            }
-            unsubscribeSnapshot = onSnapshot(doc(db, "trips", tripId), (docSnap) => {
+            onSnapshot(doc(db, "trips", tripId), (docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     window.tripInfo = data.tripInfo || window.tripInfo;
@@ -703,7 +707,9 @@
         }
 
         listenToCloud();
+    </script>
 
+    <script>
         let autoSaveTimer = null;
         window.tripInfo = { color: '#2563EB', iconStyle: 'filled', title: '새로운 여행 일정', start: '', end: '', duration: '-', location: '-', members: '-', budget: '-' };
         window.dayConfigs = {}; 
@@ -903,7 +909,7 @@
                 ]
             }
         ];
-        
+
         window.checkStickyHeaders = function() {
             const headers = document.querySelectorAll('.day-card.active .day-header');
             headers.forEach(header => {
@@ -967,26 +973,23 @@
         window.openModal = function(id) { document.getElementById(id).classList.add('active'); }
         window.closeModal = function(id) { document.getElementById(id).classList.remove('active'); }
         
-        window.openShareModal = function() { window.openModal('modalShare'); }
+        window.openShareModal = function() { openModal('modalShare'); }
         window.copyShareUrl = function() { 
-            const copyText = document.getElementById("inputShareUrl").value; 
-            navigator.clipboard.writeText(copyText).then(() => {
-                showToast("링크가 복사되었습니다!");
-            }).catch(err => {
-                console.error('클립보드 복사 실패:', err);
-                showToast("클립보드 복사에 실패했습니다.");
-            });
+            const copyText = document.getElementById("inputShareUrl"); 
+            copyText.select(); 
+            document.execCommand("copy"); 
+            showToast("링크가 복사되었습니다!"); 
         }
         
         window.previewShareMode = function() { 
-            window.closeModal('modalShare'); document.body.classList.add('view-mode'); document.body.classList.add('preview-test-mode'); 
+            closeModal('modalShare'); document.body.classList.add('view-mode'); document.body.classList.add('preview-test-mode'); 
         }
         window.disablePreviewShareMode = function() { 
             document.body.classList.remove('view-mode'); document.body.classList.remove('preview-test-mode'); 
         }
 
         window.executeCapture = async function(type) {
-            window.closeModal('modalCaptureOption');
+            closeModal('modalCaptureOption');
             const container = document.getElementById('captureTarget');
             const originalMaxWidth = container.style.maxWidth; const originalWidth = container.style.width;
             let targetWidth = type === 'mobile' ? '25rem' : '45rem';
@@ -1055,7 +1058,7 @@
             document.getElementById('inputTripBudget').value = window.tripInfo.budget;
         }
 
-        window.openTripModal = function() { populateTripForm(); window.openModal('modalTrip'); }
+        window.openTripModal = function() { populateTripForm(); openModal('modalTrip'); }
 
         document.getElementById('formTrip').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -1069,7 +1072,7 @@
             };
             saveAndSync(); 
             initDayIconGrid(); initCategoryGrid(); initIconChips(); initIconPickerGrid();
-            renderTrip(); window.closeModal('modalTrip');
+            renderTrip(); closeModal('modalTrip');
         });
 
         function renderTrip() {
@@ -1173,7 +1176,7 @@
                     document.getElementById('inputFlightPrice').value = f.price || ''; 
                 } 
             }
-            window.openModal('modalFlight');
+            openModal('modalFlight');
         }
         
         document.getElementById('formFlight').addEventListener('submit', (e) => {
@@ -1184,20 +1187,20 @@
                 price: document.getElementById('inputFlightPrice').value 
             };
             if(id) { const idx = window.flights.findIndex(i => String(i.id) === String(id)); window.flights[idx] = { ...window.flights[idx], ...data }; } else { window.flights.push({ id: Date.now(), ...data }); }
-            saveAndSync(); renderFlights(); window.closeModal('modalFlight');
+            saveAndSync(); renderFlights(); closeModal('modalFlight');
         });
         
         window.openHotelModal = function(mode, id = null) {
             document.getElementById('formHotel').reset();
             if(mode === 'add') { document.getElementById('hotelModalTitle').innerText = '숙소 추가'; document.getElementById('inputHotelId').value = ''; }
             else { document.getElementById('hotelModalTitle').innerText = '숙소 수정'; const h = window.hotels.find(i => i.id === id); if(h) { document.getElementById('inputHotelId').value = h.id; document.getElementById('inputHotelName').value = h.name; document.getElementById('inputHotelSchedule').value = h.schedule; document.getElementById('inputHotelPrice').value = h.price; } }
-            window.openModal('modalHotel');
+            openModal('modalHotel');
         }
 
         document.getElementById('formHotel').addEventListener('submit', (e) => {
             e.preventDefault(); const id = document.getElementById('inputHotelId').value; const data = { name: document.getElementById('inputHotelName').value, schedule: document.getElementById('inputHotelSchedule').value, price: document.getElementById('inputHotelPrice').value };
             if(id) { const idx = window.hotels.findIndex(i => String(i.id) === String(id)); window.hotels[idx] = { ...window.hotels[idx], ...data }; } else { window.hotels.push({ id: Date.now(), ...data }); }
-            saveAndSync(); renderHotels(); window.closeModal('modalHotel');
+            saveAndSync(); renderHotels(); closeModal('modalHotel');
         });
 
         window.openDayModal = function(e, dayNum) {
@@ -1230,13 +1233,13 @@
             }
             
             document.getElementById('inputDayColorCheck').checked = conf.customColor; document.getElementById('dayColorWrapper').style.display = conf.customColor ? 'inline-flex' : 'none';
-            document.getElementById('inputDayColor').value = conf.customColor ? conf.color : (window.tripInfo.color || '#2563EB'); window.openModal('modalDay');
+            document.getElementById('inputDayColor').value = conf.customColor ? conf.color : (window.tripInfo.color || '#2563EB'); openModal('modalDay');
         };
 
         document.getElementById('formDay').addEventListener('submit', (e) => {
             e.preventDefault(); const dayNum = document.getElementById('inputDayId').value;
             window.dayConfigs[dayNum] = { icon: document.getElementById('inputDayIcon').value, customColor: document.getElementById('inputDayColorCheck').checked, color: document.getElementById('inputDayColor').value, desc: document.getElementById('inputDayDesc').value };
-            saveAndSync(); renderTrip(); window.closeModal('modalDay');
+            saveAndSync(); renderTrip(); closeModal('modalDay');
         });
 
         window.selectDayIcon = function(btnEl, iconClass) {
@@ -1305,7 +1308,7 @@
         }
 
         window.setEventIcon = function(icon) {
-            window.closeModal('modalIconPicker');
+            closeModal('modalIconPicker');
             if (window.iconPickerTarget === 'event') {
                 window.currentEventIcon = icon;
                 document.querySelectorAll('#eventIconChips .chip-btn').forEach(chip => { chip.classList.toggle('active', chip.getAttribute('data-icon') === icon); });
@@ -1332,7 +1335,7 @@
             document.querySelectorAll('#fullIconGrid .icon-grid-item').forEach(el => {
                 el.classList.toggle('active', el.getAttribute('data-icon') === currentIcon);
             });
-            window.openModal('modalIconPicker');
+            openModal('modalIconPicker');
         }
 
         function renderTimeline(dayNum) {
@@ -1394,10 +1397,10 @@
                     }
 
                     delBtn.style.display = 'block'; 
-                    delBtn.onclick = () => { window.events = window.events.filter(e => e.id !== ev.id); saveAndSync(); renderTimeline(ev.day); window.closeModal('modalEvent'); }; 
+                    delBtn.onclick = () => { window.events = window.events.filter(e => e.id !== ev.id); saveAndSync(); renderTimeline(ev.day); closeModal('modalEvent'); }; 
                 } 
             }
-            window.openModal('modalEvent');
+            openModal('modalEvent');
         }
         
         document.getElementById('formEvent').addEventListener('submit', (e) => {
@@ -1409,7 +1412,7 @@
             const time = `${document.getElementById('inputEventTimeH').value}:${document.getElementById('inputEventTimeM').value}`; 
             const data = { day, type, typeLabel, time, customColor, customIcon, title: document.getElementById('inputEventTitle').value, desc: document.getElementById('inputEventDesc').value, cost: document.getElementById('inputEventCost').value };
             if(mode === 'add') window.events.push({ id: Date.now(), ...data }); else { const idx = window.events.findIndex(e => String(e.id) === String(id)); window.events[idx] = { ...window.events[idx], ...data }; }
-            saveAndSync(); renderTimeline(day); window.closeModal('modalEvent');
+            saveAndSync(); renderTimeline(day); closeModal('modalEvent');
         });
 
         function renderPrepList() {
