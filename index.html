@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>여행 일정 관리 v1.5</title>
+    <title>여행 일정 관리 v1.6</title>
     
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -68,7 +68,7 @@
             flex-wrap: wrap; justify-content: flex-end; max-width: 90%; 
         }
 
-        .btn-hero-circle { width: 36px; height: 36px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.3); color: white; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; transition: background 0.2s; }
+        .btn-hero-circle { width: 36px; height: 36px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.3); color: white; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; transition: background 0.2s; }
         .btn-hero-circle:hover { background: rgba(255, 255, 255, 0.3); }
 
         .section-wrap { padding: 32px 20px 12px; }
@@ -77,7 +77,7 @@
 
         .overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #fff; border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; }
         .overview-item { display: flex; align-items: center; gap: 10px; }
-        .overview-icon { width: 36px; height: 36px; border-radius: 10px; background: #F8FAFC; color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .overview-icon { width: 36px; height: 36px; border-radius: 10px; background: #F8FAFC; color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 18px; }
         .overview-label { font-size: 12px; color: var(--text-gray); margin-bottom: 2px; }
         .overview-value { font-size: 14px; font-weight: 600; color: var(--text-dark); }
 
@@ -85,7 +85,6 @@
         .btn-add-booking:hover { background: #F8FAFC; border-color: var(--primary); }
         
         .booking-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px; }
-        /* v1.3 결제금액 100% 버그수정을 위해 기본 속성 유지하되 블록요소로 구조화 지원 */
         .booking-item { padding: 16px; border: 1px solid var(--border-color); border-radius: 12px; background: #fff; }
         .booking-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
         
@@ -102,7 +101,7 @@
         .flight-price-value { font-size: 14px; font-weight: 700; color: var(--text-dark); }
 
         .booking-item .item-actions { display: flex; gap: 4px; flex-shrink: 0; margin-left: 8px; }
-        .booking-item .btn-icon { color: #9CA3AF; font-size: 16px; padding: 6px; border: none; background: none; cursor: pointer; border-radius: 6px; }
+        .booking-item .btn-icon { color: #9CA3AF; font-size: 20px; padding: 4px; border: none; background: none; cursor: pointer; border-radius: 6px; }
         .booking-item .btn-icon:hover { color: var(--text-gray); background: #F3F4F6; }
         .booking-item .btn-icon.delete:hover { color: #EF4444; background: #FEF2F2; }
 
@@ -111,7 +110,7 @@
 
         .day-header { padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; background: #fff; position: sticky; top: 0; z-index: 10; border-radius: 16px; transition: all 0.2s ease;}
         .day-header-left { display: flex; align-items: center; gap: 14px; }
-        .day-icon-block { display: none; width: 42px; height: 42px; background: var(--current-primary-light); color: var(--current-primary); border-radius: 10px; align-items: center; justify-content: center; font-size: 18px; transition: all 0.3s;}
+        .day-icon-block { display: none; width: 42px; height: 42px; background: var(--current-primary-light); color: var(--current-primary); border-radius: 10px; align-items: center; justify-content: center; font-size: 22px; transition: all 0.3s;}
         .day-text-wrap { display: flex; align-items: center; gap: 12px; transition: all 0.2s ease;}
         .day-title-row { display: flex; align-items: center; gap: 8px; }
         .day-badge-text { color: var(--current-primary); font-size: 16px; font-weight: 700; transition: color 0.3s;}
@@ -122,7 +121,7 @@
         .view-mode .day-desc-text:empty::before { content: ''; }
 
         .day-header-actions { display: flex; align-items: center; gap: 8px; height: 42px; }
-        .icon-caret { transition: transform 0.3s ease; color: #9CA3AF; font-size: 16px; }
+        .icon-caret { transition: transform 0.3s ease; color: #9CA3AF; font-size: 20px; }
         
         .day-card.active .day-header { align-items: flex-start; border-radius: 16px 16px 0 0; }
         .day-card.active .icon-caret { transform: rotate(180deg); }
@@ -142,7 +141,7 @@
         .timeline-item { display: flex; align-items: stretch; margin-bottom: 12px; }
         .timeline-time { width: 44px; font-size: 14px; font-weight: 700; color: var(--text-dark); padding-top: 12px; text-align: left; }
         .timeline-divider { display: flex; flex-direction: column; align-items: center; margin: 6px 16px 0; }
-        .timeline-circle { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; z-index: 2; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
+        .timeline-circle { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; z-index: 2; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
         .timeline-line { width: 2px; background: #E5E7EB; flex-grow: 1; margin-top: 4px; margin-bottom: 4px; min-height: 24px; }
         .timeline-item:last-child .timeline-line { display: none; }
         
@@ -152,9 +151,9 @@
         .timeline-text p { margin-top: 5px; font-size: 13px; color: var(--text-gray-dark); line-height: 1.4; } 
         
         .timeline-cost { font-size: 13px; font-weight: 600; color: var(--text-dark); margin-top: 8px; display: flex; align-items: center; gap: 4px; border-top: 1px dashed #D1D5DB; padding-top: 8px;}
-        .timeline-cost i { color: var(--text-gray); font-size: 12px; }
+        .timeline-cost i { color: var(--text-gray); font-size: 14px; }
         .timeline-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
-
+        
         .btn-add-schedule { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: #fff; border: 1px solid var(--border-color); border-radius: 12px; color: var(--current-primary, var(--primary)); font-weight: 600; font-size: 14px; margin-top: 10px; cursor: pointer; transition: all 0.2s; }
         .btn-add-schedule:hover { background: #F8FAFC; border-color: var(--current-primary, var(--primary)); }
 
@@ -168,23 +167,22 @@
         .prep-item:last-child { border-bottom: none; }
         .prep-item-left { display: flex; align-items: center; gap: 12px; cursor: pointer; flex: 1; overflow: hidden;}
         
-        .prep-checkbox { font-size: 20px; color: #D1D5DB; transition: color 0.2s; }
+        .prep-checkbox { font-size: 24px; color: #D1D5DB; transition: color 0.2s; }
         .prep-item.completed .prep-checkbox { color: var(--primary); }
         .prep-text { font-size: 15px; color: var(--text-dark); transition: all 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .prep-item.completed .prep-text { text-decoration: line-through; color: var(--text-gray); opacity: 0.7; }
         
         .memo-link-text { color: var(--primary); text-decoration: underline; font-weight: 500; cursor: pointer; }
 
-        .btn-icon { background: none; border: none; color: #9CA3AF; font-size: 16px; cursor: pointer; padding: 6px; border-radius: 6px; }
+        .btn-icon { background: none; border: none; color: #9CA3AF; font-size: 18px; cursor: pointer; padding: 4px; border-radius: 6px; }
         .btn-icon:hover { background: #F3F4F6; color: var(--text-dark); }
         .btn-icon.delete:hover { background: #FEF2F2; color: #EF4444; }
 
         .prep-add-form { display: flex; gap: 8px; }
         .prep-input { flex: 1; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 12px; font-size: 14px; outline: none; background: #F9FAFB; }
         .prep-input:focus { border-color: var(--text-dark); background: #fff; }
-        .btn-prep-add { width: 46px; height: 46px; background: #111827; color: white; border: none; border-radius: 12px; font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .btn-prep-add { width: 46px; height: 46px; background: #111827; color: white; border: none; border-radius: 12px; font-size: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
-        /* Modal Layout */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 1000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(2px);}
         .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease-out; }
         .modal-content { background: #fff; width: 100%; max-width: 400px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; padding: 0;}
@@ -230,13 +228,16 @@
         .btn-icon-more { width: 24px; height: 24px; border-radius: 50%; border: 1px dashed var(--border-color); background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-gray); font-size: 12px; transition: all 0.2s; }
         .btn-icon-more:hover { background: #F3F4F6; color: var(--text-dark); }
 
-        .icon-grid-full { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 10px; max-height: 350px; overflow-y: auto; padding-right: 4px; }
-        .icon-grid-item { width: 100%; aspect-ratio: 1; border-radius: 12px; background: #F3F4F6; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; border: 2px solid transparent; color: var(--text-dark); transition: all 0.2s;}
+        .icon-grid-full { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 10px; max-height: 350px; overflow-y: auto; padding-right: 4px; }
+        .icon-grid-item { width: 100%; border-radius: 12px; background: #F3F4F6; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; border: 2px solid transparent; color: var(--text-dark); transition: all 0.2s; padding: 12px 4px; gap: 6px;}
         .icon-grid-item:hover { background: #E5E7EB; }
         .icon-grid-item.active { border-color: var(--primary); background: var(--primary-light); color: var(--primary); }
+        .icon-label { font-size: 11px; font-weight: 500; text-align: center; color: var(--text-gray-dark); width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .icon-grid-item.active .icon-label { color: var(--primary); font-weight: 600; }
 
         .view-mode .hero-btn-group { display: none !important; }
         .view-mode .day-header-actions .btn-icon { display: none !important; } 
+        
         .view-mode .timeline-actions { display: none !important; }
         .view-mode .btn-add-schedule { display: none !important; }
         .view-mode .btn-add-booking { display: none !important; }
@@ -269,6 +270,7 @@
                 <button class="btn-hero-circle" onclick="manualCloudSave()" title="클라우드 수동 저장"><i class="ph ph-cloud-arrow-up"></i></button>
                 <button class="btn-hero-circle" onclick="document.getElementById('importFile').click()" title="데이터 불러오기"><i class="ph ph-folder-open"></i></button>
                 <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
+                
                 <button class="btn-hero-circle" onclick="exportData()" title="데이터 저장"><i class="ph ph-floppy-disk"></i></button>
                 <button class="btn-hero-circle" onclick="openModal('modalCaptureOption')" title="이미지로 저장"><i class="ph ph-download-simple"></i></button>
                 <button class="btn-hero-circle" onclick="openShareModal()" title="공유하기"><i class="ph ph-share-network"></i></button>
@@ -493,18 +495,18 @@
                     <div class="form-group">
                         <label class="form-label">대표 아이콘</label>
                         <div class="category-grid" id="dayIconGrid">
-                            <button type="button" class="category-btn icon-btn active" data-icon="ph-fill ph-map-pin"><i class="ph-fill ph-map-pin"></i></button>
-                            <button type="button" class="category-btn icon-btn" data-icon="ph-fill ph-airplane-tilt"><i class="ph-fill ph-airplane-tilt"></i></button>
-                            <button type="button" class="category-btn icon-btn" data-icon="ph-fill ph-buildings"><i class="ph-fill ph-buildings"></i></button>
-                            <button type="button" class="category-btn icon-btn" data-icon="ph-fill ph-car-profile"><i class="ph-fill ph-car-profile"></i></button>
-                            <button type="button" class="category-btn icon-btn" data-icon="ph-fill ph-camera"><i class="ph-fill ph-camera"></i></button>
-                            <button type="button" class="category-btn icon-btn" data-icon="ph-fill ph-coffee"><i class="ph-fill ph-coffee"></i></button>
-                            <button type="button" class="category-btn icon-btn" data-icon="ph-fill ph-flag"><i class="ph-fill ph-flag"></i></button>
-                            <button type="button" class="category-btn icon-btn" data-icon="ph-fill ph-star"><i class="ph-fill ph-star"></i></button>
-                            <button type="button" class="category-btn icon-btn" data-icon="ph-fill ph-heart"><i class="ph-fill ph-heart"></i></button>
-                            <button type="button" class="category-btn icon-btn" data-icon="ph-fill ph-check-circle"><i class="ph-fill ph-check-circle"></i></button>
+                            <button type="button" class="category-btn icon-btn active" data-icon="ph-map-pin"><i class="ph-fill ph-map-pin"></i></button>
+                            <button type="button" class="category-btn icon-btn" data-icon="ph-airplane-tilt"><i class="ph-fill ph-airplane-tilt"></i></button>
+                            <button type="button" class="category-btn icon-btn" data-icon="ph-buildings"><i class="ph-fill ph-buildings"></i></button>
+                            <button type="button" class="category-btn icon-btn" data-icon="ph-car-profile"><i class="ph-fill ph-car-profile"></i></button>
+                            <button type="button" class="category-btn icon-btn" data-icon="ph-camera"><i class="ph-fill ph-camera"></i></button>
+                            <button type="button" class="category-btn icon-btn" data-icon="ph-coffee"><i class="ph-fill ph-coffee"></i></button>
+                            <button type="button" class="category-btn icon-btn" data-icon="ph-flag"><i class="ph-fill ph-flag"></i></button>
+                            <button type="button" class="category-btn icon-btn" data-icon="ph-star"><i class="ph-fill ph-star"></i></button>
+                            <button type="button" class="category-btn icon-btn" data-icon="ph-heart"><i class="ph-fill ph-heart"></i></button>
+                            <button type="button" class="category-btn icon-btn" data-icon="ph-check-circle"><i class="ph-fill ph-check-circle"></i></button>
                         </div>
-                        <input type="hidden" id="inputDayIcon" value="ph-fill ph-map-pin">
+                        <input type="hidden" id="inputDayIcon" value="ph-map-pin">
                     </div>
                     <div class="form-group">
                         <label class="form-label">주요 일정 (요약)</label>
@@ -600,13 +602,13 @@
     </div>
 
     <div id="modalIconPicker" class="modal-overlay" style="z-index: 1100;">
-        <div class="modal-content" style="max-width: 360px;">
+        <div class="modal-content" style="max-width: 380px;">
             <div class="modal-header">
                 <h3 class="modal-title">아이콘 선택</h3>
                 <button type="button" class="btn-icon" onclick="closeModal('modalIconPicker')"><i class="ph ph-x"></i></button>
             </div>
             <div class="modal-body icon-grid-full" id="fullIconGrid">
-                <!-- JS 랜더링: 전체 아이콘 목록 -->
+                <!-- JS 랜더링: 전체 아이콘 목록 (이름 포함) -->
             </div>
         </div>
     </div>
@@ -709,6 +711,7 @@
         window.memoItems = [];
         window.currentEventColor = '#3B82F6';
         window.currentEventIcon = 'ph-fill ph-airplane-takeoff';
+        
         let autoSaveTimer = null;
 
         const categoryStyles = {
@@ -737,41 +740,96 @@
         ];
         
         const extendedIcons = [
-            'ph-fill ph-airplane-takeoff', 'ph-fill ph-airplane-landing', 'ph-fill ph-airplane-tilt', 'ph-fill ph-car-profile', 'ph-fill ph-buildings', 'ph-fill ph-fork-knife', 'ph-fill ph-camera', 'ph-fill ph-shopping-bag', 'ph-fill ph-flower-lotus', 'ph-fill ph-dots-three-circle',
-            'ph-fill ph-star', 'ph-fill ph-heart', 'ph-fill ph-swimming-pool', 'ph-fill ph-umbrella', 'ph-fill ph-circle', 'ph-fill ph-map-pin', 'ph-fill ph-flag', 'ph-fill ph-check-circle', 'ph-fill ph-coffee', 'ph-fill ph-martini', 'ph-fill ph-beer-bottle', 'ph-fill ph-hamburger', 'ph-fill ph-pizza',
-            'ph-fill ph-train', 'ph-fill ph-bus', 'ph-fill ph-taxi', 'ph-fill ph-bicycle', 'ph-fill ph-boat', 'ph-fill ph-anchor', 'ph-fill ph-tent', 'ph-fill ph-mountains', 'ph-fill ph-tree', 'ph-fill ph-sun', 'ph-fill ph-cloud-sun', 'ph-fill ph-ticket', 'ph-fill ph-money', 'ph-fill ph-credit-card',
-            'ph-fill ph-shopping-cart', 'ph-fill ph-suitcase', 'ph-fill ph-t-shirt', 'ph-fill ph-sneaker', 'ph-fill ph-music-notes', 'ph-fill ph-camera-rotate', 'ph-fill ph-video-camera', 'ph-fill ph-film-strip', 'ph-fill ph-game-controller', 'ph-fill ph-bed', 'ph-fill ph-first-aid', 'ph-fill ph-pill'
+            { class: 'ph-fill ph-airplane-takeoff', label: '출발' },
+            { class: 'ph-fill ph-airplane-landing', label: '도착' },
+            { class: 'ph-fill ph-airplane-tilt', label: '항공' },
+            { class: 'ph-fill ph-car-profile', label: '자동차' },
+            { class: 'ph-fill ph-train', label: '기차' },
+            { class: 'ph-fill ph-bus', label: '버스' },
+            { class: 'ph-fill ph-taxi', label: '택시' },
+            { class: 'ph-fill ph-bicycle', label: '자전거' },
+            { class: 'ph-fill ph-boat', label: '배' },
+            { class: 'ph-fill ph-buildings', label: '빌딩' },
+            { class: 'ph-fill ph-house', label: '숙소' },
+            { class: 'ph-fill ph-bed', label: '침대' },
+            { class: 'ph-fill ph-fork-knife', label: '식사' },
+            { class: 'ph-fill ph-coffee', label: '커피' },
+            { class: 'ph-fill ph-martini', label: '칵테일' },
+            { class: 'ph-fill ph-beer-bottle', label: '맥주' },
+            { class: 'ph-fill ph-hamburger', label: '햄버거' },
+            { class: 'ph-fill ph-pizza', label: '피자' },
+            { class: 'ph-fill ph-camera', label: '카메라' },
+            { class: 'ph-fill ph-binoculars', label: '관광' },
+            { class: 'ph-fill ph-shopping-bag', label: '쇼핑' },
+            { class: 'ph-fill ph-storefront', label: '상점' },
+            { class: 'ph-fill ph-shopping-cart', label: '카트' },
+            { class: 'ph-fill ph-gift', label: '기념품' },
+            { class: 'ph-fill ph-flower-lotus', label: '마사지' },
+            { class: 'ph-fill ph-person-simple-swim', label: '수영' },
+            { class: 'ph-fill ph-swimming-pool', label: '수영장' },
+            { class: 'ph-fill ph-waves', label: '바다/호핑' },
+            { class: 'ph-fill ph-drop', label: '물놀이' },
+            { class: 'ph-fill ph-fish', label: '스노클링' },
+            { class: 'ph-fill ph-palm-tree', label: '휴양' },
+            { class: 'ph-fill ph-island', label: '섬' },
+            { class: 'ph-fill ph-tent', label: '텐트' },
+            { class: 'ph-fill ph-mountains', label: '산' },
+            { class: 'ph-fill ph-tree', label: '나무' },
+            { class: 'ph-fill ph-sun', label: '해' },
+            { class: 'ph-fill ph-cloud-sun', label: '흐림' },
+            { class: 'ph-fill ph-umbrella', label: '우산' },
+            { class: 'ph-fill ph-map-pin', label: '마커' },
+            { class: 'ph-fill ph-map-trifold', label: '지도' },
+            { class: 'ph-fill ph-navigation-arrow', label: '길찾기' },
+            { class: 'ph-fill ph-compass', label: '방향' },
+            { class: 'ph-fill ph-target', label: '목적지' },
+            { class: 'ph-fill ph-flag', label: '깃발' },
+            { class: 'ph-fill ph-clock', label: '시간' },
+            { class: 'ph-fill ph-alarm', label: '알람' },
+            { class: 'ph-fill ph-clock-countdown', label: '카운트다운' },
+            { class: 'ph-fill ph-calendar', label: '일정' },
+            { class: 'ph-fill ph-calendar-check', label: '예약완료' },
+            { class: 'ph-fill ph-ticket', label: '티켓' },
+            { class: 'ph-fill ph-money', label: '돈' },
+            { class: 'ph-fill ph-credit-card', label: '카드' },
+            { class: 'ph-fill ph-suitcase', label: '캐리어' },
+            { class: 'ph-fill ph-backpack', label: '백팩' },
+            { class: 'ph-fill ph-handbag', label: '가방' },
+            { class: 'ph-fill ph-package', label: '짐' },
+            { class: 'ph-fill ph-passport', label: '여권' },
+            { class: 'ph-fill ph-identification-card', label: '신분증' },
+            { class: 'ph-fill ph-qr-code', label: 'QR' },
+            { class: 'ph-fill ph-wifi-high', label: '와이파이' },
+            { class: 'ph-fill ph-plug-charging', label: '충전' },
+            { class: 'ph-fill ph-battery-charging', label: '보전' },
+            { class: 'ph-fill ph-phone', label: '전화' },
+            { class: 'ph-fill ph-chat-circle-text', label: '메모' },
+            { class: 'ph-fill ph-note-pencil', label: '기록' },
+            { class: 'ph-fill ph-camera-rotate', label: '회전' },
+            { class: 'ph-fill ph-video-camera', label: '비디오' },
+            { class: 'ph-fill ph-film-strip', label: '필름' },
+            { class: 'ph-fill ph-music-notes', label: '음악' },
+            { class: 'ph-fill ph-game-controller', label: '게임' },
+            { class: 'ph-fill ph-t-shirt', label: '옷' },
+            { class: 'ph-fill ph-sneaker', label: '신발' },
+            { class: 'ph-fill ph-medical-kit', label: '응급' },
+            { class: 'ph-fill ph-first-aid', label: '구급' },
+            { class: 'ph-fill ph-pill', label: '약' },
+            { class: 'ph-fill ph-toilet', label: '화장실' },
+            { class: 'ph-fill ph-shower', label: '샤워' },
+            { class: 'ph-fill ph-lifebuoy', label: '안전' },
+            { class: 'ph-fill ph-warning-circle', label: '주의' },
+            { class: 'ph-fill ph-info', label: '안내' },
+            { class: 'ph-fill ph-check-circle', label: '체크' },
+            { class: 'ph-fill ph-circle', label: '원' },
+            { class: 'ph-fill ph-star', label: '별' },
+            { class: 'ph-fill ph-heart', label: '하트' },
+            { class: 'ph-fill ph-smiley', label: '즐거움' },
+            { class: 'ph-fill ph-sparkle', label: '추천' },
+            { class: 'ph-fill ph-crown', label: '베스트' },
+            { class: 'ph-fill ph-dots-three-circle', label: '기타' }
         ];
 
-        function migrateIcons(iconStr) {
-            if(!iconStr) return 'ph-fill ph-star';
-            if(iconStr.includes('fa-')) {
-                if(iconStr.includes('map-marker')) return 'ph-fill ph-map-pin';
-                if(iconStr.includes('plane-departure')) return 'ph-fill ph-airplane-takeoff';
-                if(iconStr.includes('plane-arrival')) return 'ph-fill ph-airplane-landing';
-                if(iconStr.includes('plane')) return 'ph-fill ph-airplane-tilt';
-                if(iconStr.includes('building')) return 'ph-fill ph-buildings';
-                if(iconStr.includes('car')) return 'ph-fill ph-car-profile';
-                if(iconStr.includes('bus')) return 'ph-fill ph-bus';
-                if(iconStr.includes('camera')) return 'ph-fill ph-camera';
-                if(iconStr.includes('coffee')) return 'ph-fill ph-coffee';
-                if(iconStr.includes('flag')) return 'ph-fill ph-flag';
-                if(iconStr.includes('star')) return 'ph-fill ph-star';
-                if(iconStr.includes('heart')) return 'ph-fill ph-heart';
-                if(iconStr.includes('check')) return 'ph-fill ph-check-circle';
-                if(iconStr.includes('utensils')) return 'ph-fill ph-fork-knife';
-                if(iconStr.includes('shopping')) return 'ph-fill ph-shopping-bag';
-                if(iconStr.includes('spa')) return 'ph-fill ph-flower-lotus';
-                if(iconStr.includes('bed')) return 'ph-fill ph-bed';
-                return 'ph-fill ph-star';
-            }
-            if(!iconStr.includes('ph-fill') && iconStr.includes('ph-')) {
-                return iconStr.replace('ph-', 'ph-fill ph-');
-            }
-            return iconStr;
-        }
-
-        // UI Helpers
         window.checkStickyHeaders = function() {
             const headers = document.querySelectorAll('.day-card.active .day-header');
             headers.forEach(header => {
@@ -970,14 +1028,13 @@
                 timelineContainer.innerHTML = ''; 
                 for (let i = 0; i < diffDays; i++) {
                     const curDate = new Date(startD); curDate.setDate(curDate.getDate() + i);
-                    const dayNum = i + 1; const conf = window.dayConfigs[dayNum] || { icon: 'ph-fill ph-map-pin', desc: '', customColor: false, color: '#2563EB' };
-                    const safeIcon = migrateIcons(conf.icon);
+                    const dayNum = i + 1; const conf = window.dayConfigs[dayNum] || { icon: 'ph-map-pin', desc: '', customColor: false, color: '#2563EB' };
 
                     timelineContainer.insertAdjacentHTML('beforeend', `
                         <div class="day-card active" data-day="${dayNum}" ${conf.customColor ? `style="--day-primary: ${conf.color}; --day-primary-light: ${conf.color}1A;"` : ''}>
                             <div class="day-header" onclick="toggleDay(this)">
                                 <div class="day-header-left">
-                                    <div class="day-icon-block"><i class="${safeIcon}"></i></div>
+                                    <div class="day-icon-block"><i class="${conf.icon}"></i></div>
                                     <div class="day-text-wrap">
                                         <div class="day-title-row"><span class="day-badge-text">DAY ${dayNum}</span><span class="day-date-text">${String(curDate.getMonth()+1).padStart(2,'0')}.${String(curDate.getDate()).padStart(2,'0')} (${daysArr[curDate.getDay()]})</span></div>
                                         <div class="day-desc-text" id="dayDesc${dayNum}">${conf.desc}</div>
@@ -1084,8 +1141,7 @@
             e.stopPropagation(); document.getElementById('inputDayId').value = dayNum; const conf = window.dayConfigs[dayNum] || { icon: 'ph-fill ph-map-pin', desc: '', customColor: false, color: '#2563EB' };
             document.getElementById('inputDayDesc').value = conf.desc; 
             
-            const safeIcon = migrateIcons(conf.icon);
-            document.querySelectorAll('#dayIconGrid .category-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-icon') === safeIcon));
+            document.querySelectorAll('#dayIconGrid .category-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-icon') === conf.icon));
             
             document.getElementById('inputDayColorCheck').checked = conf.customColor; document.getElementById('dayColorWrapper').style.display = conf.customColor ? 'inline-flex' : 'none';
             document.getElementById('inputDayColor').value = conf.customColor ? conf.color : (window.tripInfo.color || '#2563EB'); openModal('modalDay');
@@ -1093,7 +1149,9 @@
 
         document.getElementById('formDay').addEventListener('submit', (e) => {
             e.preventDefault(); const dayNum = document.getElementById('inputDayId').value;
-            window.dayConfigs[dayNum] = { icon: document.getElementById('inputDayIcon').value, customColor: document.getElementById('inputDayColorCheck').checked, color: document.getElementById('inputDayColor').value, desc: document.getElementById('inputDayDesc').value };
+            let finalIcon = document.getElementById('inputDayIcon').value;
+            if(!finalIcon.includes('ph-fill') && finalIcon.includes('ph-')) { finalIcon = finalIcon.replace('ph-', 'ph-fill ph-'); }
+            window.dayConfigs[dayNum] = { icon: finalIcon, customColor: document.getElementById('inputDayColorCheck').checked, color: document.getElementById('inputDayColor').value, desc: document.getElementById('inputDayDesc').value };
             saveAndSync(); renderTrip(); closeModal('modalDay');
         });
 
@@ -1106,8 +1164,7 @@
             
             dayEvents.forEach(ev => {
                 const evColor = ev.color || categoryStyles[ev.type]?.color || '#6B7280';
-                const originalIcon = ev.icon || categoryStyles[ev.type]?.icon || 'ph-fill ph-star';
-                const safeIcon = migrateIcons(originalIcon);
+                const safeIcon = ev.icon || categoryStyles[ev.type]?.icon || 'ph-fill ph-star';
 
                 list.insertAdjacentHTML('beforeend', `
                     <div class="timeline-item">
@@ -1191,10 +1248,11 @@
         function initIconPickerGrid() {
             const grid = document.getElementById('fullIconGrid');
             grid.innerHTML = '';
-            extendedIcons.forEach(icon => {
+            extendedIcons.forEach(iconObj => {
                 grid.insertAdjacentHTML('beforeend', `
-                    <div class="icon-grid-item" data-icon="${icon}" onclick="setEventIcon('${icon}')">
-                        <i class="${icon}"></i>
+                    <div class="icon-grid-item" data-icon="${iconObj.class}" onclick="setEventIcon('${iconObj.class}')">
+                        <i class="${iconObj.class}"></i>
+                        <span class="icon-label">${iconObj.label}</span>
                     </div>
                 `);
             });
@@ -1256,7 +1314,7 @@
                     document.getElementById('inputEventCost').value = ev.cost||''; 
                     
                     window.currentEventColor = ev.color || categoryStyles[ev.type]?.color || '#6B7280';
-                    window.currentEventIcon = migrateIcons(ev.icon || categoryStyles[ev.type]?.icon || 'ph-fill ph-star');
+                    window.currentEventIcon = ev.icon || categoryStyles[ev.type]?.icon || 'ph-fill ph-star';
                     
                     document.querySelectorAll('#eventCategoryGrid .category-btn').forEach(btn => {
                         btn.classList.toggle('active', btn.getAttribute('data-val') === ev.type);
